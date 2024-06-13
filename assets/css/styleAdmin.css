@@ -1,0 +1,979 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ==================== PARA EL HEADER ======================= */
+
+.menu__hamburguesa,
+.container__closed {
+    display: none;
+}
+
+.list__menu {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.list__link__menu {
+    padding: 15px;
+    text-align: center;
+    align-items: center;
+    white-space: nowrap;
+    margin-right: 10px;
+}
+
+.list__link__menu i {
+    font-size: 20px;
+    margin-top: -10px;
+}
+
+.list__link__menu a {
+    font-size: 13px;
+    font-weight: bold;
+    padding: 15px 5px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.container__button__menu button {
+    width: 165px;
+    height: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.container__button__menu button i {
+    margin-right: 3%;
+}
+
+.container__button__menu .button__One__menu {
+    background-color: #ffffff;
+    color: #5410a2;
+}
+
+.notification {
+    width: 1%;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+}
+
+.notification i {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+
+@media screen and (max-width: 1200px) {
+    .welcome{
+        width: 90%;
+    }
+
+    .menu__hamburguesa {
+        width: 5%;
+        padding: 25px 15px 0px 0px;
+        display: block;
+        color: #ffffff;
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+    }
+
+    .menu__hamburguesa i {
+        margin-left: 2%;
+    }
+
+    .container__general {
+        opacity: 0;
+        visibility: hidden;
+        height: calc(75.5vh - 10px);
+        background-color: #5410a2;
+        position: absolute;
+        top: 26%;
+        transition: all 1s;
+        overflow: scroll;
+        display: flex;
+        justify-content: start;
+        flex-direction: column;
+        border-radius: 0 5% 5% 0;
+        box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .5);
+        z-index: 1;
+    }
+
+    .container__general.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .container__closed {
+        width: 10%;
+        position: absolute;
+        right: 0;
+        font-size: 20px;
+        display: block;
+        color: #ffffff;
+        padding: 25px 20px 0px 0px;
+    }
+
+    body.no-scroll {
+        overflow: hidden;
+    }
+
+
+    .list__menu {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .list__link__menu {
+        width: 150px;
+        padding: 25px 18px;
+        text-align: left;
+        align-items: center;
+        margin-left: -14%;
+    }
+
+    .list__link__menu a {
+        font-size: 13px;
+        font-weight: bold;
+        padding: 15px 5px;
+        color: #ffffff;
+    }
+
+    .container__button__menu {
+        width: 60%;
+        margin-left: 14%;
+        display: block;
+        right: 0;
+    }
+
+    .container__button__menu button {
+        width: 165px;
+        height: 30px;
+        font-size: 15px;
+        font-weight: bold;
+        border: none;
+        background: none;
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        cursor: pointer;
+    }
+
+    .column-menu{
+        display: flex;
+        flex-direction: column;
+        margin-left: 20px;
+    }
+}
+
+
+@media (min-width: 441px) and (max-width: 1200px) {
+    .container__general {
+        opacity: 0;
+        visibility: hidden;
+        width: 60%;
+        height: calc(74vh - 10px);
+        background-color: #5410a2;
+        position: absolute;
+        top: 28%;
+        transition: all 1s;
+        overflow: scroll;
+        display: flex;
+        flex-direction: column;
+        border-radius: 0 5% 5% 0;
+        box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .5);
+        z-index: 1;
+    }
+}
+
+/* RELOJ */
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.reloj {
+    color: #ffffff;
+    background: #7c19ed;
+    text-align: left;
+    padding: 20px 20px;
+}
+
+.fecha {
+    font-size: 18px;
+}
+
+.tiempo {
+    font-size: 24px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .reloj .fecha {
+        font-size: 15px;
+    }
+}
+
+/* ===================== footer ====================== */
+
+.footer {
+    background-color: #33076e;
+    padding-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.footer p {
+    color: #ffffff;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+.footerLinks img {
+    text-align: center;
+    margin-top: 1px;
+    height: 100%;
+    width: 300px;
+}
+
+@media (max-width: 768px) {
+    .footer p {
+        color: #ffffff;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: 0.6em;
+        margin-top: 10px;
+    }
+}
+
+/* ====================== NOTIFICACIÓN ============================= */
+
+
+.container__notificacion {
+    width: 800px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    float: right;
+    right: 0;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
+    background-color: #ffffff;
+    overflow: auto;
+    display: none;
+    z-index: 20;
+    -webkit-animation: scale-up-right 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    animation: scale-up-right 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+.container__notificacion.cerrado {
+    -webkit-animation: slide-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: slide-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+.cabezado__notificacion {
+    background-color: #7a0ff8;
+    font-size: 28px;
+    color: #ffffff;
+    padding: 10px 0px;
+    display: flex;
+    flex-direction: row;
+}
+
+.cabezado__notificacion span {
+    width: 600px;
+}
+
+.cabezado__notificacion i {
+    margin: 0px 20px;
+    cursor: pointer;
+}
+
+.cuerpo__notificacion {
+    display: flex;
+    flex-direction: column;
+}
+
+.part__notificacion {
+    display: flex;
+    flex-direction: row;
+    padding: 15px 0px;
+    background-color: #eee7ff;
+}
+
+.part__notificacion i {
+    padding: 15px 15px;
+    font-size: 50px;
+    color: #7a0ff8;
+}
+
+.text__info {
+    font-size: 18px;
+}
+
+.closed {
+    cursor: pointer;
+}
+
+/* ----------------------------------------------
+ * Generated by Animista on 2024-3-7 0:37:58
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info. 
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation scale-up-right
+ * ----------------------------------------
+ */
+@-webkit-keyframes scale-up-right {
+    0% {
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+        -webkit-transform-origin: 100% 50%;
+        transform-origin: 100% 50%;
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transform-origin: 100% 50%;
+        transform-origin: 100% 50%;
+    }
+}
+
+@keyframes scale-up-right {
+    0% {
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+        -webkit-transform-origin: 100% 50%;
+        transform-origin: 100% 50%;
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transform-origin: 100% 50%;
+        transform-origin: 100% 50%;
+    }
+}
+
+
+/* ----------------------------------------------
+ * Generated by Animista on 2024-3-7 0:44:1
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info. 
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation slide-right
+ * ----------------------------------------
+ */
+@-webkit-keyframes slide-right {
+    0% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+
+    100% {
+        -webkit-transform: translateX(1000px);
+        transform: translateX(1000px);
+    }
+}
+
+@keyframes slide-right {
+    0% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+
+    100% {
+        -webkit-transform: translateX(1000px);
+        transform: translateX(1000px);
+    }
+}
+
+/* =============== TARJETAS DE ADMINISTRADOR ========== */
+/* ===================== footer ====================== */
+
+.text-footer p {
+    color: #ffffff;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+
+/* =================== CONTENIDO ======================== */
+.picture {
+    max-width: 600px;
+    width: 300px;
+    max-height: 180px;
+    height: 170px;
+    background-color: #5410a2;
+    margin: auto 15px;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    justify-content: center;
+    display: block;
+}
+
+.picture a{
+    display: block;
+    padding: 39px 0px;
+    border-radius: 30px;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+}
+
+
+.picture a span {
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    padding-top: 10px;
+}
+
+.picture a img {
+    max-width: 60px;
+    width: 80%;
+    margin: auto 0;
+}
+
+.picture:hover {
+    transform: scale(1.05);
+}
+
+/* ======================================= TABLAS ===================================== */
+
+.container-table {
+    width: 1200px;
+    max-height: 600px;
+    overflow: auto;
+}
+
+.encabezadoEstatico{
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.table-factura{
+    border: #7030a0;
+    text-align: center;
+}
+
+.table-factura th {
+    background-color: #7030a0;
+    color: #fff;
+}
+
+.download-button {
+    border-color: #00476D;
+    background-color: rgb(0,72,110);
+}
+
+.download-button:hover{
+    background-color: rgba(0,72,110,0.8);
+    border-color: rgba(0,72,110,0.8);
+}
+
+.table-servicios{
+    border: #00476D;
+    text-align: center;
+}
+
+.table-servicios th {
+    background-color: #00476D;
+    color: #fff;
+}
+
+.table-contrato{
+    border: #4a4a4a !important;
+    text-align: center;
+}
+
+.table-contrato th {
+    background-color: #4a4a4a !important;
+    color: #fff;
+}
+
+.table-credenciales{
+    border: #106da2;
+    text-align: center;
+}
+
+.table-credenciales th {
+    background-color: #106da2;
+    color: #fff;
+}
+
+.table-reporte{
+    border: #00b807;
+    text-align: center;
+}
+
+.table-reporte th {
+    background-color: #00b807;
+    color: #fff;
+}
+
+.table-cliente{
+    border: #7030a0;
+    text-align: center;
+}
+
+.table-cliente th {
+    background-color: #7030a0;
+    color: #fff;
+}
+/* ======================== BOTONES DE LA TABLAS ============ */
+.clr-ser, .clr-ser:hover, .clr-ser:active {
+    background-color: #00476D;
+    border-color: #00476D;
+}
+
+.clr-fac, .clr-fac:hover, .clr-fac:active {
+    background-color: #5410a2;
+    border-color: #5410a2;
+}
+
+.clr-con, .clr-con:hover, .clr-con:active {
+    background-color: #4a4a4a;
+    border-color: #4a4a4a;
+}
+
+.clr-cre, .clr-cre:hover, .clr-cre:active {
+    background-color: #106da2;
+    border-color: #106da2;
+}
+
+.clr-pa, .clr-pa:hover, .clr-pa:active {
+    background-color: #00b807;
+    border-color: #00b807;
+}
+
+.clr-so, .clr-so:hover, .clr-so:active {
+    background-color: #ff0000;
+    border-color: #ff0000;
+}
+
+
+/* ===================================== APARTADO DE CLIENTES ===================== */
+.title-clientes span {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.col-auto button {
+    font-size: 15px;
+    border: none;
+    color: #ffffff;
+    border-radius: 10px;
+}
+
+.btn-clientes{
+    background-color: #7a0ff8;
+}
+
+.btn-clientes:hover, .btn-clientes:active{
+    background-color: #7a0ff8 !important;
+    box-shadow: 0 16px 16px rgba(0, 0, 0, 0.4);
+}
+
+.button__administrar {
+    background-color: #7a0ff8;
+    padding: 6px;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 10px;
+    margin-left: 16%;
+    cursor: pointer;
+}
+
+
+/* ========================= CONTAINER DESPLEGAR ============== */
+.container__desplegar {
+    width: 800px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    float: right;
+    right: 0;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
+    background-color: #ffffff;
+    overflow: hidden;
+    display: none;
+    z-index: 20;
+    -webkit-animation: scale-up-right 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    animation: scale-up-right 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+.container__desplegar.cerrado {
+    -webkit-animation: slide-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: slide-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+.closed {
+    cursor: pointer;
+}
+
+/* ----------------------------------------------
+ * Generated by Animista on 2024-3-7 0:37:58
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info. 
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation scale-up-right
+ * ----------------------------------------
+ */
+@-webkit-keyframes scale-up-right {
+    0% {
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+        -webkit-transform-origin: 100% 50%;
+        transform-origin: 100% 50%;
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transform-origin: 100% 50%;
+        transform-origin: 100% 50%;
+    }
+}
+
+@keyframes scale-up-right {
+    0% {
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+        -webkit-transform-origin: 100% 50%;
+        transform-origin: 100% 50%;
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transform-origin: 100% 50%;
+        transform-origin: 100% 50%;
+    }
+}
+
+
+/* ----------------------------------------------
+ * Generated by Animista on 2024-3-7 0:44:1
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info. 
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation slide-right
+ * ----------------------------------------
+ */
+@-webkit-keyframes slide-right {
+    0% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+
+    100% {
+        -webkit-transform: translateX(1000px);
+        transform: translateX(1000px);
+    }
+}
+
+@keyframes slide-right {
+    0% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+
+    100% {
+        -webkit-transform: translateX(1000px);
+        transform: translateX(1000px);
+    }
+}
+
+/* ==================== MENU DE CONTAINER GENERAL ==================== */
+.cabezado__desplegar {
+    width: 100%;
+    background-color: #5410a2;
+    color: #ffffff;
+    font-size: 20px;
+    text-align: center;
+    padding: 20px;
+}
+
+.cabezado__desplegar i {
+    padding: 0 20px;
+    font-size: 30px;
+}
+
+.menu__desplegable {
+    padding: 5px 0px;
+    font-size: 10px;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: row;
+}
+
+.menu__desplegable span {
+    margin: 0 8px;
+    cursor: pointer;
+    display: block;
+    padding: 15px 10px;
+    font-size: 8px;
+}
+
+/* ============== PARA QUE SE SELECCIONE =========== */
+.menu__desplegable span:hover,
+.menu__desplegable span.clicked {
+    color: #7a0ff8;
+}
+
+
+.menu__desplegable span i {
+    margin: 0 8px;
+}
+
+/* =================== DATOS GENERALES ======================== */
+.cuerpo__general2,
+.cuerpo__general3,
+.cuerpo__general4,
+.cuerpo__general5,
+.cuerpo__general6 {
+    display: none;
+    height: 79vh;
+    overflow: auto;
+}
+
+.datos__generales {
+    width: 100%;
+    margin-bottom: 2%;
+    margin-top: 4%;
+}
+
+.general__info {
+    width: 100%;
+}
+
+.title__general {
+    margin-left: 5%;
+    font-size: 25px;
+    color: #5410a2;
+}
+
+.title__general i {
+    margin-right: 1%;
+}
+
+.part__general {
+    margin-top: 2%;
+    margin-left: 12%;
+    font-size: 20px;
+}
+
+
+.button__general {
+    width: 100%;
+    padding: 15px 0px;
+    ;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.eliminar {
+    width: 50px;
+    height: 50px;
+    background-color: #ff0000;
+    text-align: center;
+    padding-top: 14px;
+    border-radius: 60px;
+    font-size: 20px;
+    color: #ffffff;
+    margin-left: 3%;
+    cursor: pointer;
+}
+
+.button__general button {
+    width: 160px;
+    height: 50px;
+    margin-left: 5%;
+    border: none;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.button__general button i {
+    margin-right: 5%;
+}
+
+.general__facturas {
+    background-color: #33076e;
+}
+
+.general__contrato {
+    background-color: #4a4a4a;
+}
+
+.general__credenciales {
+    background-color: #106da2;
+}
+
+/* ============ RESTABLECER CONTRASEÑA ==================== */
+.title__contrasenia {
+    width: 96%;
+    display: flex;
+    flex-direction: row;
+    margin: 20px 10px;
+    background-color: #5410a2;
+    color: #ffffff;
+    padding: 15px 10px;
+    font-size: 12px;
+    border-radius: 10px;
+}
+
+
+.title__contrasenia i {
+    margin-right: 2%;
+    font-size: 40px;
+}
+
+.container__checkbox {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+    font-size: 15px;
+}
+
+.container__checkbox .check {
+    width: 25px;
+    height: 25px;
+    margin: 10px 10px 10px 0px;
+}
+
+.check:checked+label {
+    background-color: #5410a2;
+    color: #ffffff;
+}
+
+.one__contrasenia,
+.two__contrasenia {
+    width: 400px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    margin: 10px 0px 10px 15px;
+    border: 1px solid #7a0ff8;
+}
+
+.two__contrasenia {
+    background-color: #d0d0d0;
+}
+
+.button__contrasenia {
+    width: 300px;
+    background-color: #5410a2;
+    padding: 15px 0px;
+    margin: 20px 0px;
+    font-size: 15px;
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+}
+
+.button__contrasenia i {
+    padding-right: 10px;
+}
+
+/* ================== EDITAR PERFIL =================== */
+
+.title-edit {
+    margin: 20px 0px;
+    color: #ffffff;
+    padding: 15px 10px;
+    font-size: 12px;
+}
+
+.title-edit p {
+    font-size: 25px;
+    margin-left: 3%;
+    margin-top: 1%;
+}
+
+.title-edit i {
+    position: relative;
+    align-items: end;
+    font-size: 40px;
+}
+
+.validar{
+    background-color: #464646;
+    border: none;
+}
+
+.validar:hover, .validar:active{
+    background-color: #464646;
+    box-shadow: 0 16px 16px rgba(0, 0, 0, 0.8);
+}
+
+.cancelar{
+    background-color: #bf1f1f;
+    border: none;
+}
+
+.cancelar:hover, .cancelar:active{
+    background-color: #bf1f1f;
+    box-shadow: 0 16px 16px rgba(0, 0, 0, 0.8);
+}
+
+.salvar{
+    background-color: #464646;
+    border: none;
+}
+
+.salvar:hover, .salvar:active{
+    background-color: #464646;
+    box-shadow: 0 16px 16px rgba(0, 0, 0, 0.8);
+}
+
