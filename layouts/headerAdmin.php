@@ -1,53 +1,92 @@
+<div class="reloj p-2" id="miReloj">
+    <p class="fecha"></p>
+    <p class="tiempo"></p>
+</div>
+<div class="container-fluid">
+    <a href="menuAdministrador.php"><img src="assets/img/logoSigra.svg" alt="logoSigra" class="img-fluid"></a>
+</div>
 <header>
-    <div class="reloj p-2" id="miReloj">
-        <p class="fecha"></p>
-        <p class="tiempo"></p>
-    </div>
     <div class="container-fluid">
-        <a href="menuAdministrador.php"><img src="assets/img/logoSigra.svg" alt="logoSigra" class="img-fluid"></a>
-    </div>
-    <div class="container-fluid" style="background-color: #5410a2;">
-        <div class="row d-flex justify-content-start">
-            <div class="col-4 p-4 welcome" style="color: #fff; width: 25%;">
-                <span class="p-2"><Strong>BIENVENIDO/A:</Strong><?php echo $_SESSION['nombreApellidos']; ?></span>
+        <div class="col-md-3" style="color: #fff;">
+            <span class="p-2"><Strong>BIENVENIDO/A:</Strong><?php echo $_SESSION['nombreApellidos']; ?></span>
+        </div>
+        <div class="navb-items">
+            <div class="item">
+                <a href="menuAdministrador.php"><i class="fa-solid fa-house-chimney"></i></a>
             </div>
-            <div class="col menu__hamburguesa">
-                <i class="fa-solid fa-bars" id="abrir"></i>
+            <div class="item">
+                <a href="facturasAdmin.php">FACTURACIÓN</a>
             </div>
-            <div class="col-8 container__general general__secundario" id="container-general">
-                <div class="col-md-3 container__closed">
-                    <i class="fa-solid fa-circle-xmark" id="cerrar"></i>
-                </div>
-                <div class="col p-0 m-0">
-                    <div class="row d-flex justify-content-between align-items-center column-menu">
-                        <div class="col-10 pt-2">
-                            <nav class="container__list__menu">
-                                <ul class="list__menu">
-                                    <li class="list__link__menu"><a href="menuAdministrador.php"><i class="fa-solid fa-house-chimney"></i></a></li>
-                                    <li class="list__link__menu"><a href="facturasAdmin.php">FACTURACIÓN</a></li>
-                                    <li class="list__link__menu"><a href="credencialesAdmin.php">CREDENCIALES</a></li>
-                                    <li class="list__link__menu"><a href="contratosAdmin.php">CONTRATO</a></li>
-                                    <li class="list__link__menu"><a href="servicios.php">MIS SERVICIOS</a></li>
-                                    <li class="list__link__menu"><a href="accesos.php">SOPORTE</a></li>
-                                </ul>
-                            </nav>
+            <div class="item">
+                <a href="credencialesAdmin.php">CREDENCIALES</a>
+            </div>
+            <div class="item">
+                <a href="contratosAdmin.php">CONTRATO</a>
+            </div>
+            <div class="item">
+                <a href="servicios.php">SERVICIOS</a>
+            </div>
+            <div class="item">
+                <a href="accesos.php">SOPORTE</a>
+            </div>
+            <div class="item">
+                <i class="fa-solid fa-bell" id="abrir-notificacion"></i>
+            </div>
+            <div class="item-button container__button__menu">
+                <a href="cerrarSesion.php" class="button__One__menu" id="cerrarSesionBtn" style="padding: 5px;"><i class="fa-solid fa-circle-xmark"></i>CERRAR SESIÓN</a>
+            </div>
+        </div>
+
+        <!-- Button trigger modal -->
+        <div class="mobile-toggler d-lg-none">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#navbModal" style="color: #fefefe;">
+                <i class="fa-solid fa-bars"></i>
+            </a>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="navbModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-header">
+                <div class="modal-content modal-content-header">
+                    <div class="modal-header modal-header-header">
+                        <a href="menuPrincipal.php" style="color: #fefefe;">CORPORACIÓN VYS PERÚ E.I.R.L.</a>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-x"></i></button>
+                    </div>
+                    <div class="modal-body modal-body-header">
+                        <div class="modal-line">
+                            <a href="menuAdministrador.php"><i class="fa-solid fa-house-chimney"></i></a>
                         </div>
-                        <div class="col-2">
-                            <div class="row">
-                                <div class="col-1 mb-3 notification" style="width: 1%;">
-                                    <i class="fa-solid fa-bell" id="abrir-notificacion"></i>
-                                </div>
-                                <div class="col-1 mb-3 container__button__menu">
-                                    <button class="button__One__menu" id="cerrarSesionAdmin"><i class="fa-solid fa-circle-xmark"></i>CERRAR SESIÓN</button>
-                                </div>
-                            </div>
+                        <div class="modal-line">
+                            <a href="facturasAdmin.php">FACTURACIÓN</a>
                         </div>
+                        <div class="modal-line">
+                            <a href="credencialesAdmin.php">CREDENCIALES</a>
+                        </div>
+                        <div class="modal-line">
+                            <a href="contratosAdmin.php">CONTRATO</a>
+                        </div>
+                        <div class="modal-line">
+                            <a href="servicios.php">MIS SERVICIOS</a>
+                        </div>
+                        <div class="modal-line">
+                            <a href="accesos.php">SOPORTE</a>
+                        </div>
+                        <div class="modal-line">
+                            <i class="fa-solid fa-bell" id="abrir-notificacion"></i>
+                        </div>
+                        <div class="container__button__menu">
+                            <a href="cerrarSesion.php" class="button__One__menu" id="cerrarSesionBtn" style="padding: 5px;"><i class="fa-solid fa-circle-xmark"></i>CERRAR SESIÓN</a>
+                        </div>
+                    </div>
+                    <div class="mobile-modal-footer">
+                        <a target="_blank" href="#"><i class="fa-brands fa-facebook"></i></a>
+                        <a target="_blank" href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a target="_blank" href="#"><i class="fa-brands fa-linkedin"></i></a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="container__notificacion" id="container-notificacion">
         <div class="cabezado__notificacion">
             <i class="fa-solid fa-bell"></i>

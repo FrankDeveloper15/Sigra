@@ -176,7 +176,7 @@ require_once("layouts/head.php");
         </div>
 
     </div>
-    
+
     <?php require_once("layouts/footer.php"); ?>
     <script>
         /* Para el conteo de números */
@@ -211,5 +211,30 @@ require_once("layouts/head.php");
             observer.observe(valueDisplay);
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modalLinks = document.querySelectorAll('.modal-link');
+
+            modalLinks.forEach(function(link) {
+                link.addEventListener('click', function(event) {
+                    var targetId = this.getAttribute('href');
+                    var targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        var modal = bootstrap.Modal.getInstance(document.getElementById('navbModal'));
+                        modal.hide();
+
+                        // Espera un momento para asegurarte de que el modal se cierre antes de desplazarte
+                        setTimeout(function() {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }, 500);
+                    }
+                });
+            });
+        });
+    </script>
+
     <?php require_once("layouts/script.php"); ?>
 </body>

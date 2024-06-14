@@ -30,21 +30,6 @@ setInterval(() => {
 
 Relojdigital();
 
-/* ====== PARA EL MENU GENERAL ========= */
-const containerGeneral = document.querySelector("#container-general");
-const abrir = document.querySelector("#abrir");
-const cerrar = document.querySelector("#cerrar");
-const body = document.body;
-
-abrir.addEventListener("click", () => {
-    containerGeneral.classList.add("visible");
-    body.classList.add("no-scroll");
-});
-
-cerrar.addEventListener("click", () => {
-    containerGeneral.classList.remove("visible");
-    body.classList.remove("no-scroll");
-});
 
 /* =========================== ABRIR EL LADO LATERAL DERECHA ======= */
 window.addEventListener('DOMContentLoaded', function () {

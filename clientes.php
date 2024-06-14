@@ -1266,7 +1266,11 @@ require_once("layouts/headAdmin.php");
             </div>
         </div>
     </div>
+    <?php
+    require_once("layouts/footer.php");
+    ?>
 
+    <?php require_once("layouts/script.php"); ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         document.getElementById('btn-aceptar-cliente').addEventListener('click', function() {
@@ -1300,7 +1304,7 @@ require_once("layouts/headAdmin.php");
                 if (!documento.trim()) {
                     showModal('Por favor, ingrese el DNI');
                 }
-            } else if(tipoDoc == "RUC"){
+            } else if (tipoDoc == "RUC") {
                 // Validar longitud del DNI
                 if (documento.length !== 11) {
                     showModal('El RUC debe tener 11 dígitos');
@@ -1321,7 +1325,7 @@ require_once("layouts/headAdmin.php");
                     dataType: 'json',
                     success: function(persona) {
                         if (persona.numeroDocumento == documento) {
-                            var nombreCompleto =persona.nombres+ ' ' + persona.apellidoPaterno + ' ' + persona.apellidoMaterno;
+                            var nombreCompleto = persona.nombres + ' ' + persona.apellidoPaterno + ' ' + persona.apellidoMaterno;
                             $('#nombre').val(nombreCompleto);
                             $('#numeroDocumento').val(persona.numeroDocumento);
                             $('#tipoDocumento').val('DNI');
@@ -1329,7 +1333,7 @@ require_once("layouts/headAdmin.php");
                         }
                     }
                 });
-            } else if(tipoDoc == "RUC") {
+            } else if (tipoDoc == "RUC") {
                 $.ajax({
                     url: 'consulta-reniec.php',
                     type: 'POST',
@@ -1376,9 +1380,6 @@ require_once("layouts/headAdmin.php");
             this.value = this.value.replace(/\D/g, '');
         });
     </script>
-    <?php
-    require_once("layouts/footerAdmin.php");
-    ?>
 </body>
 
 </html>

@@ -126,8 +126,10 @@ require_once("layouts/headCliente.php");
         </div>
     </div>
     <?php
-    require_once("layouts/footerCliente.php");
+    require_once("layouts/footer.php");
     ?>
+
+    <?php require_once("layouts/script.php"); ?>
 </body>
 
 </html>

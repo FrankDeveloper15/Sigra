@@ -55,7 +55,7 @@ require 'layouts/head.php';
 
 <body>
     <?php
-    require 'layouts/header.php';
+    require 'layouts/headerLogin.php';
     ?>
     <?php
     if (!$datosProcesados) {
@@ -139,6 +139,7 @@ require 'layouts/head.php';
             }
         });
     </script>
+    <?php require_once("layouts/script.php"); ?>
 </body>
 
 </html>

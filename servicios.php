@@ -293,7 +293,11 @@ require_once("layouts/headAdmin.php");
             </div>
         </div>
     </div>
+    <?php
+    require_once("layouts/footer.php");
+    ?>
 
+    <?php require_once("layouts/script.php"); ?>
     <script>
         document.getElementById('btn-aceptar-editar-servicios').addEventListener('click', function() {
             document.getElementById('form-editar-servicios').submit();
@@ -303,9 +307,6 @@ require_once("layouts/headAdmin.php");
             document.getElementById('form-servicios').submit();
         });
     </script>
-    <?php
-    require_once("layouts/footerAdmin.php");
-    ?>
 </body>
 
 </html>

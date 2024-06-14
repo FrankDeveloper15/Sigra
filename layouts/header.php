@@ -1,38 +1,70 @@
+<div class="reloj p-2" id="miReloj">
+    <p class="fecha"></p>
+    <p class="tiempo"></p>
+</div>
 <header>
-    <div class="reloj p-2" id="miReloj">
-        <p class="fecha"></p>
-        <p class="tiempo"></p>
-    </div>
+    <div class="container-fluid">
+        <div class="navb-logo">
+            <a href="menuPrincipal.php"><img src="assets/img/logoSigra.svg" alt="logoSigra"></a>
+        </div>
+        <div class="navb-items">
+            <div class="item">
+                <a href="#id-servicios"><i class="fa-solid fa-bell-concierge"></i>SERVICIOS</a>
+            </div>
+            <div class="item">
+                <a href="#id-marca"><i class="fa-solid fa-stamp"></i>MARCAS</a>
+            </div>
+            <div class="item">
+                <a href="#porque-elegirnos"><i class="fa-solid fa-check-double"></i>PORQUE ELEGIRNOS</a>
+            </div>
+            <div class="item">
+                <a href="#id-clientes"><i class="fa-solid fa-user-check"></i>CLIENTES</a>
+            </div>
+            <div class="item-button">
+                <a href="login_cliente.php" role="button" class="btn btn-primary button__One me-4">CONTÁCTANOS <img src="assets/img/contactanos.svg" alt="contactanos"></a>
+                <a href="login_cliente.php" role="button" class="btn btn-primary button__Two">ÁREA DE CLIENTE <img src="assets/img/cliente.svg" alt="cliente"></a>
+            </div>
+        </div>
 
-    <div class="container-fluid" style="background-color: #fff;">
-        <div class="row d-flex justify-content-start container-orden">
-            <div class="col-3 p-4 container-logo">
-                <a href="menuAdministrador.php"><img src="assets/img/logoSigra.svg" alt="logoSigra" class="img-fluid"></a>
-            </div>
-            <div class="col-3 menu__hamburguesa">
-                <i class="fa-solid fa-bars" id="abrir"></i>
-            </div>
-            <div class="col-9 container__general" id="container-general">
-                <div class="col-md-3 container__closed">
-                    <i class="fa-solid fa-circle-xmark" id="cerrar"></i>
-                </div>
-                <div class="col-12 container-adaptar">
-                    <div class="row d-flex justify-content-between align-items-center column-menu">
-                        <div class="col-7 pt-4 container-adaptar">
-                            <ul class="list__menu">
-                                <li class="list__link__menu"><a href="#id-servicios">SERVICIOS</a></li>
-                                <li class="list__link__menu"><a href="#id-marca">MARCAS</a></li>
-                                <li class="list__link__menu"><a href="#porque-elegirnos">PORQUE ELEGIRNOS</a></li>
-                                <li class="list__link__menu"><a href="#id-clientes">CLIENTES</a></li>
-                            </ul>
+        <!-- Button trigger modal -->
+        <div class="mobile-toggler d-lg-none">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#navbModal">
+                <i class="fa-solid fa-bars"></i>
+            </a>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="navbModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-header">
+                <div class="modal-content modal-content-header">
+                    <div class="modal-header modal-header-header">
+                        <a href="menuPrincipal.php" style="color: #fefefe;">CORPORACIÓN VYS PERÚ E.I.R.L.</a>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-x"></i></button>
+                    </div>
+                    <div class="modal-body modal-body-header">
+                        <div class="modal-line">
+                            <a href="#id-servicios" class="modal-link" data-bs-dismiss="modal"><i class="fa-solid fa-bell-concierge"></i>SERVICIOS</a>
                         </div>
-                        <div class="col-5 pt-2 button-container">
-                            <a href="login_cliente.php" role="button" class="btn btn-primary button__One me-4" id="cerrarSesionAdmin">CONTÁCTANOS <img src="assets/img/contactanos.svg" alt="contactanos"></a>
-                            <a href="login_cliente.php" role="button" class="btn btn-primary button__Two" id="cerrarSesionAdmin">ÁREA DE CLIENTE <img src="assets/img/cliente.svg" alt="cliente"></a>
+                        <div class="modal-line">
+                            <a href="#id-marca" class="modal-link" data-bs-dismiss="modal"><i class="fa-solid fa-stamp"></i>MARCAS</a>
                         </div>
+                        <div class="modal-line">
+                            <a href="#porque-elegirnos" class="modal-link" data-bs-dismiss="modal"><i class="fa-solid fa-check-double"></i>PORQUE ELEGIRNOS</a>
+                        </div>
+                        <div class="modal-line">
+                            <a href="#id-clientes" class="modal-link" data-bs-dismiss="modal"><i class="fa-solid fa-user-check"></i>CLIENTES</a>
+                        </div>
+                        <a href="login_cliente.php" role="button" class="btn btn-primary navb-button button__One me-4">CONTÁCTANOS <img src="assets/img/contactanos.svg" alt="contactanos"></a>
+                        <a href="login_cliente.php" role="button" class="btn btn-primary navb-button button__Two">ÁREA DE CLIENTE <img src="assets/img/cliente.svg" alt="cliente"></a>
+                    </div>
+                    <div class="mobile-modal-footer">
+                        <a target="_blank" href="#"><i class="fa-brands fa-facebook"></i></a>
+                        <a target="_blank" href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a target="_blank" href="#"><i class="fa-brands fa-linkedin"></i></a>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </header>

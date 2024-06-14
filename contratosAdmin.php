@@ -254,14 +254,16 @@ require_once("layouts/headAdmin.php");
             </div>
         </div>
     </div>
+    <?php
+    require_once("layouts/footer.php");
+    ?>
+
+    <?php require_once("layouts/script.php"); ?>
     <script>
         document.getElementById('btn-aceptar-contrato').addEventListener('click', function() {
             document.getElementById('form-contrato').submit();
         });
     </script>
-    <?php
-    require_once("layouts/footerAdmin.php");
-    ?>
 </body>
 
 </html>

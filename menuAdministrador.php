@@ -42,8 +42,10 @@ require_once("layouts/headAdmin.php");
         </div>
     </div>
     <?php
-    require_once("layouts/footerAdmin.php");
+    require_once("layouts/footer.php");
     ?>
+
+    <?php require_once("layouts/script.php"); ?>
 </body>
 
 </html>
