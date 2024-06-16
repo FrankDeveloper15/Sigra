@@ -31,7 +31,7 @@
             <div class="modal-dialog modal-dialog-header">
                 <div class="modal-content modal-content-header">
                     <div class="modal-header modal-header-header">
-                        <a href="menuPrincipal.php" style="color: #fefefe;">CORPORACIÓN VYS PERÚ E.I.R.L.</a>
+                        <a href="index.php" style="color: #fefefe;">CORPORACIÓN VYS PERÚ E.I.R.L.</a>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-x"></i></button>
                     </div>
                     <div class="modal-body modal-body-header">

@@ -7,9 +7,9 @@ require_once("layouts/headCliente.php");
     require_once("layouts/headerCliente.php");
     ?>
     <div class="container-fluid container-table my-4 shadow-lg bg-body-tertiary rounded">
-        <div class="row">
-            <table class="table table-reporte">
-                <thead class="encabezadoEstatico">
+        <div class="row table-reporte">
+            <table class="table table-striped" id="reportePago">
+                <thead>
                     <tr>
                         <th>N°</th>
                         <th>MES</th>
@@ -141,6 +141,31 @@ require_once("layouts/headCliente.php");
     ?>
 
     <?php require_once("layouts/script.php"); ?>
+    <script>
+        $('#reportePago').DataTable({
+            responsive: true,
+            autoWidth: false,
+            "language": {
+                "lengthMenu": "Mostrar " +
+                    `<select class="custom-select custom-select-sm w-50 form-select form-select-sm mb-2">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                    </select>`,
+                "zeroRecords": "No se encontró nada - lo siento",
+                "info": "Mostrando la página _PAGE_ de _PAGES_ de _TOTAL_ Reporte Pago",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar:",
+                "emptyTable": "No hay datos disponibles en la tabla",
+                "paginate": {
+                    "next": ">",
+                    "previous": "<"
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -180,20 +180,20 @@ require_once("layouts/headAdmin.php");
         </div>
     </div>
 
-    <!-- Modal Eliminar Cliente-->
+    <!-- Modal Eliminar Servicios-->
     <div class="modal fade" id="modalEliminarCliente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header" style="background-color: #5410a2; color: #fff;">
+                <div class="modal-header" style="background-color: #ff0000; color: #fff;">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Eliminar Cliente</h1>
                 </div>
                 <div class="modal-body">
                     El cliente sera eliminado.
                 </div>
                 <div class="modal-footer row align-items-center p-0">
-                    <div class="row d-flex justify-content-end mb-4">
+                    <div class="row d-flex justify-content-end mb-3">
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-secondary cancelar" data-bs-toggle="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
+                            <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
                         </div>
                         <div class="col-md-4">
                             <button type="submit" class="btn btn-primary salvar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Salvar</button>
@@ -205,9 +205,9 @@ require_once("layouts/headAdmin.php");
     </div>
 
     <div class="container-fluid container-table my-4 shadow-lg bg-body-tertiary rounded">
-        <div class="row">
-            <table class="table table-cliente">
-                <thead class="encabezadoEstatico">
+        <div class="row table-cliente">
+            <table class="table table-striped" id="clientes">
+                <thead>
                     <tr>
                         <th>NOMBRE O RAZÓN SOCIAL</th>
                         <th> N° DE DOC. IDENTIDAD</th>
@@ -416,9 +416,9 @@ require_once("layouts/headAdmin.php");
                 <button type="button" class="btn btn-primary w-auto clr-pa" id="agregar-factura" data-bs-toggle="modal" data-bs-target="#modalAgregarFactura"><i class="fa-solid fa-file-circle-plus"></i>&nbsp; AGREGAR</button>
             </div>
             <div class="container-fluid container-table my-4 shadow-lg bg-body-tertiary rounded" style="width: 90%; max-height: 400px;">
-                <div class="row">
-                    <table class="table table-reporte">
-                        <thead class="encabezadoEstatico">
+                <div class="row table-reporte">
+                    <table class="table table-striped" id="facturas">
+                        <thead>
                             <tr>
                                 <th>N°</th>
                                 <th>MES</th>
@@ -553,9 +553,9 @@ require_once("layouts/headAdmin.php");
                 <button type="button" class="btn btn-primary w-auto clr-cre" id="agregar-accesos" data-bs-toggle="modal" data-bs-target="#modalAgregarCredenciales"><i class="fa-solid fa-file-circle-plus"></i> AGREGAR</button>
             </div>
             <div class="container-fluid container-table my-4 shadow-lg bg-body-tertiary rounded" style="width: 90%; max-height: 400px;">
-                <div class="row">
-                    <table class="table table-credenciales">
-                        <thead class="encabezadoEstatico">
+                <div class="row table-credenciales">
+                    <table class="table table-striped" id="credenciales">
+                        <thead>
                             <tr>
                                 <th>Servicio</th>
                                 <th>Tipo</th>
@@ -748,9 +748,9 @@ require_once("layouts/headAdmin.php");
                 <button type="button" class="btn btn-primary w-auto clr-con" id="agregar-contrato" data-bs-toggle="modal" data-bs-target="#modalAgregarContrato"><i class="fa-solid fa-file-circle-plus"></i> AGREGAR</button>
             </div>
             <div class="container-fluid container-table my-4 shadow-lg bg-body-tertiary rounded" style="width: 90%; max-height: 400px;">
-                <div class="row">
-                    <table class="table table-contrato">
-                        <thead class="encabezadoEstatico">
+                <div class="row table-contrato">
+                    <table class="table table-striped" id="contratos">
+                        <thead>
                             <tr>
                                 <th>SERVICIO</th>
                                 <th>DOCUMENTO</th>
@@ -893,9 +893,9 @@ require_once("layouts/headAdmin.php");
                                 </div>
                                 <div class="col-md-4">
                                     <div class="row">
-                                        <label for="mes" class="col-auto col-form-label">Mes:</label>
+                                        <label for="tipoMoneda" class="col-auto col-form-label">Tipo Moneda:</label>
                                         <div class="col">
-                                            <input type="text" class="form-control" id="mes" name="mes">
+                                            <input type="text" class="form-control" id="tipoMoneda" name="tipoMoneda">
                                         </div>
                                     </div>
                                 </div>
@@ -938,7 +938,17 @@ require_once("layouts/headAdmin.php");
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <label for="mes" class="col-auto col-form-label">Mes:</label>
+                                        <div class="col">
+                                            <input type="text" class="form-control" id="mes" name="mes">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row align-items-center mb-3">
+                                <div class="col-md-12">
                                     <div class="row">
                                         <label for="archivo" class="col-auto col-form-label">Archivo:</label>
                                         <div class="col">
@@ -1271,7 +1281,6 @@ require_once("layouts/headAdmin.php");
     ?>
 
     <?php require_once("layouts/script.php"); ?>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         document.getElementById('btn-aceptar-cliente').addEventListener('click', function() {
             document.getElementById('form-cliente').submit();
@@ -1378,6 +1387,103 @@ require_once("layouts/headAdmin.php");
 
         $('#documento,#numeroDocumento,#telefonocContacto').on('input', function() {
             this.value = this.value.replace(/\D/g, '');
+        });
+    </script>
+    <script>
+        $('#clientes').DataTable({
+            responsive: true,
+            autoWidth: false,
+            "language": {
+                "lengthMenu": "Mostrar " +
+                    `<select class="custom-select custom-select-sm w-50 form-select form-select-sm mb-2">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                    </select>`,
+                "zeroRecords": "No se encontró nada - lo siento",
+                "info": "Mostrando la página _PAGE_ de _PAGES_ de _TOTAL_ clientes",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar:",
+                "emptyTable": "No hay datos disponibles en la tabla",
+                "paginate": {
+                    "next": ">",
+                    "previous": "<"
+                }
+            }
+        });
+
+        $('#facturas').DataTable({
+            responsive: true,
+            autoWidth: false,
+            "language": {
+                "lengthMenu": "Mostrar " +
+                    `<select class="custom-select custom-select-sm w-50 form-select form-select-sm mb-2">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                    </select>`,
+                "zeroRecords": "No se encontró nada - lo siento",
+                "info": "Mostrando la página _PAGE_ de _PAGES_ de _TOTAL_ clientes",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar:",
+                "emptyTable": "No hay datos disponibles en la tabla",
+                "paginate": {
+                    "next": ">",
+                    "previous": "<"
+                }
+            }
+        });
+
+        $('#credenciales').DataTable({
+            responsive: true,
+            autoWidth: false,
+            "language": {
+                "lengthMenu": "Mostrar " +
+                    `<select class="custom-select custom-select-sm w-50 form-select form-select-sm mb-2">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                    </select>`,
+                "zeroRecords": "No se encontró nada - lo siento",
+                "info": "Mostrando la página _PAGE_ de _PAGES_ de _TOTAL_ clientes",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar:",
+                "emptyTable": "No hay datos disponibles en la tabla",
+                "paginate": {
+                    "next": ">",
+                    "previous": "<"
+                }
+            }
+        });
+
+        $('#contratos').DataTable({
+            responsive: true,
+            autoWidth: false,
+            "language": {
+                "lengthMenu": "Mostrar " +
+                    `<select class="custom-select custom-select-sm w-50 form-select form-select-sm mb-2">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                    </select>`,
+                "zeroRecords": "No se encontró nada - lo siento",
+                "info": "Mostrando la página _PAGE_ de _PAGES_ de _TOTAL_ clientes",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar:",
+                "emptyTable": "No hay datos disponibles en la tabla",
+                "paginate": {
+                    "next": ">",
+                    "previous": "<"
+                }
+            }
         });
     </script>
 </body>

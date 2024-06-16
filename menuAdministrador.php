@@ -28,12 +28,6 @@ require_once("layouts/headAdmin.php");
                 </a>
             </div>
             <div class="col-lg-3 col-md-6 mb-3 picture">
-                <a href="accesos.php">
-                    <img src="assets/img/access.svg" alt="">
-                    <span>ACCESOS</span>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-3 picture">
                 <a href="#">
                     <img src="assets/img/access.svg" alt="">
                     <span>ADMINISTRADOR</span>

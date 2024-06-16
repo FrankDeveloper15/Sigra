@@ -27,7 +27,7 @@
                 <a href="servicios.php">SERVICIOS</a>
             </div>
             <div class="item">
-                <a href="accesos.php">SOPORTE</a>
+                <a href="#">SOPORTE</a>
             </div>
             <div class="item">
                 <i class="fa-solid fa-bell" id="abrir-notificacion"></i>
@@ -49,7 +49,7 @@
             <div class="modal-dialog modal-dialog-header">
                 <div class="modal-content modal-content-header">
                     <div class="modal-header modal-header-header">
-                        <a href="menuPrincipal.php" style="color: #fefefe;">CORPORACIÓN VYS PERÚ E.I.R.L.</a>
+                        <a href="index.php" style="color: #fefefe;">CORPORACIÓN VYS PERÚ E.I.R.L.</a>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-x"></i></button>
                     </div>
                     <div class="modal-body modal-body-header">
@@ -69,7 +69,7 @@
                             <a href="servicios.php">MIS SERVICIOS</a>
                         </div>
                         <div class="modal-line">
-                            <a href="accesos.php">SOPORTE</a>
+                            <a href="#">SOPORTE</a>
                         </div>
                         <div class="modal-line">
                             <i class="fa-solid fa-bell" id="abrir-notificacion"></i>

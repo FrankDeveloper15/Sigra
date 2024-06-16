@@ -491,7 +491,7 @@ p {
 /* ======================================= TABLAS ===================================== */
 
 .container-table {
-    width: 1200px;
+    width: 90%;
     max-height: 600px;
     overflow: auto;
 }
@@ -504,12 +504,11 @@ p {
 
 .table-factura{
     border: #7030a0;
-    text-align: center;
 }
 
-.table-factura th {
-    background-color: #7030a0;
-    color: #fff;
+.table-factura tr th {
+    background-color: #7030a0 !important;
+    color: #fefefe;
 }
 
 .download-button {
@@ -522,6 +521,34 @@ p {
     border-color: rgba(0,72,110,0.8);
 }
 
+.table-contrato{
+    border: #4a4a4a;
+}
+
+.table-contrato tr th {
+    background-color: #4a4a4a !important;
+    color: #fefefe;
+}
+
+.table-credenciales{
+    border: #106da2;
+}
+
+.table-credenciales tr th {
+    background-color: #106da2 !important;
+    color: #fff;
+}
+
+.table-reporte{
+    border: #00b807;
+    text-align: center;
+}
+
+.table-reporte tr th {
+    background-color: #00b807 !important;
+    color: #fff;
+}
+
 .table-servicios{
     border: #00476D;
     text-align: center;
@@ -532,44 +559,14 @@ p {
     color: #fff;
 }
 
-.table-contrato{
-    border: #4a4a4a !important;
-    text-align: center;
-}
-
-.table-contrato th {
-    background-color: #4a4a4a !important;
-    color: #fff;
-}
-
-.table-credenciales{
-    border: #106da2;
-    text-align: center;
-}
-
-.table-credenciales th {
-    background-color: #106da2;
-    color: #fff;
-}
-
-.table-reporte{
-    border: #00b807;
-    text-align: center;
-}
-
-.table-reporte th {
-    background-color: #00b807;
-    color: #fff;
-}
-
 .table-cliente{
     border: #7030a0;
-    text-align: center;
 }
 
-.table-cliente th {
-    background-color: #7030a0;
+.table-cliente tr th {
+    background-color: #7030a0 !important;
     color: #fff;
+    
 }
 /* ======================== BOTONES DE LA TABLAS ============ */
 .clr-ser, .clr-ser:hover, .clr-ser:active {
@@ -639,7 +636,7 @@ p {
 
 /* ========================= CONTAINER DESPLEGAR ============== */
 .container__desplegar {
-    width: 800px;
+    width: 54%;
     height: 100vh;
     position: fixed;
     top: 0;
@@ -785,6 +782,20 @@ p {
 .menu__desplegable span i {
     margin: 0 8px;
 }
+
+@media screen and (max-width: 1279px) {
+    .container__desplegar{
+        width: 98%;
+        overflow: scroll;
+    }
+
+    .menu__desplegable {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
 
 /* =================== DATOS GENERALES ======================== */
 .cuerpo__general2,

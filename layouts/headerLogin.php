@@ -5,7 +5,7 @@
 <header>
     <div class="container-fluid">
         <div class="navb-logo">
-            <a href="menuPrincipal.php"><img src="assets/img/logoSigra.svg" alt="logoSigra"></a>
+            <a href="index.php"><img src="assets/img/logoSigra.svg" alt="logoSigra"></a>
         </div>
         <div class="navb-items">
             <div class="item-button">
@@ -26,7 +26,7 @@
             <div class="modal-dialog modal-dialog-header">
                 <div class="modal-content modal-content-header">
                     <div class="modal-header modal-header-header">
-                        <a href="menuPrincipal.php" style="color: #fefefe;">CORPORACIÓN VYS PERÚ E.I.R.L.</a>
+                        <a href="index.php" style="color: #fefefe;">CORPORACIÓN VYS PERÚ E.I.R.L.</a>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-x"></i></button>
                     </div>
                     <div class="modal-body modal-body-header">
