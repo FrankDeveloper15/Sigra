@@ -52,7 +52,7 @@ require_once("layouts/headAdmin.php");
                     </tr>
                     <tr>
                         <td>001</td>
-                        <td>Noviembre 2023</td>
+                        <td>Diciembre 2023</td>
                         <td>37.9</td>
                         <td>03/11/2023</td>
                         <td>04/11/2023</td>

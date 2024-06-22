@@ -208,3 +208,98 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+/* =================================== SERVICIOS =========================================== */
+
+-- ----------------------------
+-- Procedure structure for `sp_servicios_insert`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_servicios_insert`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_servicios_insert`(
+nombreServicios_ char(50) 
+,correoProveedor_ varchar(255)
+,linkAcceso_ varchar(255) 
+)
+BEGIN
+INSERT INTO
+servicios
+(
+nombreServicios
+,correoProveedor
+,linkAcceso
+)
+VALUES
+(
+nombreServicios_
+,correoProveedor_
+,linkAcceso_
+);
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_servicios_list`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_servicios_list`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_servicios_list`()
+BEGIN
+
+SELECT
+		idServicios
+		,nombreServicios	
+		,correoProveedor
+    ,linkAcceso
+	FROM
+		servicios;
+	
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_servicios_edit`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_servicios_edit`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_servicios_edit`(
+idServicios_ int(6)
+,nombreServicios_ char(50) 
+,correoProveedor_ varchar(255)
+,linkAcceso_ varchar(255) 
+)
+BEGIN
+
+UPDATE
+servicios
+SET
+nombreServicios=nombreServicios_
+,correoProveedor=correoProveedor_
+,linkAcceso=linkAcceso_
+WHERE
+idServicios=idServicios_;
+
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_servicios_delete`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_servicios_delete`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_servicios_delete`(
+idServicios_ int(6)
+)
+BEGIN
+
+DELETE FROM
+servicios
+WHERE
+idServicios=idServicios_;
+
+END
+;;
+DELIMITER ;

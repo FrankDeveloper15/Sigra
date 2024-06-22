@@ -541,7 +541,6 @@ p {
 
 .table-reporte{
     border: #00b807;
-    text-align: center;
 }
 
 .table-reporte tr th {
@@ -551,11 +550,10 @@ p {
 
 .table-servicios{
     border: #00476D;
-    text-align: center;
 }
 
-.table-servicios th {
-    background-color: #00476D;
+.table-servicios tr th {
+    background-color: #00476D !important;
     color: #fff;
 }
 
