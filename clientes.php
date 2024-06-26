@@ -1385,7 +1385,7 @@ require_once("layouts/headAdmin.php");
 
         $("#consultaReniec").click(buscarDNI);
 
-        $('#documento,#numeroDocumento,#telefonocContacto').on('input', function() {
+        $('#documento,#numeroDocumento,#telefonoContacto').on('input', function() {
             this.value = this.value.replace(/\D/g, '');
         });
     </script>

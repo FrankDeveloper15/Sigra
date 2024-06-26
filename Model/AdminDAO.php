@@ -1,37 +1,33 @@
 <?php
 require_once("Connection/conexion.php");
 require_once("Model/Admin.php");
-require_once("Model/Cliente.php");
 
 class AdminDAO
 {
-    /*---------------------------------------------------------------------------------*/
-    public function registrarCliente(Cliente $cliente)
+    //--------------------------------------------------------------------------------------
+
+    public function list()
     {
         try {
             $con = Conexion::getConexion();
-            $sql = "CALL sp_registrar_cliente(?,?,?,?,?,?,?,?)";
+            $sql = "CALL sp_admin_list()";
             $query = $con->prepare($sql);
-
-            $query->bindValue(1, $cliente->tipoDocumento);
-
-            if (empty($cliente->numDocumento)) {
-                $query->bindValue(2, 'NULL', PDO::PARAM_NULL);
-            } else {
-                $query->bindValue(2, $cliente->numDocumento);
-            }
-
-            $query->bindValue(3, $cliente->nombre);
-            $query->bindValue(4, $cliente->razonSocial);
-            $query->bindValue(5, $cliente->nombreComercial);
-            $query->bindValue(6, $cliente->telefonoContacto);
-            $query->bindValue(7, $cliente->correoContacto);
-
-            $claveEncriptada = md5($cliente->contrasenia);
-
-            $query->bindValue(8, $claveEncriptada);
-
+            $query->setFetchMode(PDO::FETCH_ASSOC);
             $query->execute();
+            $adminArray = array();
+
+            while ($row = $query->fetch()) {
+                $admin = new Admin();
+                $admin->idAdmin = $row["idAdmin"];
+                $admin->tipoDocumento = $row["tipoDocumento"];
+                $admin->numDocumento = $row["numDocumento"];
+                $admin->telefonoContacto = $row["telefonoContacto"];
+                $admin->nombreApellidos = $row["nombreApellidos"];
+                $admin->correoContacto = $row["correoContacto"];
+                $admin->contrasenia = $row["contrasenia"];
+                $adminArray[] = $admin;
+            }
+            return $adminArray;
         } catch (PDOException $e) {
             echo $e->getMessage();
             exit;
@@ -39,23 +35,17 @@ class AdminDAO
     }
 
     /*---------------------------------------------------------------------------------*/
-    public function insertar(Admin $admin)
+    public function insert(Admin $admin)
     {
         try {
             $con = Conexion::getConexion();
-            $sql = "CALL sp_personal_insertar2(?,?,?,?,?,?,?,?,?)";
+            $sql = "CALL sp_admin_insert(?,?,?,?,?,?)";
             $query = $con->prepare($sql);
 
             $query->bindValue(1, $admin->tipoDocumento);
-
-            if (empty($admin->numDocumento)) {
-                $query->bindValue(2, 'NULL', PDO::PARAM_NULL);
-            } else {
-                $query->bindValue(2, $admin->numDocumento);
-            }
-
-            $query->bindValue(3, $admin->nombreApellidos);
-            $query->bindValue(4, $admin->telefonoContacto);
+            $query->bindValue(2, $admin->numDocumento);
+            $query->bindValue(3, $admin->telefonoContacto);
+            $query->bindValue(4, $admin->nombreApellidos);
             $query->bindValue(5, $admin->correoContacto);
 
             $claveEncriptada = md5($admin->contrasenia);
@@ -69,20 +59,27 @@ class AdminDAO
         }
     }
     /*---------------------------------------------------------------------------------*/
-    public function actualizar(Admin $admin)
+    public function edit(Admin $admin)
     {
 
         try {
             $con = Conexion::getConexion();
-            $sql = "CALL sp_personal_actualizar2(?,?,?,?,?,?,?,?,?,?)";
+            $sql = "CALL sp_admin_edit(?,?,?,?,?,?,?)";
             $query = $con->prepare($sql);
             $query->bindValue(1, $admin->idAdmin);
             $query->bindValue(2, $admin->tipoDocumento);
             $query->bindValue(3, $admin->numDocumento);
-            $query->bindValue(4, $admin->nombreApellidos);
-            $query->bindValue(5, $admin->telefonoContacto);
-            $query->bindValue(6, $admin->correoContacto);
-            $query->bindValue(7, $admin->contrasenia);
+            $query->bindValue(4, $admin->telefonoContacto);
+            $query->bindValue(5, $admin->nombreApellidos);
+            $query->bindValue(6, $admin->correoContacto);          
+            
+            if (!empty($admin->forPassword)) {
+                $claveEncriptada = md5($admin->contrasenia);
+                $query->bindValue(7, $claveEncriptada);
+            } else{
+                $query->bindValue(7, $admin->contrasenia); //
+            }
+
             $query->execute();
         } catch (PDOException $e) {
             throw $e;
@@ -91,43 +88,13 @@ class AdminDAO
 
     /*------------------------------------------------------------------*/
 
-    public function listar()
-    {
-        try {
-            $con = Conexion::getConexion();
-            $sql = "CALL sp_personal_listar()";
-            $query = $con->prepare($sql);
-            $query->setFetchMode(PDO::FETCH_ASSOC);
-            $query->execute();
-            $admins = array();
-
-            while ($row = $query->fetch()) {
-                $admin = new Admin();
-                $admin->idAdmin = $row["idAdmin"];
-                $admin->tipoDocumento = $row["tipoDocumento"];
-                $admin->numDocumento = $row["numDocumento"];
-                $admin->telefonoContacto = $row["telefonoContacto"];
-                $admin->nombreApellidos = $row["nombreApellidos"];
-                $admin->correoContacto = $row["correoContacto"];
-                $admin->contrasenia = $row["contrasenia"];
-                $admins[] = $admin;
-            }
-            return $admins;
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-            exit;
-        }
-    }
-
-    //--------------------------------------------------------------------------------------
-
-    public function eliminar($idAdmin)
+    public function delete($idAdmin)
     {
 
         try {
             $con = Conexion::getconexion();
 
-            $sql = "CALL sp_personal_eliminar(?)";
+            $sql = "CALL sp_admin_delete(?)";
             $query = $con->prepare($sql);
             $query->bindValue(1, $idAdmin);
             $query->execute();

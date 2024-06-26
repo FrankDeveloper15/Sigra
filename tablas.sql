@@ -172,43 +172,6 @@ BEGIN
 END;;
 DELIMITER ;
 
-DELIMITER $$
-
-CREATE PROCEDURE sp_registrar_cliente(
-    IN p_tipoDocumento VARCHAR(20),
-    IN p_numDocumento VARCHAR(11),
-    IN p_nombre VARCHAR(60),
-    IN p_razonSocial VARCHAR(50),
-    IN p_nombreComercial VARCHAR(50),
-    IN p_telefonoContacto VARCHAR(9),
-    IN p_correoContacto VARCHAR(255),
-    IN p_contrasenia VARCHAR(255)
-)
-BEGIN
-    INSERT INTO clientes (
-        tipoDocumento, 
-        numDocumento, 
-        nombre, 
-        razonSocial, 
-        nombreComercial, 
-        telefonoContacto, 
-        correoContacto, 
-        contrasenia
-    )
-    VALUES (
-        p_tipoDocumento, 
-        p_numDocumento, 
-        p_nombre, 
-        p_razonSocial, 
-        p_nombreComercial, 
-        p_telefonoContacto, 
-        p_correoContacto, 
-        p_contrasenia
-    );
-END$$
-
-DELIMITER ;
-
 /* =================================== SERVICIOS =========================================== */
 
 -- ----------------------------
@@ -299,6 +262,119 @@ DELETE FROM
 servicios
 WHERE
 idServicios=idServicios_;
+
+END
+;;
+DELIMITER ;
+
+/* =================================== ADMIN =========================================== */
+
+-- ----------------------------
+-- Procedure structure for `sp_admin_insert`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_admin_insert`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_admin_insert`(
+tipoDocumento_ char(20) 
+,numDocumento_ varchar(11)
+,telefonoContacto_ varchar(9) 
+,nombreApellidos_ varchar(60) 
+,correoContacto_ varchar(255)
+,contrasenia_ varchar(255)
+)
+BEGIN
+INSERT INTO
+administrador
+(
+tipoDocumento
+,numDocumento
+,telefonoContacto
+,nombreApellidos
+,correoContacto
+,contrasenia
+)
+VALUES
+(
+tipoDocumento_
+,numDocumento_
+,telefonoContacto_
+,nombreApellidos_
+,correoContacto_
+,contrasenia_
+);
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_admin_list`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_admin_list`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_admin_list`()
+BEGIN
+
+SELECT
+		idAdmin
+		,tipoDocumento
+    ,numDocumento
+    ,telefonoContacto
+    ,nombreApellidos
+    ,correoContacto
+    ,contrasenia
+	FROM
+		administrador;
+	
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_admin_edit`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_admin_edit`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_admin_edit`(
+idAdmin_ int(6)
+,tipoDocumento_ char(20) 
+,numDocumento_ varchar(11)
+,telefonoContacto_ varchar(9) 
+,nombreApellidos_ varchar(60) 
+,correoContacto_ varchar(255)
+,contrasenia_ varchar(255)
+)
+BEGIN
+
+UPDATE
+administrador
+SET
+tipoDocumento=tipoDocumento_
+,numDocumento=numDocumento_
+,telefonoContacto=telefonoContacto_
+,nombreApellidos=nombreApellidos_
+,correoContacto=correoContacto_
+,contrasenia=contrasenia_
+WHERE
+idAdmin=idAdmin_;
+
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_admin_delete`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_admin_delete`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_admin_delete`(
+idAdmin_ int(6)
+)
+BEGIN
+
+DELETE FROM
+administrador
+WHERE
+idAdmin=idAdmin_;
 
 END
 ;;

@@ -1,6 +1,6 @@
 
 <?php
-    require_once("Validator/Validator.php");
+require_once("Validator/Validator.php");
 class Admin
 {
     public $idAdmin;
@@ -10,6 +10,12 @@ class Admin
     public $nombreApellidos;
     public $correoContacto;
     public $contrasenia;
+    public $forPassword;
+
+    // Constructor vacío
+    public function __construct()
+    {
+    }
 
     public function test_input($data)
     {
@@ -23,20 +29,16 @@ class Admin
     {
         $mensajesErrores = array();
         //-----------------------------------------------------------------------------
-
         if (empty($this->tipoDocumento)) {
             $mensajesErrores[] = 'El tipo de documento es obligatorio';
         } else {
             $this->tipoDocumento = $this->test_input($this->tipoDocumento);
         }
         //-----------------------------------------
-        if (!empty($this->numDocumento)) {
-            $this->numDocumento = $this->test_input($this->numDocumento);
-            if (!Validator::isDNI($this->numDocumento)) {
-                $mensajesErrores[] = "El campo DNI tiene un formato erroneo";
-            }
+        if (empty($this->numDocumento)) {
+            $mensajesErrores[] = 'El número de documento es obligatorio';
         } else {
-            $mensajesErrores[] = "El  DNI no puede estar vacio";
+            $this->numDocumento = $this->test_input($this->numDocumento);
         }
         //-----------------------------------------------------------------------------
         if (!empty($this->telefonoContacto)) {
@@ -52,7 +54,7 @@ class Admin
         if (empty($this->nombreApellidos)) {
             $mensajesErrores[] = "El nombre y apellidos no puede estar vacio";
         } else {
-            if (strlen($this->nombreApellidos) > 20) {
+            if (strlen($this->nombreApellidos) > 60) {
                 $mensajesErrores[] = "El nombre y apellidos no tiene que exceder de 255 carácteres.";
             }
             $this->nombreApellidos = $this->test_input($this->nombreApellidos);
@@ -69,16 +71,11 @@ class Admin
         //-----------------------------------------------------------------------------
 
         if (empty($this->contrasenia)) {
-            $mensajesErrores[] = 'La contraseña es obligatorio';
+            $mensajesErrores[] = 'La contraseña no puede estar vacia.'.$this->contrasenia;
         } else {
             $this->contrasenia = $this->test_input($this->contrasenia);
         }
 
-
         return $mensajesErrores;
     }
-    public function __construct()
-    {
-    }
 }
-?>

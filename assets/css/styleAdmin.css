@@ -566,6 +566,16 @@ p {
     color: #fff;
     
 }
+
+.table-admin{
+    border: #7030a0;
+}
+
+.table-admin tr th {
+    background-color: #7030a0 !important;
+    color: #fff;
+    
+}
 /* ======================== BOTONES DE LA TABLAS ============ */
 .clr-ser, .clr-ser:hover, .clr-ser:active {
     background-color: #00476D;
