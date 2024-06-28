@@ -1,34 +1,60 @@
 <?php
-    require_once("Connection/conexion.php");
-    require_once("Model/Cliente.php");
+require_once("Connection/conexion.php");
+require_once("Model/Cliente.php");
 
 class ClienteDAO
 {
-    /*---------------------------------------------------------------------------------*/
-    public function insertar(Cliente $cliente)
+    //--------------------------------------------------------------------------------------
+
+    public function list()
     {
         try {
             $con = Conexion::getConexion();
-            $sql = "CALL sp_personal_insertar2(?,?,?,?,?,?,?,?,?)";
+            $sql = "CALL sp_clientes_list()";
+            $query = $con->prepare($sql);
+            $query->setFetchMode(PDO::FETCH_ASSOC);
+            $query->execute();
+            $clientesArray = array();
+
+            while ($row = $query->fetch()) {
+                $cliente = new Cliente();
+                $cliente->idClientes = $row["idClientes"];
+                $cliente->tipoDocumento = $row["tipoDocumento"];
+                $cliente->numDocumento = $row["numDocumento"];
+                $cliente->nombre = $row["nombre"];
+                $cliente->razonSocial = $row["razonSocial"];
+                $cliente->nombreComercial = $row["nombreComercial"];
+                $cliente->telefonoContacto = $row["telefonoContacto"];
+                $cliente->correoContacto = $row["correoContacto"];
+                $cliente->contrasenia = $row["contrasenia"];
+                $clientesArray[] = $cliente;
+            }
+            return $clientesArray;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit;
+        }
+    }
+
+    /*---------------------------------------------------------------------------------*/
+    public function insert(Cliente $cliente)
+    {
+        try {
+            $con = Conexion::getConexion();
+            $sql = "CALL sp_clientes_insert(?,?,?,?,?,?,?,?)";
             $query = $con->prepare($sql);
 
             $query->bindValue(1, $cliente->tipoDocumento);
-
-            if (empty($cliente->numDocumento)) {
-                $query->bindValue(2, 'NULL', PDO::PARAM_NULL);
-            } else {
-                $query->bindValue(2, $cliente->numDocumento);
-            }
-
-            $query->bindValue(3, $cliente->razonSocial);
-            $query->bindValue(4, $cliente->nombreComercial);
-            $query->bindValue(5, $cliente->telefonoContacto);
-            $query->bindValue(6, $cliente->correoContacto);
-
+            $query->bindValue(2, $cliente->numDocumento);
+            $query->bindValue(3, $cliente->nombre);
+            $query->bindValue(4, $cliente->razonSocial);
+            $query->bindValue(5, $cliente->nombreComercial);
+            $query->bindValue(6, $cliente->telefonoContacto);
+            $query->bindValue(7, $cliente->correoContacto);
 
             $claveEncriptada = md5($cliente->contrasenia);
 
-            $query->bindValue(9, $claveEncriptada);
+            $query->bindValue(8, $claveEncriptada);
 
             $query->execute();
         } catch (PDOException $e) {
@@ -37,21 +63,29 @@ class ClienteDAO
         }
     }
     /*---------------------------------------------------------------------------------*/
-    public function actualizar(Cliente $cliente)
+    public function edit(Cliente $cliente)
     {
 
         try {
             $con = Conexion::getConexion();
-            $sql = "CALL sp_personal_actualizar2(?,?,?,?,?,?,?,?,?,?)";
+            $sql = "CALL sp_clientes_edit(?,?,?,?,?,?,?,?,?)";
             $query = $con->prepare($sql);
             $query->bindValue(1, $cliente->idClientes);
             $query->bindValue(2, $cliente->tipoDocumento);
             $query->bindValue(3, $cliente->numDocumento);
-            $query->bindValue(4, $cliente->razonSocial);
-            $query->bindValue(5, $cliente->nombreComercial);
-            $query->bindValue(6, $cliente->telefonoContacto);
-            $query->bindValue(7, $cliente->correoContacto);
-            $query->bindValue(12, $cliente->contrasenia);
+            $query->bindValue(4, $cliente->nombre);
+            $query->bindValue(5, $cliente->razonSocial);
+            $query->bindValue(6, $cliente->nombreComercial);
+            $query->bindValue(7, $cliente->telefonoContacto);
+            $query->bindValue(8, $cliente->correoContacto);
+
+            if (!empty($cliente->forPassword)) {
+                $claveEncriptada = md5($cliente->contrasenia);
+                $query->bindValue(9, $claveEncriptada);
+            } else {
+                $query->bindValue(9, $cliente->contrasenia); //
+            }
+
             $query->execute();
         } catch (PDOException $e) {
             throw $e;
@@ -60,46 +94,15 @@ class ClienteDAO
 
     /*------------------------------------------------------------------*/
 
-    public function listar()
-    {
-        try {
-            $con = Conexion::getConexion();
-            $sql = "CALL sp_personal_listar()";
-            $query = $con->prepare($sql);
-            $query->setFetchMode(PDO::FETCH_ASSOC);
-            $query->execute();
-            $clientes = array();
-
-            while ($row = $query->fetch()) {
-                $cliente = new Cliente();
-                $cliente->idClientes = $row["idCliente"];
-                $cliente->tipoDocumento = $row["tipoDocumento"];
-                $cliente->numDocumento = $row["numDocumento"];
-                $cliente->razonSocial = $row["razonSocial"];
-                $cliente->nombreComercial = $row["nombreComercial"];
-                $cliente->telefonoContacto = $row["telefonoContacto"];
-                $cliente->correoContacto = $row["correoContacto"];
-                $cliente->contrasenia = $row["contrasenia"];
-                $clientes[] = $cliente;
-            }
-            return $clientes;
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-            exit;
-        }
-    }
-
-    //--------------------------------------------------------------------------------------
-
-    public function eliminar($idCliente)
+    public function delete($idClientes)
     {
 
         try {
             $con = Conexion::getconexion();
 
-            $sql = "CALL sp_personal_eliminar(?)";
+            $sql = "CALL sp_clientes_delete(?)";
             $query = $con->prepare($sql);
-            $query->bindValue(1, $idCliente);
+            $query->bindValue(1, $idClientes);
             $query->execute();
         } catch (PDOException $e) {
             throw $e;
@@ -108,7 +111,8 @@ class ClienteDAO
 
     /*-------------------------------------------------------------------------------------------------*/
 
-    public function login($clienteLogin){
+    public function login($clienteLogin)
+    {
 
         try {
 

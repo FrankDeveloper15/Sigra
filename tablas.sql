@@ -379,3 +379,128 @@ idAdmin=idAdmin_;
 END
 ;;
 DELIMITER ;
+
+/* =================================== CLIENTES =========================================== */
+
+-- ----------------------------
+-- Procedure structure for `sp_clientes_insert`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_clientes_insert`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_clientes_insert`(
+tipoDocumento_ char(20) 
+,numDocumento_ varchar(11)
+,nombre_ varchar(60)
+,razonSocial_ varchar(50)
+,nombreComercial_ varchar(50)
+,telefonoContacto_ varchar(9) 
+,correoContacto_ varchar(255)
+,contrasenia_ varchar(255)
+)
+BEGIN
+INSERT INTO
+clientes
+(
+tipoDocumento
+,numDocumento
+,nombre
+,razonSocial
+,nombreComercial
+,telefonoContacto
+,correoContacto
+,contrasenia
+)
+VALUES
+(
+tipoDocumento_
+,numDocumento_
+,nombre_
+,razonSocial_
+,nombreComercial_
+,telefonoContacto_
+,correoContacto_
+,contrasenia_
+);
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_clientes_list`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_clientes_list`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_clientes_list`()
+BEGIN
+
+SELECT
+		idClientes
+		,tipoDocumento
+    ,numDocumento
+    ,nombre
+    ,razonSocial
+    ,nombreComercial
+    ,telefonoContacto
+    ,correoContacto
+    ,contrasenia
+	FROM
+		clientes;
+	
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_clientes_edit`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_clientes_edit`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_clientes_edit`(
+idClientes_ int(6)
+,tipoDocumento_ char(20) 
+,numDocumento_ varchar(11)
+,nombre_ varchar(60)
+,razonSocial_ varchar(50)
+,nombreComercial_ varchar(50)
+,telefonoContacto_ varchar(9) 
+,correoContacto_ varchar(255)
+,contrasenia_ varchar(255)
+)
+BEGIN
+
+UPDATE
+clientes
+SET
+tipoDocumento=tipoDocumento_
+,numDocumento=numDocumento_
+,nombre=nombre_
+,razonSocial=razonSocial_
+,nombreComercial=nombreComercial_
+,telefonoContacto=telefonoContacto_
+,correoContacto=correoContacto_
+,contrasenia=contrasenia_
+WHERE
+idClientes=idClientes_;
+
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_clientes_delete`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_clientes_delete`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_clientes_delete`(
+idClientes_ int(6)
+)
+BEGIN
+
+DELETE FROM
+clientes
+WHERE
+idClientes=idClientes_;
+
+END
+;;
+DELIMITER ;

@@ -214,7 +214,7 @@ require_once("layouts/headAdmin.php");
                                                                     <div class="row">
                                                                         <label for="telefonoContactoEdit-<?php echo $admin->idAdmin; ?>" class="col-auto col-form-label">Telefono Contacto:</label>
                                                                         <div class="col">
-                                                                            <input type="text" class="form-control" id="telefonoContactoEdit-<?php echo $admin->idAdmin; ?>" name="telefonoContactoEdit" value="<?php echo $admin->telefonoContacto; ?>">
+                                                                            <input type="text" class="form-control" id="telefonoContactoEdit-<?php echo $admin->idAdmin; ?>" name="telefonoContactoEdit" value="<?php echo $admin->telefonoContacto; ?>" maxlength="9" minlength="9">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -790,7 +790,6 @@ require_once("layouts/headAdmin.php");
                 <?php } ?>
             });
         </script>
-
     <?php
     } else {
         header("Location: admin.php");

@@ -72,6 +72,11 @@ require_once("layouts/headAdmin.php");
 
                 break;
         }
+
+        if (!empty($mensajesErrores)) {
+            header("Location: servicios.php");
+            exit();
+        }
     } else {
         try {
             $serviciosDAO = new ServiciosDAO();
