@@ -127,116 +127,6 @@ require_once("layouts/headAdmin.php");
                                 <td><?php echo $servicios->linkAcceso; ?></td>
                                 <td>
                                     <button class="btn btn-primary clr-cre" id="edit-servicios" data-bs-target="#modalEditarServicios-<?php echo $servicios->idServicios; ?>" data-bs-toggle="modal" style="border-radius: 10px 0 0 10px;"><i class="fa-solid fa-pen"></i></button><button class="btn btn-primary clr-so" id="delete-servicios" data-bs-target="#modalEliminarServicios-<?php echo $servicios->idServicios; ?>" data-bs-toggle="modal" style="border-radius: 0 10px 10px 0;"><i class="fa-solid fa-circle-xmark"></i></button>
-                                    <!-- Modal Eliminar Servicios-->
-                                    <div class="modal fade" id="modalEliminarServicios-<?php echo $servicios->idServicios; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <form id="form-delete-servicios-<?php echo $servicios->idServicios; ?>" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                                                    <div class="modal-header" style="background-color: #ff0000; color: #fff;">
-                                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Eliminar Servicio</h1>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        El servicio <?php echo $servicios->nombreServicios;?> sera eliminado.
-                                                        <input type="hidden" name="tipoEnvio" value="delete">
-                                                        <input type="hidden" name="idServiciosDelete" value="<?php echo $servicios->idServicios; ?>">
-                                                    </div>
-                                                    <div class="modal-footer row align-items-center p-0">
-                                                        <div class="row d-flex justify-content-end mb-3">
-                                                            <div class="col-md-4">
-                                                                <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <button type="submit" class="btn btn-primary salvar" id="btn-aceptar-delete-servicios-<?php echo $servicios->idServicios; ?>"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Eliminar</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Modal Editar Servicios -->
-                                    <div class="modal fade" id="modalEditarServicios-<?php echo $servicios->idServicios; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header title-edit" style="background-color: #106da2; margin-top: 0px;">
-                                                    <p>EDITAR SERVICIOS</p>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div id="alertaErroresEditar-<?php echo $servicios->idServicios; ?>" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
-                                                    </div>
-                                                    <div class="col mb-3 px-3">
-                                                        <form id="form-editar-servicios-<?php echo $servicios->idServicios; ?>" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                                                            <input type="hidden" name="tipoEnvio" value="edit">
-                                                            <input type="hidden" name="idServiciosEdit" value="<?php echo $servicios->idServicios; ?>">
-                                                            <div class="row align-items-center mb-3">
-                                                                <div class="col-md-6">
-                                                                    <div class="col">
-                                                                        <label for="nombreServiciosEdit-<?php echo $servicios->idServicios; ?>" class="col-auto col-form-label">Nombre de Servicios:</label>
-                                                                        <div class="col">
-                                                                            <input type="text" class="form-control" id="nombreServiciosEdit-<?php echo $servicios->idServicios; ?>" name="nombreServiciosEdit" value="<?php echo $servicios->nombreServicios; ?>">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="col">
-                                                                        <label for="correoProveedorEdit-<?php echo $servicios->idServicios; ?>" class="col-auto col-form-label">Correo de Proveedor:</label>
-                                                                        <div class="col">
-                                                                            <input type="text" class="form-control" id="correoProveedorEdit-<?php echo $servicios->idServicios; ?>" name="correoProveedorEdit" value="<?php echo $servicios->correoProveedor; ?>">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row align-items-center mb-3">
-                                                                <div class="col-md-12">
-                                                                    <div class="row">
-                                                                        <label for="linkAccesoEdit-<?php echo $servicios->idServicios; ?>" class="col-auto col-form-label">Link Acceso:</label>
-                                                                        <div class="col">
-                                                                            <input type="text" class="form-control" id="linkAccesoEdit-<?php echo $servicios->idServicios; ?>" name="linkAccesoEdit" value="<?php echo $servicios->linkAcceso; ?>">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer row align-items-center p-0 pt-2">
-                                                                <div class="row d-flex justify-content-end mb-3">
-                                                                    <div class="col-md-3">
-                                                                        <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                                                    </div>
-                                                                    <div class="col-md-3">
-                                                                        <button type="button" class="btn btn-primary salvar" data-bs-target="#modalAceptarEditarServicios-<?php echo $servicios->idServicios; ?>" data-bs-toggle="modal"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Aceptar</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Modal Editar Servicios-->
-                                    <div class="modal fade" id="modalAceptarEditarServicios-<?php echo $servicios->idServicios; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header" style="background-color: #106da2; color: #fff;">
-                                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Editar Este Servicio</h1>
-                                                </div>
-                                                <div class="modal-body">
-                                                    El servicio sera editado.
-                                                </div>
-                                                <div class="modal-footer row align-items-center p-0">
-                                                    <div class="row d-flex justify-content-end mb-3">
-                                                        <div class="col-md-4">
-                                                            <button type="button" class="btn btn-secondary cancelar" data-bs-target="#modalEditarServicios-<?php echo $servicios->idServicios; ?>" data-bs-toggle="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <button type="submit" id="btn-aceptar-editar-servicios-<?php echo $servicios->idServicios; ?>" class="btn btn-primary salvar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Guardar</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </td>
                             </tr>
                         <?php }; ?>
@@ -328,6 +218,118 @@ require_once("layouts/headAdmin.php");
             </div>
         </div>
 
+        <?php foreach ($serviciosArray as $servicios) { ?>
+            <!-- Modal Eliminar Servicios-->
+            <div class="modal fade" id="modalEliminarServicios-<?php echo $servicios->idServicios; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <form id="form-delete-servicios-<?php echo $servicios->idServicios; ?>" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                            <div class="modal-header" style="background-color: #ff0000; color: #fff;">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Eliminar Servicio</h1>
+                            </div>
+                            <div class="modal-body">
+                                El servicio <?php echo $servicios->nombreServicios; ?> sera eliminado.
+                                <input type="hidden" name="tipoEnvio" value="delete">
+                                <input type="hidden" name="idServiciosDelete" value="<?php echo $servicios->idServicios; ?>">
+                            </div>
+                            <div class="modal-footer row align-items-center p-0">
+                                <div class="row d-flex justify-content-end mb-3">
+                                    <div class="col-md-4">
+                                        <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="submit" class="btn btn-primary salvar" id="btn-aceptar-delete-servicios-<?php echo $servicios->idServicios; ?>"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Eliminar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Editar Servicios -->
+            <div class="modal fade" id="modalEditarServicios-<?php echo $servicios->idServicios; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header title-edit" style="background-color: #106da2; margin-top: 0px;">
+                            <p>EDITAR SERVICIOS</p>
+                        </div>
+                        <div class="modal-body">
+                            <div id="alertaErroresEditar-<?php echo $servicios->idServicios; ?>" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
+                            </div>
+                            <div class="col mb-3 px-3">
+                                <form id="form-editar-servicios-<?php echo $servicios->idServicios; ?>" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                                    <input type="hidden" name="tipoEnvio" value="edit">
+                                    <input type="hidden" name="idServiciosEdit" value="<?php echo $servicios->idServicios; ?>">
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col-md-6">
+                                            <div class="col">
+                                                <label for="nombreServiciosEdit-<?php echo $servicios->idServicios; ?>" class="col-auto col-form-label">Nombre de Servicios:</label>
+                                                <div class="col">
+                                                    <input type="text" class="form-control" id="nombreServiciosEdit-<?php echo $servicios->idServicios; ?>" name="nombreServiciosEdit" value="<?php echo $servicios->nombreServicios; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="col">
+                                                <label for="correoProveedorEdit-<?php echo $servicios->idServicios; ?>" class="col-auto col-form-label">Correo de Proveedor:</label>
+                                                <div class="col">
+                                                    <input type="text" class="form-control" id="correoProveedorEdit-<?php echo $servicios->idServicios; ?>" name="correoProveedorEdit" value="<?php echo $servicios->correoProveedor; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <label for="linkAccesoEdit-<?php echo $servicios->idServicios; ?>" class="col-auto col-form-label">Link Acceso:</label>
+                                                <div class="col">
+                                                    <input type="text" class="form-control" id="linkAccesoEdit-<?php echo $servicios->idServicios; ?>" name="linkAccesoEdit" value="<?php echo $servicios->linkAcceso; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer row align-items-center p-0 pt-2">
+                                        <div class="row d-flex justify-content-end mb-3">
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-primary salvar" data-bs-target="#modalAceptarEditarServicios-<?php echo $servicios->idServicios; ?>" data-bs-toggle="modal"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Aceptar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Editar Servicios-->
+            <div class="modal fade" id="modalAceptarEditarServicios-<?php echo $servicios->idServicios; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #106da2; color: #fff;">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Editar Este Servicio</h1>
+                        </div>
+                        <div class="modal-body">
+                            El servicio <?php echo $servicios->nombreServicios; ?> sera editado.
+                        </div>
+                        <div class="modal-footer row align-items-center p-0">
+                            <div class="row d-flex justify-content-end mb-3">
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-secondary cancelar" data-bs-target="#modalEditarServicios-<?php echo $servicios->idServicios; ?>" data-bs-toggle="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" id="btn-aceptar-editar-servicios-<?php echo $servicios->idServicios; ?>" class="btn btn-primary salvar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
         <?php
         require_once("layouts/footer.php");
         ?>
@@ -391,6 +393,12 @@ require_once("layouts/headAdmin.php");
                         mensajesErrores.push("El link de acceso no debe exceder los 255 caracteres.");
                     }
 
+                    <?php foreach ($serviciosArray as $servicios) { ?>
+                        if (linkAcceso === '<?php echo $servicios->linkAcceso; ?>') {
+                            mensajesErrores.push("El link de acceso ya existe.");
+                        }
+                    <?php } ?>
+
                     if (mensajesErrores.length > 0) {
                         var alertaErrores = $('#alertaErrores');
                         alertaErrores.css('display', 'block');
@@ -437,6 +445,13 @@ require_once("layouts/headAdmin.php");
                         } else if (linkAcceso.length > 255) {
                             mensajesErrores.push("El link de acceso no debe exceder los 255 caracteres.");
                         }
+
+                        // Verificación de la existencia de los valores teléfono y correo
+                        <?php foreach ($serviciosArray as $value) { ?>
+                            if ('<?php echo $servicios->idServicios; ?>' != '<?php echo $value->idServicios; ?>' && (linkAcceso === '<?php echo $value->linkAcceso; ?>')) {
+                                mensajesErrores.push("El link de acceso ya existe.");
+                            }
+                        <?php } ?>
 
                         if (mensajesErrores.length > 0) {
                             var alertaErrores = $('#alertaErroresEditar-<?php echo $servicios->idServicios; ?>');

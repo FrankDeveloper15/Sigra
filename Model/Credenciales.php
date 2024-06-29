@@ -9,6 +9,11 @@ class Credenciales
     public $observacion;
     public $idClientes;
     public $idServicios;
+    public $forPassword;
+
+    public $nombre;
+    public $nombreServicios;
+    public $linkAcceso;
 
     public function test_input($data)
     {
@@ -18,7 +23,7 @@ class Credenciales
         return $data;
     }
 
-    public function validarCliente()
+    public function validarCredenciales()
     {
         $mensajesErrores = array();
         
@@ -36,7 +41,7 @@ class Credenciales
         //-----------------------------------------------------------------------------
 
         if (empty($this->contrasenia)) {
-            $mensajesErrores[] = 'La contraseña es obligatorio';
+            $mensajesErrores[] = 'La contraseña no puede estar vacia.'.$this->contrasenia;
         } else {
             $this->contrasenia = $this->test_input($this->contrasenia);
         }

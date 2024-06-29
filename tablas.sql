@@ -504,3 +504,152 @@ idClientes=idClientes_;
 END
 ;;
 DELIMITER ;
+
+/* =================================== CREDENCIALES =========================================== */
+
+-- ----------------------------
+-- Procedure structure for `sp_credenciales_insert`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_credenciales_insert`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_credenciales_insert`(
+usuario_ varchar(30) 
+,contrasenia_ varchar(255)
+,observacion_ varchar(50)
+,idClientes_ int(6)
+,idServicios_ int(6)
+
+)
+BEGIN
+INSERT INTO
+credenciales
+(
+usuario
+,contrasenia
+,observacion
+,idClientes
+,idServicios
+)
+VALUES
+(
+usuario_
+,contrasenia_
+,observacion_
+,idClientes_
+,idServicios_
+);
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_credenciales_list`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_credenciales_list`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_credenciales_list`()
+BEGIN
+
+SELECT
+		cre.idCredenciales
+		,cre.usuario
+    ,cre.contrasenia
+    ,cre.observacion
+    ,cre.idClientes
+    ,cre.idServicios
+    ,cli.nombre
+    ,ser.nombreServicios
+    ,ser.linkAcceso
+	FROM
+		credenciales cre
+    INNER JOIN clientes cli ON cre.idClientes = cli.idClientes
+    INNER JOIN servicios ser ON cre.idServicios = ser.idServicios;
+	
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_credenciales_edit`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_credenciales_edit`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_credenciales_edit`(
+idCredenciales_ int(6)
+,usuario_ varchar(30) 
+,contrasenia_ varchar(255)
+,observacion_ varchar(50)
+,idClientes_ int(6)
+,idServicios_ int(6)
+)
+BEGIN
+
+UPDATE
+credenciales
+SET
+usuario=usuario_
+,contrasenia=contrasenia_
+,observacion=observacion_
+,idClientes=idClientes_
+,idServicios=idServicios_
+WHERE
+idCredenciales=idCredenciales_;
+
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_credenciales_delete`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_credenciales_delete`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_credenciales_delete`(
+idCredenciales_ int(6)
+)
+BEGIN
+
+DELETE FROM
+credenciales
+WHERE
+idCredenciales=idCredenciales_;
+
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_search_clientes_cre`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_search_clientes_cre`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_search_clientes_cre`()
+BEGIN
+
+SELECT
+		idClientes
+    ,nombre
+	FROM
+		clientes;
+	
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_search_servicios_cre`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_search_servicios_cre`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_search_servicios_cre`()
+BEGIN
+
+SELECT
+		idServicios
+		,nombreServicios	
+	FROM
+		servicios;
+	
+END
+;;
+DELIMITER ;

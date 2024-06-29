@@ -135,7 +135,7 @@ require_once("layouts/headAdmin.php");
                                         <div class="row">
                                             <label for="tipoDoc" class="col-auto col-form-label">Tipo de Doc:</label>
                                             <div class="col">
-                                                <select title="Estado..." data-style="btn-secondary" class="form-control" name="tipoDoc" id="tipoDoc">
+                                                <select title="Estado..." data-style="btn-secondary" class="form-control form-select" name="tipoDoc" id="tipoDoc">
                                                     <option value="DNI">DNI</option>
                                                     <option value="RUC">RUC</option>
                                                 </select>
@@ -1499,7 +1499,8 @@ require_once("layouts/headAdmin.php");
                         var telefonoContacto = $('#telefonoContactoEdit-<?php echo $clientes->idClientes; ?>').val().trim();
                         var correoContacto = $('#correoContactoEdit-<?php echo $clientes->idClientes; ?>').val().trim();
                         var contrasenia = $('#contraseniaEdit-<?php echo $clientes->idClientes; ?>').val().trim();
-
+                        var containerDesplegar = $('#containerDesplegar-<?php echo $clientes->idClientes; ?>');
+                
                         // Validación
                         var mensajesErrores = [];
 
@@ -1581,6 +1582,7 @@ require_once("layouts/headAdmin.php");
                         } else {
                             var alertaErrores = $('#alertaErroresEditar-<?php echo $clientes->idClientes; ?>');
                             alertaErrores.css('display', 'none');
+                            containerDesplegar.addClass('cerrado');
                             $('#form-editar-cliente-<?php echo $clientes->idClientes; ?>').submit();
                         }
                     });

@@ -138,148 +138,6 @@ require_once("layouts/headAdmin.php");
                                 <td><?php echo $admin->correoContacto; ?></td>
                                 <td>
                                     <button class="btn btn-primary clr-cre" id="edit-admin" data-bs-target="#modalEditarAdmin-<?php echo $admin->idAdmin; ?>" data-bs-toggle="modal" style="border-radius: 10px 0 0 10px;"><i class="fa-solid fa-pen"></i></button><button class="btn btn-primary clr-so" id="delete-admin" data-bs-target="#modalEliminarAdmin-<?php echo $admin->idAdmin; ?>" data-bs-toggle="modal" style="border-radius: 0 10px 10px 0;"><i class="fa-solid fa-circle-xmark"></i></button>
-                                    <!-- Modal Eliminar Admin-->
-                                    <div class="modal fade" id="modalEliminarAdmin-<?php echo $admin->idAdmin; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <form id="form-delete-admin-<?php echo $admin->idAdmin; ?>" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                                                    <div class="modal-header" style="background-color: #ff0000; color: #fff;">
-                                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Eliminar Administrador</h1>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        El administrador <?php echo $admin->nombreApellidos; ?> sera eliminado.
-                                                        <input type="hidden" name="tipoEnvio" value="delete">
-                                                        <input type="hidden" name="idAdminDelete" value="<?php echo $admin->idAdmin; ?>">
-                                                    </div>
-                                                    <div class="modal-footer row align-items-center p-0">
-                                                        <div class="row d-flex justify-content-end mb-3">
-                                                            <div class="col-md-4">
-                                                                <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <button type="submit" class="btn btn-primary salvar" id="btn-aceptar-delete-admin-<?php echo $admin->idAdmin; ?>"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Eliminar</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Modal Editar Admin -->
-                                    <div class="modal fade" id="modalEditarAdmin-<?php echo $admin->idAdmin; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header title-edit" style="background-color: #106da2; margin-top: 0px;">
-                                                    <p>EDITAR ADMINISTRADOR</p>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div id="alertaErroresEditar-<?php echo $admin->idAdmin; ?>" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
-                                                    </div>
-                                                    <div class="col mb-3 px-3">
-                                                        <form id="form-editar-admin-<?php echo $admin->idAdmin; ?>" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
-                                                            <input type="hidden" name="tipoEnvio" value="edit">
-                                                            <input type="hidden" id="idAdminEdit-<?php echo $admin->idAdmin; ?>" name="idAdminEdit" value="<?php echo $admin->idAdmin; ?>">
-                                                            <input type="hidden" id="forPassword-<?php echo $admin->idAdmin; ?>" name="forPassword">
-                                                            <div class="row align-items-center mb-3">
-                                                                <div class="col-md-5">
-                                                                    <div class="row">
-                                                                        <label for="tipoDocumentoEdit-<?php echo $admin->idAdmin; ?>" class="col-auto col-form-label">Tipo de Doc:</label>
-                                                                        <div class="col">
-                                                                            <input readonly type="text" class="form-control" id="tipoDocumentoEdit-<?php echo $admin->idAdmin; ?>" name="tipoDocumentoEdit" value="<?php echo $admin->tipoDocumento; ?>">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="row">
-                                                                        <label for="numDocumentoEdit-<?php echo $admin->idAdmin; ?>" class="col-auto col-form-label">N° Doc:</label>
-                                                                        <div class="col">
-                                                                            <input readonly type="text" class="form-control" id="numDocumentoEdit-<?php echo $admin->idAdmin; ?>" name="numDocumentoEdit" value="<?php echo $admin->numDocumento; ?>">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row align-items-center mb-3">
-                                                                <div class="col-md-8">
-                                                                    <div class="row">
-                                                                        <label for="nombreApellidosEdit-<?php echo $admin->idAdmin; ?>" class="col-auto col-form-label">Nombre y Apellidos:</label>
-                                                                        <div class="col">
-                                                                            <input readonly type="text" class="form-control" id="nombreApellidosEdit-<?php echo $admin->idAdmin; ?>" name="nombreApellidosEdit" value="<?php echo $admin->nombreApellidos; ?>">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row align-items-center mb-3">
-                                                                <div class="col-md-5">
-                                                                    <div class="row">
-                                                                        <label for="telefonoContactoEdit-<?php echo $admin->idAdmin; ?>" class="col-auto col-form-label">Telefono Contacto:</label>
-                                                                        <div class="col">
-                                                                            <input type="text" class="form-control" id="telefonoContactoEdit-<?php echo $admin->idAdmin; ?>" name="telefonoContactoEdit" value="<?php echo $admin->telefonoContacto; ?>" maxlength="9" minlength="9">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-7">
-                                                                    <div class="row">
-                                                                        <label for="correoContactoEdit-<?php echo $admin->idAdmin; ?>" class="col-auto col-form-label">Correo Contacto:</label>
-                                                                        <div class="col">
-                                                                            <input type="email" class="form-control" id="correoContactoEdit-<?php echo $admin->idAdmin; ?>" name="correoContactoEdit" value="<?php echo $admin->correoContacto; ?>">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row align-items-center mb-3">
-                                                                <div class="col-md-6">
-                                                                    <div class="row">
-                                                                        <label for="contraseniaEdit-<?php echo $admin->idAdmin; ?>" class="col-auto col-form-label">Contraseña:</label>
-                                                                        <div class="col input-group">
-                                                                            <input type="password" class="form-control" id="contraseniaEdit-<?php echo $admin->idAdmin; ?>" name="contraseniaEdit">
-                                                                            <button class="input-group-text" type="button" id="seePasswordEdit-<?php echo $admin->idAdmin; ?>">
-                                                                                <i class="fa-solid fa-eye-slash"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer row align-items-center p-0 pt-2">
-                                                                <div class="row d-flex justify-content-end mb-3">
-                                                                    <div class="col-md-3">
-                                                                        <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                                                    </div>
-                                                                    <div class="col-md-3">
-                                                                        <button type="button" class="btn btn-primary salvar" data-bs-target="#modalAceptarEditarAdmin-<?php echo $admin->idAdmin; ?>" data-bs-toggle="modal"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Aceptar</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Modal Aceptar Editar Administrador -->
-                                    <div class="modal fade" id="modalAceptarEditarAdmin-<?php echo $admin->idAdmin; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header" style="background-color: #106da2; color: #fff;">
-                                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Editar Este Administrador</h1>
-                                                </div>
-                                                <div class="modal-body">
-                                                    El administrador <?php echo $admin->nombreApellidos; ?> será editado.
-                                                </div>
-                                                <div class="modal-footer row align-items-center p-0">
-                                                    <div class="row d-flex justify-content-end mb-3">
-                                                        <div class="col-md-4">
-                                                            <button type="button" class="btn btn-secondary cancelar" data-bs-target="#modalEditarAdmin-<?php echo $admin->idAdmin; ?>" data-bs-toggle="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <button type="submit" id="btn-aceptar-editar-admin-<?php echo $admin->idAdmin; ?>" class="btn btn-primary salvar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Guardar</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </td>
                             </tr>
                         <?php }; ?>
@@ -307,7 +165,7 @@ require_once("layouts/headAdmin.php");
                                         <div class="row">
                                             <label for="tipoDoc" class="col-auto col-form-label">Tipo de Doc:</label>
                                             <div class="col">
-                                                <select title="Estado..." data-style="btn-secondary" class="form-control" name="tipoDoc" id="tipoDoc">
+                                                <select title="Estado..." data-style="btn-secondary" class="form-control form-select" name="tipoDoc" id="tipoDoc">
                                                     <option value="DNI">DNI</option>
                                                     <option value="RUC">RUC</option>
                                                 </select>
@@ -437,11 +295,157 @@ require_once("layouts/headAdmin.php");
             </div>
         </div>
 
+        <?php foreach ($adminArray as $admin) { ?>
+            <!-- Modal Eliminar Admin-->
+            <div class="modal fade" id="modalEliminarAdmin-<?php echo $admin->idAdmin; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <form id="form-delete-admin-<?php echo $admin->idAdmin; ?>" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                            <div class="modal-header" style="background-color: #ff0000; color: #fff;">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Eliminar Administrador</h1>
+                            </div>
+                            <div class="modal-body">
+                                El administrador <?php echo $admin->nombreApellidos; ?> sera eliminado.
+                                <input type="hidden" name="tipoEnvio" value="delete">
+                                <input type="hidden" name="idAdminDelete" value="<?php echo $admin->idAdmin; ?>">
+                            </div>
+                            <div class="modal-footer row align-items-center p-0">
+                                <div class="row d-flex justify-content-end mb-3">
+                                    <div class="col-md-4">
+                                        <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="submit" class="btn btn-primary salvar" id="btn-aceptar-delete-admin-<?php echo $admin->idAdmin; ?>"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Eliminar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Editar Admin -->
+            <div class="modal fade" id="modalEditarAdmin-<?php echo $admin->idAdmin; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header title-edit" style="background-color: #106da2; margin-top: 0px;">
+                            <p>EDITAR ADMINISTRADOR</p>
+                        </div>
+                        <div class="modal-body">
+                            <div id="alertaErroresEditar-<?php echo $admin->idAdmin; ?>" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
+                            </div>
+                            <div class="col mb-3 px-3">
+                                <form id="form-editar-admin-<?php echo $admin->idAdmin; ?>" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                                    <input type="hidden" name="tipoEnvio" value="edit">
+                                    <input type="hidden" id="idAdminEdit-<?php echo $admin->idAdmin; ?>" name="idAdminEdit" value="<?php echo $admin->idAdmin; ?>">
+                                    <input type="hidden" id="forPassword-<?php echo $admin->idAdmin; ?>" name="forPassword">
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col-md-5">
+                                            <div class="row">
+                                                <label for="tipoDocumentoEdit-<?php echo $admin->idAdmin; ?>" class="col-auto col-form-label">Tipo de Doc:</label>
+                                                <div class="col">
+                                                    <input readonly type="text" class="form-control" id="tipoDocumentoEdit-<?php echo $admin->idAdmin; ?>" name="tipoDocumentoEdit" value="<?php echo $admin->tipoDocumento; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <label for="numDocumentoEdit-<?php echo $admin->idAdmin; ?>" class="col-auto col-form-label">N° Doc:</label>
+                                                <div class="col">
+                                                    <input readonly type="text" class="form-control" id="numDocumentoEdit-<?php echo $admin->idAdmin; ?>" name="numDocumentoEdit" value="<?php echo $admin->numDocumento; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col-md-8">
+                                            <div class="row">
+                                                <label for="nombreApellidosEdit-<?php echo $admin->idAdmin; ?>" class="col-auto col-form-label">Nombre y Apellidos:</label>
+                                                <div class="col">
+                                                    <input readonly type="text" class="form-control" id="nombreApellidosEdit-<?php echo $admin->idAdmin; ?>" name="nombreApellidosEdit" value="<?php echo $admin->nombreApellidos; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col-md-5">
+                                            <div class="row">
+                                                <label for="telefonoContactoEdit-<?php echo $admin->idAdmin; ?>" class="col-auto col-form-label">Telefono Contacto:</label>
+                                                <div class="col">
+                                                    <input type="text" class="form-control" id="telefonoContactoEdit-<?php echo $admin->idAdmin; ?>" name="telefonoContactoEdit" value="<?php echo $admin->telefonoContacto; ?>" maxlength="9" minlength="9">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="row">
+                                                <label for="correoContactoEdit-<?php echo $admin->idAdmin; ?>" class="col-auto col-form-label">Correo Contacto:</label>
+                                                <div class="col">
+                                                    <input type="email" class="form-control" id="correoContactoEdit-<?php echo $admin->idAdmin; ?>" name="correoContactoEdit" value="<?php echo $admin->correoContacto; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <label for="contraseniaEdit-<?php echo $admin->idAdmin; ?>" class="col-auto col-form-label">Contraseña:</label>
+                                                <div class="col input-group">
+                                                    <input type="password" class="form-control" id="contraseniaEdit-<?php echo $admin->idAdmin; ?>" name="contraseniaEdit">
+                                                    <button class="input-group-text" type="button" id="seePasswordEdit-<?php echo $admin->idAdmin; ?>">
+                                                        <i class="fa-solid fa-eye-slash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer row align-items-center p-0 pt-2">
+                                        <div class="row d-flex justify-content-end mb-3">
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-primary salvar" data-bs-target="#modalAceptarEditarAdmin-<?php echo $admin->idAdmin; ?>" data-bs-toggle="modal"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Aceptar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Aceptar Editar Administrador -->
+            <div class="modal fade" id="modalAceptarEditarAdmin-<?php echo $admin->idAdmin; ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #106da2; color: #fff;">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Editar Este Administrador</h1>
+                        </div>
+                        <div class="modal-body">
+                            El administrador <?php echo $admin->nombreApellidos; ?> será editado.
+                        </div>
+                        <div class="modal-footer row align-items-center p-0">
+                            <div class="row d-flex justify-content-end mb-3">
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-secondary cancelar" data-bs-target="#modalEditarAdmin-<?php echo $admin->idAdmin; ?>" data-bs-toggle="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" id="btn-aceptar-editar-admin-<?php echo $admin->idAdmin; ?>" class="btn btn-primary salvar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <?php } ?>
         <?php
         require_once("layouts/footer.php");
         ?>
 
         <?php require_once("layouts/script.php"); ?>
+        <!-- Para que se muestre o oculte la contraseña -->
         <script>
             /* Visibilidada de contraseña Insertar*/
             document.getElementById('seePasswordInsert').addEventListener('click', function() {
@@ -474,7 +478,7 @@ require_once("layouts/headAdmin.php");
                 });
             <?php } ?>
         </script>
-
+        <!-- Para la busqueda de DNI o RUC -->
         <script>
             // Función para realizar la búsqueda y validación
             function buscarDNI() {
@@ -562,7 +566,7 @@ require_once("layouts/headAdmin.php");
                 this.value = this.value.replace(/\D/g, '');
             });
         </script>
-
+        <!-- Para la tabla de administrador -->
         <script>
             $('#adminTable').DataTable({
                 responsive: true,
@@ -588,7 +592,7 @@ require_once("layouts/headAdmin.php");
                 }
             });
         </script>
-
+        <!-- Para validar antes de agregar administrador -->
         <script>
             $(document).ready(function() {
                 // Evento para el botón de aceptar en modalAgregarAdmin
@@ -642,26 +646,6 @@ require_once("layouts/headAdmin.php");
                         mensajesErrores.push("La contraseña debe exceder los 255 caracteres.");
                     }
 
-                    if (mensajesErrores.length > 0) {
-                        var alertaErrores = $('#alertaErrores');
-                        alertaErrores.css('display', 'block');
-                        alertaErrores.html(mensajesErrores.join('<br>'));
-                        $('#modalAceptarAdmin').modal('hide');
-                        $('#modalAgregarAdmin').modal('show');
-                    } else {
-                        // Si no hay errores, verificar si existe duplicidad
-                        validarExistencia(); // Llamar a la función para validar la existencia después de la consulta
-                    }
-                });
-
-                // Función para validar existencia de documentos y contactos
-                function validarExistencia() {
-                    var numDocumento = $('#numDocumentoInsert').val().trim();
-                    var telefonoContacto = $('#telefonoContactoInsert').val().trim();
-                    var correoContacto = $('#correoContactoInsert').val().trim();
-                    var alertaErrores = $('#alertaErrores');
-                    var mensajesErrores = [];
-
                     <?php foreach ($adminArray as $admin) { ?>
                         if (numDocumento === '<?php echo $admin->numDocumento; ?>') {
                             mensajesErrores.push("El número de documento ya existe.");
@@ -676,20 +660,20 @@ require_once("layouts/headAdmin.php");
                         }
                     <?php } ?>
 
-                    // Mostrar errores si los hay
                     if (mensajesErrores.length > 0) {
+                        var alertaErrores = $('#alertaErrores');
                         alertaErrores.css('display', 'block');
                         alertaErrores.html(mensajesErrores.join('<br>'));
                         $('#modalAceptarAdmin').modal('hide');
                         $('#modalAgregarAdmin').modal('show');
                     } else {
-                        alertaErrores.css('display', 'none');
+                        // Si no hay errores, verificar si existe duplicidad
                         $('#form-admin').submit(); // Enviar formulario si no hay errores
                     }
-                }
+                });
             });
         </script>
-
+        <!-- Para validar antes de editar administrador -->
         <script>
             $(document).ready(function() {
                 <?php foreach ($adminArray as $admin) { ?>
@@ -777,7 +761,7 @@ require_once("layouts/headAdmin.php");
                 <?php } ?>
             });
         </script>
-
+        <!-- Para eliminar el administrador -->
         <script>
             $(document).ready(function() {
                 <?php foreach ($adminArray as $admin) { ?>
