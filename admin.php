@@ -29,6 +29,7 @@ require_once("layouts/headAdmin.php");
                         $adminDAO = new AdminDAO();
                         $adminDAO->insert($admin);
 
+                        $_SESSION['msj'] = "Se registro el administrador correctamente.";
                         $datosProcesados = true;
                     } catch (Exception $e) {
                         $mensajesErrores[] = $e->getMessage();
@@ -55,6 +56,7 @@ require_once("layouts/headAdmin.php");
                         $adminDAO = new AdminDAO();
                         $adminDAO->edit($admin);
 
+                        $_SESSION['msj'] = "Se edito el administrador correctamente.";
                         $datosProcesados = true;
                     } catch (Exception $e) {
                         $mensajesErrores[] = $e->getMessage();
@@ -69,6 +71,7 @@ require_once("layouts/headAdmin.php");
                     $adminDAO = new AdminDAO();
                     $adminDAO->delete($idAdmin);
 
+                    $_SESSION['msj'] = "Se elimino el administrador correctamente.";
                     $datosProcesados = true;
                 } catch (Exception $e) {
                     $mensajesErrores[] = $e->getMessage();
@@ -102,7 +105,25 @@ require_once("layouts/headAdmin.php");
         <?php
         require_once("layouts/headerAdmin.php");
         ?>
-
+        <?php if (isset($_SESSION['msj'])) { ?>
+            <script>
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    icon: "success",
+                    title: "<?php echo $_SESSION['msj']; ?>",
+                    timer: 2500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+            </script>
+        <?php
+            unset($_SESSION['msj']);
+        } ?>
         <div class="container-fluid p-4">
             <div class="row">
                 <div class="col">

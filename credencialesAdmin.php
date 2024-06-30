@@ -27,6 +27,7 @@ require_once("layouts/headAdmin.php");
                         $credencialesDAO = new CredencialesDAO();
                         $credencialesDAO->insert($credenciales);
 
+                        $_SESSION['msj'] = "Se registro la credencial correctamente.";
                         $datosProcesados = true;
                     } catch (Exception $e) {
                         $mensajesErrores[] = $e->getMessage();
@@ -52,6 +53,7 @@ require_once("layouts/headAdmin.php");
                         $credencialesDAO = new CredencialesDAO();
                         $credencialesDAO->edit($credenciales);
 
+                        $_SESSION['msj'] = "Se edito la credencial correctamente.";
                         $datosProcesados = true;
                     } catch (Exception $e) {
                         $mensajesErrores[] = $e->getMessage();
@@ -66,6 +68,7 @@ require_once("layouts/headAdmin.php");
                     $credencialesDAO = new CredencialesDAO();
                     $credencialesDAO->delete($idCredenciales);
 
+                    $_SESSION['msj'] = "Se elimino la credencial correctamente.";
                     $datosProcesados = true;
                 } catch (Exception $e) {
                     $mensajesErrores[] = $e->getMessage();
@@ -103,6 +106,25 @@ require_once("layouts/headAdmin.php");
         <?php
         require_once("layouts/headerAdmin.php");
         ?>
+        <?php if (isset($_SESSION['msj'])) { ?>
+            <script>
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    icon: "success",
+                    title: "<?php echo $_SESSION['msj']; ?>",
+                    timer: 2500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+            </script>
+        <?php
+            unset($_SESSION['msj']);
+        } ?>
         <div class="container-fluid p-4">
             <button type="button" class="btn btn-primary w-auto clr-cre" id="agregar-accesos" data-bs-toggle="modal" data-bs-target="#modalAgregarCredenciales"><i class="fa-solid fa-file-circle-plus"></i> AGREGAR</button>
         </div>
@@ -272,7 +294,7 @@ require_once("layouts/headAdmin.php");
                                         <button type="button" class="btn btn-secondary cancelar" data-bs-toggle="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
                                     </div>
                                     <div class="col-md-4">
-                                        <button type="submit" id="btn-aceptar-delete-credenciales-<?php echo $credenciales->idCredenciales; ?>" class="btn btn-primary salvar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Aceptar</button>
+                                        <button type="submit" id="btn-aceptar-delete-credenciales-<?php echo $credenciales->idCredenciales; ?>" class="btn btn-primary salvar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Eliminar</button>
                                     </div>
                                 </div>
                             </div>
@@ -291,7 +313,7 @@ require_once("layouts/headAdmin.php");
                             <div id="alertaErroresEditar-<?php echo $credenciales->idCredenciales; ?>" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
                             </div>
                             <div class="col mb-3 px-3">
-                                <form id="form-editar-credenciales-<?php echo $credenciales->idCredenciales;?>" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                                <form id="form-editar-credenciales-<?php echo $credenciales->idCredenciales; ?>" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
                                     <input type="hidden" name="tipoEnvio" value="edit">
                                     <input type="hidden" id="idCredencialesEdit-<?php echo $credenciales->idCredenciales; ?>" name="idCredencialesEdit" value="<?php echo $credenciales->idCredenciales; ?>">
                                     <input type="hidden" id="forPassword-<?php echo $credenciales->idCredenciales; ?>" name="forPassword">
@@ -326,7 +348,7 @@ require_once("layouts/headAdmin.php");
                                             <div class="row">
                                                 <label for="usuarioEdit-<?php echo $credenciales->idCredenciales; ?>" class="col-auto col-form-label">Usuario:</label>
                                                 <div class="col">
-                                                    <input type="text" class="form-control" id="usuarioEdit-<?php echo $credenciales->idCredenciales; ?>" name="usuarioEdit" value="<?php echo $credenciales->usuario;?>">
+                                                    <input type="text" class="form-control" id="usuarioEdit-<?php echo $credenciales->idCredenciales; ?>" name="usuarioEdit" value="<?php echo $credenciales->usuario; ?>">
                                                 </div>
                                             </div>
                                         </div>
@@ -347,7 +369,7 @@ require_once("layouts/headAdmin.php");
                                             <div class="row">
                                                 <label for="observacionEdit-<?php echo $credenciales->idCredenciales; ?>" class="col-auto col-form-label">Observacion:</label>
                                                 <div class="col">
-                                                    <input type="text" class="form-control" id="observacionEdit-<?php echo $credenciales->idCredenciales; ?>" name="observacionEdit" value="<?php echo $credenciales->observacion;?>">
+                                                    <input type="text" class="form-control" id="observacionEdit-<?php echo $credenciales->idCredenciales; ?>" name="observacionEdit" value="<?php echo $credenciales->observacion; ?>">
                                                 </div>
                                             </div>
                                         </div>
@@ -537,11 +559,11 @@ require_once("layouts/headAdmin.php");
                         event.preventDefault(); // Prevenir el envío automático del formulario
 
                         // Validar los campos utilizando el modelo Credenciales
-                        var usuario = $('#usuarioEdit-<?php echo $credenciales->idCredenciales;?>').val().trim();
-                        var contrasenia = $('#contraseniaEdit-<?php echo $credenciales->idCredenciales;?>').val().trim();
-                        var observacion = $('#observacionEdit-<?php echo $credenciales->idCredenciales;?>').val().trim();
-                        var idClientes = $('#idClientesEdit-<?php echo $credenciales->idCredenciales;?>').val().trim();
-                        var idServicios = $('#idServiciosEdit-<?php echo $credenciales->idCredenciales;?>').val().trim();
+                        var usuario = $('#usuarioEdit-<?php echo $credenciales->idCredenciales; ?>').val().trim();
+                        var contrasenia = $('#contraseniaEdit-<?php echo $credenciales->idCredenciales; ?>').val().trim();
+                        var observacion = $('#observacionEdit-<?php echo $credenciales->idCredenciales; ?>').val().trim();
+                        var idClientes = $('#idClientesEdit-<?php echo $credenciales->idCredenciales; ?>').val().trim();
+                        var idServicios = $('#idServiciosEdit-<?php echo $credenciales->idCredenciales; ?>').val().trim();
 
 
                         // Validación

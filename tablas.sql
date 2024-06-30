@@ -653,3 +653,162 @@ SELECT
 END
 ;;
 DELIMITER ;
+
+/* =================================== CONTRATO =========================================== */
+
+-- ----------------------------
+-- Procedure structure for `sp_contrato_insert`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_contrato_insert`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_contrato_insert`(
+fechaInicio_ date 
+,fechaRenovacion_ date
+,documento_ varchar(255)
+,idCredenciales_ int(6)
+,idAdmin_ int(6)
+
+)
+BEGIN
+INSERT INTO
+contrato
+(
+fechaInicio
+,fechaRenovacion
+,documento
+,idCredenciales
+,idAdmin
+)
+VALUES
+(
+fechaInicio_
+,fechaRenovacion_
+,documento_
+,idCredenciales_
+,idAdmin_
+);
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_contrato_list`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_contrato_list`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_contrato_list`()
+BEGIN
+
+SELECT
+    con.idContrato
+    ,con.fechaInicio
+    ,con.fechaRenovacion
+    ,con.documento
+    ,con.idCredenciales
+    ,con.idAdmin
+		,cre.idClientes
+    ,cre.idServicios
+    ,cli.nombre
+    ,ser.nombreServicios
+    ,ad.nombreApellidos
+	FROM
+		contrato con
+    INNER JOIN credenciales cre ON con.idCredenciales = cre.idCredenciales
+    INNER JOIN administrador ad ON con.idAdmin = ad.idAdmin
+    INNER JOIN clientes cli ON cre.idClientes = cli.idClientes
+    INNER JOIN servicios ser ON cre.idServicios = ser.idServicios;
+	
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_contrato_edit`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_contrato_edit`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_contrato_edit`(
+idContrato_ int(6)
+,fechaInicio_ date 
+,fechaRenovacion_ date
+,documento_ varchar(255)
+,idCredenciales_ int(6)
+,idAdmin_ int(6)
+)
+BEGIN
+
+UPDATE
+contrato
+SET
+fechaInicio=fechaInicio_
+,fechaRenovacion=fechaRenovacion_
+,documento=documento_
+,idCredenciales=idCredenciales_
+,idAdmin=idAdmin_
+WHERE
+idContrato=idContrato_;
+
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_contrato_delete`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_contrato_delete`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_contrato_delete`(
+idContrato_ int(6)
+)
+BEGIN
+
+DELETE FROM
+contrato
+WHERE
+idContrato=idContrato_;
+
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_search_clientes_con`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_search_clientes_con`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_search_clientes_con`()
+BEGIN
+
+SELECT
+    cre.idCredenciales
+		,cli.idClientes
+    ,cli.nombre
+    ,ser.idServicios
+    ,ser.nombreServicios
+	FROM
+		clientes cli
+    INNER JOIN credenciales cre ON cli.idClientes = cre.idClientes
+    INNER JOIN servicios ser ON cre.idServicios = ser.idServicios;
+	
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_search_admin_con`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_search_admin_con`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_search_admin_con`()
+BEGIN
+
+SELECT
+		idAdmin
+		,nombreApellidos	
+	FROM
+		administrador;
+	
+END
+;;
+DELIMITER ;
+

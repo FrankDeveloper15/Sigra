@@ -25,6 +25,7 @@ require_once("layouts/headAdmin.php");
                         $serviciosDAO = new ServiciosDAO();
                         $serviciosDAO->insert($servicios);
 
+                        $_SESSION['msj'] = "Se registro el servicio correctamente.";
                         $datosProcesados = true;
                     } catch (Exception $e) {
                         $mensajesErrores[] = $e->getMessage();
@@ -48,6 +49,7 @@ require_once("layouts/headAdmin.php");
                         $serviciosDAO = new ServiciosDAO();
                         $serviciosDAO->edit($servicios);
 
+                        $_SESSION['msj'] = "Se edito el servicio correctamente.";
                         $datosProcesados = true;
                     } catch (Exception $e) {
                         $mensajesErrores[] = $e->getMessage();
@@ -62,6 +64,7 @@ require_once("layouts/headAdmin.php");
                     $serviciosDAO = new ServiciosDAO();
                     $serviciosDAO->delete($idServicios);
 
+                    $_SESSION['msj'] = "Se elimino el servicio correctamente.";
                     $datosProcesados = true;
                 } catch (Exception $e) {
                     $mensajesErrores[] = $e->getMessage();
@@ -95,7 +98,25 @@ require_once("layouts/headAdmin.php");
         <?php
         require_once("layouts/headerAdmin.php");
         ?>
-
+        <?php if (isset($_SESSION['msj'])) { ?>
+            <script>
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    icon: "success",
+                    title: "<?php echo $_SESSION['msj']; ?>",
+                    timer: 2500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+            </script>
+        <?php
+            unset($_SESSION['msj']);
+        } ?>
         <div class="container-fluid p-4">
             <div class="row">
                 <div class="col">

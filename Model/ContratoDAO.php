@@ -1,34 +1,57 @@
 <?php
-    require_once("Connection/conexion.php");
-    require_once("Model/Cliente.php");
+require_once("Connection/conexion.php");
+require_once("Model/Contrato.php");
+require_once("Model/Credenciales.php");
+require_once("Model/Admin.php");
 
-class ClienteDAO
+class ContratoDAO
 {
-    /*---------------------------------------------------------------------------------*/
-    public function insertar(Cliente $cliente)
+    //--------------------------------------------------------------------------------------
+
+    public function list()
     {
         try {
             $con = Conexion::getConexion();
-            $sql = "CALL sp_personal_insertar2(?,?,?,?,?,?,?,?,?)";
+            $sql = "CALL sp_contrato_list()";
+            $query = $con->prepare($sql);
+            $query->setFetchMode(PDO::FETCH_ASSOC);
+            $query->execute();
+            $contratoArray = array();
+
+            while ($row = $query->fetch()) {
+                $contrato = new Contrato();
+                $contrato->idContrato = $row["idContrato"];
+                $contrato->fechaInicio = $row["fechaInicio"];
+                $contrato->fechaRenovacion = $row["fechaRenovacion"];
+                $contrato->documento = $row["documento"];
+                $contrato->idCredenciales = $row["idCredenciales"];
+                $contrato->idAdmin = $row["idAdmin"];
+                $contrato->idClientes = $row["idServicios"];
+                $contrato->nombre = $row["nombre"];
+                $contrato->nombreServicios = $row["nombreServicios"];
+                $contrato->nombreApellidos = $row["nombreApellidos"];
+                $contratoArray[] = $contrato;
+            }
+            return $contratoArray;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit;
+        }
+    }
+
+    /*---------------------------------------------------------------------------------*/
+    public function insert(Contrato $contrato)
+    {
+        try {
+            $con = Conexion::getConexion();
+            $sql = "CALL sp_contrato_insert(?,?,?,?,?)";
             $query = $con->prepare($sql);
 
-            $query->bindValue(1, $cliente->tipoDocumento);
-
-            if (empty($cliente->numDocumento)) {
-                $query->bindValue(2, 'NULL', PDO::PARAM_NULL);
-            } else {
-                $query->bindValue(2, $cliente->numDocumento);
-            }
-
-            $query->bindValue(3, $cliente->razonSocial);
-            $query->bindValue(4, $cliente->nombreComercial);
-            $query->bindValue(5, $cliente->telefonoContacto);
-            $query->bindValue(6, $cliente->correoContacto);
-
-
-            $claveEncriptada = md5($cliente->contrasenia);
-
-            $query->bindValue(9, $claveEncriptada);
+            $query->bindValue(1, $contrato->fechaInicio);
+            $query->bindValue(2, $contrato->fechaRenovacion);
+            $query->bindValue(3, $contrato->documento);
+            $query->bindValue(4, $contrato->idCredenciales);
+            $query->bindValue(5, $contrato->idAdmin);
 
             $query->execute();
         } catch (PDOException $e) {
@@ -37,21 +60,20 @@ class ClienteDAO
         }
     }
     /*---------------------------------------------------------------------------------*/
-    public function actualizar(Cliente $cliente)
+    public function edit(Contrato $contrato)
     {
 
         try {
             $con = Conexion::getConexion();
-            $sql = "CALL sp_personal_actualizar2(?,?,?,?,?,?,?,?,?,?)";
+            $sql = "CALL sp_contrato_edit(?,?,?,?,?,?)";
             $query = $con->prepare($sql);
-            $query->bindValue(1, $cliente->idClientes);
-            $query->bindValue(2, $cliente->tipoDocumento);
-            $query->bindValue(3, $cliente->numDocumento);
-            $query->bindValue(4, $cliente->razonSocial);
-            $query->bindValue(5, $cliente->nombreComercial);
-            $query->bindValue(6, $cliente->telefonoContacto);
-            $query->bindValue(7, $cliente->correoContacto);
-            $query->bindValue(12, $cliente->contrasenia);
+            $query->bindValue(1, $contrato->idContrato);
+            $query->bindValue(2, $contrato->fechaInicio);
+            $query->bindValue(3, $contrato->fechaRenovacion);
+            $query->bindValue(4, $contrato->documento);
+            $query->bindValue(5, $contrato->idCredenciales);
+            $query->bindValue(6, $contrato->idAdmin);
+
             $query->execute();
         } catch (PDOException $e) {
             throw $e;
@@ -60,100 +82,71 @@ class ClienteDAO
 
     /*------------------------------------------------------------------*/
 
-    public function listar()
-    {
-        try {
-            $con = Conexion::getConexion();
-            $sql = "CALL sp_personal_listar()";
-            $query = $con->prepare($sql);
-            $query->setFetchMode(PDO::FETCH_ASSOC);
-            $query->execute();
-            $clientes = array();
-
-            while ($row = $query->fetch()) {
-                $cliente = new Cliente();
-                $cliente->idClientes = $row["idCliente"];
-                $cliente->tipoDocumento = $row["tipoDocumento"];
-                $cliente->numDocumento = $row["numDocumento"];
-                $cliente->razonSocial = $row["razonSocial"];
-                $cliente->nombreComercial = $row["nombreComercial"];
-                $cliente->telefonoContacto = $row["telefonoContacto"];
-                $cliente->correoContacto = $row["correoContacto"];
-                $cliente->contrasenia = $row["contrasenia"];
-                $clientes[] = $cliente;
-            }
-            return $clientes;
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-            exit;
-        }
-    }
-
-    //--------------------------------------------------------------------------------------
-
-    public function eliminar($idCliente)
+    public function delete($idContrato)
     {
 
         try {
             $con = Conexion::getconexion();
 
-            $sql = "CALL sp_personal_eliminar(?)";
+            $sql = "CALL sp_contrato_delete(?)";
             $query = $con->prepare($sql);
-            $query->bindValue(1, $idCliente);
+            $query->bindValue(1, $idContrato);
             $query->execute();
         } catch (PDOException $e) {
             throw $e;
         }
     }
 
-    /*-------------------------------------------------------------------------------------------------*/
-
-    public function login($clienteLogin){
-
+    /* ================================================================ */
+    public function searchClientesCon()
+    {
         try {
+            $con = Conexion::getConexion();
 
-            $con = Conexion::getconexion();
-
-            $sql = "call sp_clientes_login(?)";
+            $sql = "CALL sp_search_clientes_con()";
             $query = $con->prepare($sql);
-            $query->fetch(PDO::FETCH_ASSOC);
-
-            $query->bindValue(1, $clienteLogin->correoContacto);
-
+            $query->setFetchMode(PDO::FETCH_ASSOC);
             $query->execute();
+            $searchClientesCon = array();
 
-            if ($row = $query->fetch()) {
-                $_SESSION['idClientes'] = $row["idClientes"];
-                $_SESSION['numDocumento'] = $row["numDocumento"];
-                $_SESSION['razonSocial'] = $row["razonSocial"];
-                $_SESSION['nombre'] = $row["nombre"];
-                $_SESSION['nombreComercial'] = $row["nombreComercial"];
-                $_SESSION['correoContacto'] = $row["correoContacto"];
-                $_SESSION['contrasenia'] = $row["contrasenia"];
-            } else {
-                throw new Exception('E-001'); //usuario no encontrado
+            while ($row = $query->fetch()) {
+                $credenciales = new Credenciales();
+                $credenciales->idCredenciales = $row["idCredenciales"];
+                $credenciales->idClientes = $row["idClientes"];
+                $credenciales->nombre = $row["nombre"];
+                $credenciales->idServicios = $row["idServicios"];
+                $credenciales->nombreServicios = $row["nombreServicios"];
+                $searchClientesCon[] = $credenciales;
             }
+            return $searchClientesCon;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit;
+        }
+    }
 
-            $resp = strcmp(md5($clienteLogin->contrasenia), $_SESSION['contrasenia']) == 0;
-            //$resp=password_verify($usuarioLoguin->clave, $_SESSION['clave']);
-            $_SESSION['contrasenia'] = "";
+    /* ================================================================ */
+    public function searchAdmin()
+    {
+        try {
+            $con = Conexion::getConexion();
 
-            if ($resp) {
-                return $resp;
-            } else {
-                throw new Exception("E-002"); //clave incorrecta             
+            $sql = "CALL sp_search_admin_con()";
+            $query = $con->prepare($sql);
+            $query->setFetchMode(PDO::FETCH_ASSOC);
+            $query->execute();
+            $searchAdmin = array();
+
+            while ($row = $query->fetch()) {
+                $admin = new Admin();
+                $admin->idAdmin = $row["idAdmin"];
+                $admin->nombreApellidos = $row["nombreApellidos"];
+                $searchAdmin[] = $admin;
             }
-        } catch (Exception $e) {
-
-            if (str_contains($e->getMessage(), 'E-001')) {
-                throw $e;
-            } else if (str_contains($e->getMessage(), 'E-002')) {
-                throw $e;
-            } else {
-                //echo $e->getMessage();
-                //throw new Exception ('Error crítico: Comunicarse con el administrador del sistema');            
-                throw $e;
-            }
+            return $searchAdmin;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit;
         }
     }
 }

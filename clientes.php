@@ -30,6 +30,7 @@ require_once("layouts/headAdmin.php");
                         $clientesDAO = new ClienteDAO();
                         $clientesDAO->insert($clientes);
 
+                        $_SESSION['msj'] = "Se registro el cliente correctamente.";
                         $datosProcesados = true;
                     } catch (Exception $e) {
                         $mensajesErrores[] = $e->getMessage();
@@ -58,6 +59,7 @@ require_once("layouts/headAdmin.php");
                         $clientesDAO = new ClienteDAO();
                         $clientesDAO->edit($clientes);
 
+                        $_SESSION['msj'] = "Se edito el cliente correctamente.";
                         $datosProcesados = true;
                     } catch (Exception $e) {
                         $mensajesErrores[] = $e->getMessage();
@@ -72,6 +74,7 @@ require_once("layouts/headAdmin.php");
                     $clientesDAO = new ClienteDAO();
                     $clientesDAO->delete($idCliente);
 
+                    $_SESSION['msj'] = "Se elimino el cliente correctamente.";
                     $datosProcesados = true;
                 } catch (Exception $e) {
                     $mensajesErrores[] = $e->getMessage();
@@ -106,6 +109,25 @@ require_once("layouts/headAdmin.php");
         <?php
         require_once("layouts/headerAdmin.php");
         ?>
+        <?php if (isset($_SESSION['msj'])) { ?>
+            <script>
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    icon: "success",
+                    title: "<?php echo $_SESSION['msj']; ?>",
+                    timer: 2500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+            </script>
+        <?php
+            unset($_SESSION['msj']);
+        } ?>
         <div class="container-fluid py-4">
             <div class="row d-flex align-items-center">
                 <div class="col-auto title-clientes">
@@ -1500,7 +1522,7 @@ require_once("layouts/headAdmin.php");
                         var correoContacto = $('#correoContactoEdit-<?php echo $clientes->idClientes; ?>').val().trim();
                         var contrasenia = $('#contraseniaEdit-<?php echo $clientes->idClientes; ?>').val().trim();
                         var containerDesplegar = $('#containerDesplegar-<?php echo $clientes->idClientes; ?>');
-                
+
                         // Validación
                         var mensajesErrores = [];
 
