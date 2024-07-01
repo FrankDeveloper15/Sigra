@@ -51,6 +51,7 @@ require_once("layouts/headAdmin.php");
                         $contratoDAO->insert($contrato);
 
                         $_SESSION['msj'] = "Se registro el contrato correctamente.";
+                        $_SESSION['icon'] = "success";
                         $datosProcesados = true;
                     } catch (Exception $e) {
                         $mensajesErrores[] = $e->getMessage();
@@ -102,6 +103,7 @@ require_once("layouts/headAdmin.php");
                         $contratoDAO->edit($contrato);
 
                         $_SESSION['msj'] = "Se edito el contrato correctamente.";
+                        $_SESSION['icon'] = "success";
                         $datosProcesados = true;
                     } catch (Exception $e) {
                         $mensajesErrores[] = $e->getMessage();
@@ -117,10 +119,12 @@ require_once("layouts/headAdmin.php");
                     $contratoDAO->delete($idContrato);
 
                     $_SESSION['msj'] = "Se elimino el contrato correctamente.";
+                    $_SESSION['icon'] = "success";
                     $datosProcesados = true;
                 } catch (Exception $e) {
-                    $mensajesErrores[] = $e->getMessage();
-                    $datosProcesados = false;
+                    $_SESSION['msj'] = "No se puede eliminar el contrato ya que esta relacionado con otras tablas.";
+                    $_SESSION['icon'] = "error";
+                    $datosProcesados = true;
                 }
                 break;
             default:
@@ -160,7 +164,7 @@ require_once("layouts/headAdmin.php");
                     toast: true,
                     position: "top-end",
                     showConfirmButton: false,
-                    icon: "success",
+                    icon: "<?php echo $_SESSION['icon']; ?>",
                     title: "<?php echo $_SESSION['msj']; ?>",
                     timer: 2500,
                     timerProgressBar: true,
@@ -171,6 +175,7 @@ require_once("layouts/headAdmin.php");
                 });
             </script>
         <?php
+            unset($_SESSION['icon']);
             unset($_SESSION['msj']);
         } ?>
         <div class="container-fluid p-4">
@@ -230,11 +235,10 @@ require_once("layouts/headAdmin.php");
                                 <input type="hidden" name="tipoEnvio" value="insert">
                                 <div class="row align-items-center mb-3">
                                     <div class="col-md-5">
-                                        <div class="row">
+                                        <div class="col">
                                             <label for="idAdminInsert" class="col-auto col-form-label">Admin:</label>
                                             <div class="col">
-                                                <select title="Admin..." data-style="btn-secondary" class="form-control form-select" name="idAdminInsert" id="idAdminInsert">
-                                                    <option value="">Selecciona un Administrador</option>
+                                                <select title="Seleccionar Admin" data-style="btn-secondary" class="form-control form-select selectpicker show-tick" name="idAdminInsert" id="idAdminInsert" data-size="4" data-live-search="true">
                                                     <?php foreach ($searchAdmin as $admin) { ?>
                                                         <option value="<?php echo $admin->idAdmin; ?>"><?php echo $admin->nombreApellidos; ?></option>
                                                     <?php } ?>
@@ -243,11 +247,10 @@ require_once("layouts/headAdmin.php");
                                         </div>
                                     </div>
                                     <div class="col-md-7">
-                                        <div class="row">
+                                        <div class="col">
                                             <label for="idCredencialesInsert" class="col-auto col-form-label">Credenciales:</label>
                                             <div class="col">
-                                                <select title="Credenciales..." data-style="btn-secondary" class="form-control form-select" name="idCredencialesInsert" id="idCredencialesInsert">
-                                                    <option value="">Seleccion de Cliente y Servicio</option>
+                                                <select title="Seleccionar Credenciales" data-style="btn-secondary" class="form-control form-select selectpicker show-tick" name="idCredencialesInsert" id="idCredencialesInsert" data-size="4" data-live-search="true">
                                                     <?php foreach ($searchClientesCon as $clientesCon) { ?>
                                                         <option value="<?php echo $clientesCon->idCredenciales; ?>"><?php echo $clientesCon->nombre; ?> -> <?php echo $clientesCon->nombreServicios; ?></option>
                                                     <?php } ?>
@@ -370,10 +373,10 @@ require_once("layouts/headAdmin.php");
                                     <input type="hidden" id="forFile-<?php echo $contrato->idContrato; ?>" name="forFile">
                                     <div class="row align-items-center mb-3">
                                         <div class="col-md-5">
-                                            <div class="row">
+                                            <div class="col">
                                                 <label for="idAdminEdit-<?php echo $contrato->idContrato; ?>" class="col-auto col-form-label">Admin:</label>
                                                 <div class="col">
-                                                    <select title="Admin..." data-style="btn-secondary" class="form-control form-select" name="idAdminEdit" id="idAdminEdit-<?php echo $contrato->idContrato; ?>">
+                                                    <select title="Selecciona Admin" data-style="btn-secondary" class="form-control form-select selectpicker show-tick" name="idAdminEdit" id="idAdminEdit-<?php echo $contrato->idContrato; ?>" data-size="5" data-live-search="true">
                                                         <option value="">Selecciona un Administrador</option>
                                                         <?php foreach ($searchAdmin as $admin) { ?>
                                                             <?php $op = ($contrato->idAdmin == $admin->idAdmin) ? "selected" : ""; ?>
@@ -384,10 +387,10 @@ require_once("layouts/headAdmin.php");
                                             </div>
                                         </div>
                                         <div class="col-md-7">
-                                            <div class="row">
+                                            <div class="col">
                                                 <label for="idCredencialesEdit-<?php echo $contrato->idContrato; ?>" class="col-auto col-form-label">Credenciales:</label>
                                                 <div class="col">
-                                                    <select title="Credenciales..." data-style="btn-secondary" class="form-control form-select" name="idCredencialesEdit" id="idCredencialesEdit-<?php echo $contrato->idContrato; ?>">
+                                                    <select title="Credenciales..." data-style="btn-secondary" class="form-control" name="idCredencialesEdit" id="idCredencialesEdit-<?php echo $contrato->idContrato; ?>">
                                                         <option value="<?php echo $contrato->idCredenciales; ?>"><?php echo $contrato->nombre; ?> -> <?php echo $contrato->nombreServicios; ?></option>
                                                     </select>
                                                 </div>
@@ -702,7 +705,7 @@ require_once("layouts/headAdmin.php");
         <script>
             $(document).ready(function() {
                 <?php foreach ($contratoArray as $contrato) { ?>
-                    // Evento para el botón de aceptar en modalEditarContrato
+                    // Evento para el botón de aceptar en modalEliminarContrato
                     $('#btn-aceptar-delete-contrato-<?php echo $contrato->idContrato; ?>').on('click', function(event) {
                         event.preventDefault(); // Prevenir el envío automático del formulario
 

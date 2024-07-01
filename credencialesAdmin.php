@@ -28,6 +28,7 @@ require_once("layouts/headAdmin.php");
                         $credencialesDAO->insert($credenciales);
 
                         $_SESSION['msj'] = "Se registro la credencial correctamente.";
+                        $_SESSION['icon'] = "success";
                         $datosProcesados = true;
                     } catch (Exception $e) {
                         $mensajesErrores[] = $e->getMessage();
@@ -54,6 +55,7 @@ require_once("layouts/headAdmin.php");
                         $credencialesDAO->edit($credenciales);
 
                         $_SESSION['msj'] = "Se edito la credencial correctamente.";
+                        $_SESSION['icon'] = "success";
                         $datosProcesados = true;
                     } catch (Exception $e) {
                         $mensajesErrores[] = $e->getMessage();
@@ -69,10 +71,12 @@ require_once("layouts/headAdmin.php");
                     $credencialesDAO->delete($idCredenciales);
 
                     $_SESSION['msj'] = "Se elimino la credencial correctamente.";
+                    $_SESSION['icon'] = "success";
                     $datosProcesados = true;
                 } catch (Exception $e) {
-                    $mensajesErrores[] = $e->getMessage();
-                    $datosProcesados = false;
+                    $_SESSION['msj'] = "No se puede eliminar el credencial ya que esta relacionado con otras tablas.";
+                    $_SESSION['icon'] = "error";
+                    $datosProcesados = true;
                 }
                 break;
             default:
@@ -112,7 +116,7 @@ require_once("layouts/headAdmin.php");
                     toast: true,
                     position: "top-end",
                     showConfirmButton: false,
-                    icon: "success",
+                    icon: "<?php echo $_SESSION['icon']; ?>",
                     title: "<?php echo $_SESSION['msj']; ?>",
                     timer: 2500,
                     timerProgressBar: true,
@@ -123,6 +127,7 @@ require_once("layouts/headAdmin.php");
                 });
             </script>
         <?php
+            unset($_SESSION['icon']);
             unset($_SESSION['msj']);
         } ?>
         <div class="container-fluid p-4">
@@ -176,11 +181,10 @@ require_once("layouts/headAdmin.php");
                                 <input type="hidden" name="tipoEnvio" value="insert">
                                 <div class="row align-items-center mb-3">
                                     <div class="col-md-5">
-                                        <div class="row">
+                                        <div class="col">
                                             <label for="idClientesInsert" class="col-auto col-form-label">Clientes:</label>
                                             <div class="col">
-                                                <select title="Clientes..." data-style="btn-secondary" class="form-control form-select" name="idClientesInsert" id="idClientesInsert">
-                                                    <option value="">Selecciona Cliente ...</option>
+                                                <select title="Selecciona Clientes" data-style="btn-secondary" class="form-control form-select selectpicker show-tick" name="idClientesInsert" id="idClientesInsert" data-size="5" data-live-search="true">
                                                     <?php foreach ($searchClientes as $clientes) { ?>
                                                         <option value="<?php echo $clientes->idClientes; ?>"><?php echo $clientes->nombre; ?></option>
                                                     <?php } ?>
@@ -189,11 +193,10 @@ require_once("layouts/headAdmin.php");
                                         </div>
                                     </div>
                                     <div class="col-md-5">
-                                        <div class="row">
+                                        <div class="col">
                                             <label for="idServiciosInsert" class="col-auto col-form-label">Servicios:</label>
                                             <div class="col">
-                                                <select title="Servicios..." data-style="btn-secondary" class="form-control form-select" name="idServiciosInsert" id="idServiciosInsert">
-                                                    <option value="">Selecciona Servicio ...</option>
+                                                <select title="Selecciona Servicio" data-style="btn-secondary" class="form-control form-select selectpicker show-tick" name="idServiciosInsert" id="idServiciosInsert" data-size="5" data-live-search="true">
                                                     <?php foreach ($searchServicios as $servicios) { ?>
                                                         <option value="<?php echo $servicios->idServicios; ?>"><?php echo $servicios->nombreServicios; ?></option>
                                                     <?php } ?>
@@ -319,7 +322,7 @@ require_once("layouts/headAdmin.php");
                                     <input type="hidden" id="forPassword-<?php echo $credenciales->idCredenciales; ?>" name="forPassword">
                                     <div class="row align-items-center mb-3">
                                         <div class="col-md-5">
-                                            <div class="row">
+                                            <div class="col">
                                                 <label for="idClientesEdit-<?php echo $credenciales->idCredenciales; ?>" class="col-auto col-form-label">Clientes:</label>
                                                 <div class="col">
                                                     <select title="Clientes..." data-style="btn-secondary" class="form-control" name="idClientesEdit" id="idClientesEdit-<?php echo $credenciales->idCredenciales; ?>">
@@ -329,11 +332,10 @@ require_once("layouts/headAdmin.php");
                                             </div>
                                         </div>
                                         <div class="col-md-5">
-                                            <div class="row">
+                                            <div class="col">
                                                 <label for="idServiciosEdit-<?php echo $credenciales->idCredenciales; ?>" class="col-auto col-form-label">Servicios:</label>
                                                 <div class="col">
-                                                    <select title="Servicios..." data-style="btn-secondary" class="form-control form-select" name="idServiciosEdit" id="idServiciosEdit-<?php echo $credenciales->idCredenciales; ?>">
-                                                        <option value="">Selecciona Servicio ...</option>
+                                                    <select title="Selecciona Servicio" data-style="btn-secondary" class="form-control form-select selectpicker show-tick" name="idServiciosEdit" id="idServiciosEdit-<?php echo $credenciales->idCredenciales; ?>" data-size="5" data-live-search="true">
                                                         <?php foreach ($searchServicios as $servicios) { ?>
                                                             <?php $op = ($credenciales->idServicios == $servicios->idServicios) ? "selected" : ""; ?>
                                                             <option <?php echo $op; ?> value="<?php echo $servicios->idServicios; ?>"><?php echo $servicios->nombreServicios; ?></option>

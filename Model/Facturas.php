@@ -13,6 +13,10 @@ class Facturas
     public $documento;
     public $idClientes;
 
+    public $nombre;
+    public $nombreServicios;
+    public $forFile;
+
     public function test_input($data)
     {
         $data = trim($data);
@@ -21,14 +25,14 @@ class Facturas
         return $data;
     }
 
-    public function validarCliente()
+    public function validarFacturas()
     {
         $mensajesErrores = array();
         
         //-----------------------------------------------------------------------------
 
         if (empty($this->mes)) {
-            $mensajesErrores[] = "El mes puede estar vacio.";
+            $mensajesErrores[] = "El mes no puede estar vacio.";
         } else {
             if (strlen($this->mes) > 30) {
                 $mensajesErrores[] = "Mes no puede exceder de 30 caracteres";
@@ -86,11 +90,7 @@ class Facturas
 
         //-----------------------------------------------------------------------------
 
-        if (empty($this->documento)) {
-            $mensajesErrores[] = 'El documento es obligatorio';
-        } else {
-            $this->documento = $this->test_input($this->documento);
-        }
+        $this->documento = $this->test_input($this->documento);
 
         //-----------------------------------------------------------------------------
 

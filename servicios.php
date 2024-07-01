@@ -26,6 +26,7 @@ require_once("layouts/headAdmin.php");
                         $serviciosDAO->insert($servicios);
 
                         $_SESSION['msj'] = "Se registro el servicio correctamente.";
+                        $_SESSION['icon'] = "success";
                         $datosProcesados = true;
                     } catch (Exception $e) {
                         $mensajesErrores[] = $e->getMessage();
@@ -50,6 +51,7 @@ require_once("layouts/headAdmin.php");
                         $serviciosDAO->edit($servicios);
 
                         $_SESSION['msj'] = "Se edito el servicio correctamente.";
+                        $_SESSION['icon'] = "success";
                         $datosProcesados = true;
                     } catch (Exception $e) {
                         $mensajesErrores[] = $e->getMessage();
@@ -65,10 +67,12 @@ require_once("layouts/headAdmin.php");
                     $serviciosDAO->delete($idServicios);
 
                     $_SESSION['msj'] = "Se elimino el servicio correctamente.";
+                    $_SESSION['icon'] = "success";
                     $datosProcesados = true;
                 } catch (Exception $e) {
-                    $mensajesErrores[] = $e->getMessage();
-                    $datosProcesados = false;
+                    $_SESSION['msj'] = "No se puede eliminar el servicio ya que esta relacionado con otras tablas.";
+                    $_SESSION['icon'] = "error";
+                    $datosProcesados = true;
                 }
                 break;
             default:
@@ -104,7 +108,7 @@ require_once("layouts/headAdmin.php");
                     toast: true,
                     position: "top-end",
                     showConfirmButton: false,
-                    icon: "success",
+                    icon: "<?php echo $_SESSION['icon']; ?>",
                     title: "<?php echo $_SESSION['msj']; ?>",
                     timer: 2500,
                     timerProgressBar: true,
@@ -115,6 +119,7 @@ require_once("layouts/headAdmin.php");
                 });
             </script>
         <?php
+            unset($_SESSION['icon']);
             unset($_SESSION['msj']);
         } ?>
         <div class="container-fluid p-4">

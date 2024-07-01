@@ -18,14 +18,6 @@ CREATE TABLE `clientes` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
--- Records of clientes
--- ----------------------------
-INSERT INTO `clientes` VALUES 
-(1, 'DNI', '12345678', 'Empresa Teleaire', 'Empresa A S.A.', 'Empresa A', '987654321', 'empresaA@gmail.com', '21232f297a57a5a743894a0e4a801fc3'),
-(2, 'RUC', '10987654322', 'Empresa Cablitosmundo', 'Empresa B S.A.', 'Empresa B', '987654322', 'empresaB@gmail.com', '21232f297a57a5a743894a0e4a801fc3'),
-(3, 'RUC', '10897584147', 'Empresa Mejora Continua', 'Empresa C S.A.', 'Empresa C', '987654323', 'empresaC@gmail.com', '21232f297a57a5a743894a0e4a801fc3');
-
--- ----------------------------
 -- Table structure for administrador
 -- ----------------------------
 DROP TABLE IF EXISTS `administrador`;
@@ -39,15 +31,13 @@ CREATE TABLE `administrador` (
   `contrasenia` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`idAdmin`) USING BTREE,
   UNIQUE INDEX `idx_admin_numDocumento` (`numDocumento`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=2 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of administrador
 -- ----------------------------
 INSERT INTO `administrador` VALUES 
-(1, 'DNI', '98765432', '987654324', 'Arturo Azcurra', 'arturo@admin.com', '21232f297a57a5a743894a0e4a801fc3'),
-(2, 'DNI', '12345678', '987654325', 'Frank Martin', 'frank@admin.com', '21232f297a57a5a743894a0e4a801fc3'),
-(3, 'Pasaporte', 'XYZ789ABC', '987654326', 'Brayan Ricra', 'brayan@admin.com', '21232f297a57a5a743894a0e4a801fc3');
+(1, 'DNI', '71592447', '935993670', 'MONTAÑEZ LEON FRANK MARTIN', 'frank@gmail.com', '21232f297a57a5a743894a0e4a801fc3');
 
 -- ----------------------------
 -- Table structure for servicios
@@ -75,8 +65,8 @@ CREATE TABLE `credenciales` (
   PRIMARY KEY (`idCredenciales`) USING BTREE,
   INDEX `fk_credenciales_id_cliente_cliente_idx` (`idClientes`) USING BTREE,
   INDEX `fk_credenciales_id_servicios_servicios_idx` (`idServicios`) USING BTREE,
-  CONSTRAINT `fk_credenciales_id_cliente` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`idClientes`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_credenciales_id_servicios` FOREIGN KEY (`idServicios`) REFERENCES `servicios` (`idServicios`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_credenciales_id_cliente` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`idClientes`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `fk_credenciales_id_servicios` FOREIGN KEY (`idServicios`) REFERENCES `servicios` (`idServicios`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -93,8 +83,8 @@ CREATE TABLE `contrato` (
   PRIMARY KEY (`idContrato`) USING BTREE,
   INDEX `fk_contrato_id_credenciales_credenciales_idx` (`idCredenciales`) USING BTREE,
   INDEX `fk_servicios_id_admin_admin_idx` (`idAdmin`) USING BTREE,
-  CONSTRAINT `fk_contrato_id_admin` FOREIGN KEY (`idAdmin`) REFERENCES `administrador` (`idAdmin`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_contrato_id_credenciales` FOREIGN KEY (`idCredenciales`) REFERENCES `credenciales` (`idCredenciales`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_contrato_id_admin` FOREIGN KEY (`idAdmin`) REFERENCES `administrador` (`idAdmin`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `fk_contrato_id_credenciales` FOREIGN KEY (`idCredenciales`) REFERENCES `credenciales` (`idCredenciales`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -109,15 +99,15 @@ CREATE TABLE `facturas` (
   `fechaEmision` date NOT NULL,
   `fechaVencimiento` date NOT NULL,
   `estado` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `documento` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `documento` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `idClientes` int(6) NULL DEFAULT NULL,
   PRIMARY KEY (`idFacturas`) USING BTREE,
   INDEX `fk_facturas_id_clientes_clientes_idx` (`idClientes`) USING BTREE,
-  CONSTRAINT `fk_facturas_id_clientes` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`idClientes`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_facturas_id_clientes` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`idClientes`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
--- Table structure for historia_pagos
+-- Table structure for historias_pagos
 -- ----------------------------
 DROP TABLE IF EXISTS `historias_pagos`;
 CREATE TABLE `historias_pagos` (
@@ -125,7 +115,7 @@ CREATE TABLE `historias_pagos` (
   `idFacturas` int(6) NULL DEFAULT NULL,
   PRIMARY KEY (`idHistoriaPagos`) USING BTREE,
   INDEX `fk_historias_pagos_id_facturas_facturas_idx` (`idFacturas`) USING BTREE,
-  CONSTRAINT `fk_historias_pagos_id_facturas` FOREIGN KEY (`idFacturas`) REFERENCES `facturas` (`idFacturas`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_historias_pagos_id_facturas` FOREIGN KEY (`idFacturas`) REFERENCES `facturas` (`idFacturas`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
 
 -- -
@@ -807,6 +797,157 @@ SELECT
 		,nombreApellidos	
 	FROM
 		administrador;
+	
+END
+;;
+DELIMITER ;
+
+/* =================================== FACTURAS =========================================== */
+
+-- ----------------------------
+-- Procedure structure for `sp_facturas_insert`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_facturas_insert`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_facturas_insert`(
+mes_ varchar(30)
+,tipoMoneda_ varchar(10)
+,monto_ varchar(5)
+,fechaEmision_ date 
+,fechaVencimiento_ date
+,estado_ varchar(15)
+,documento_ varchar(255)
+,idClientes_ int(6)
+
+)
+BEGIN
+INSERT INTO
+facturas
+(
+mes
+,tipoMoneda
+,monto
+,fechaEmision
+,fechaVencimiento
+,estado
+,documento
+,idClientes
+)
+VALUES
+(
+mes_
+,tipoMoneda_
+,monto_
+,fechaEmision_
+,fechaVencimiento_
+,estado_
+,documento_
+,idClientes_
+);
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_facturas_list`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_facturas_list`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_facturas_list`()
+BEGIN
+
+SELECT
+    fac.idFacturas
+    ,fac.mes
+    ,fac.tipoMoneda
+    ,fac.monto
+    ,fac.fechaEmision
+    ,fac.fechaVencimiento
+		,fac.estado
+    ,fac.documento
+    ,fac.idClientes
+    ,cli.nombre
+    ,ser.nombreServicios
+	FROM
+		facturas fac
+    INNER JOIN credenciales cre ON fac.idClientes = cre.idClientes
+    INNER JOIN contrato con ON con.idCredenciales = cre.idCredenciales
+    INNER JOIN clientes cli ON cli.idClientes = cre.idClientes
+    INNER JOIN servicios ser ON ser.idServicios = cre.idServicios;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_facturas_edit`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_facturas_edit`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_facturas_edit`(
+idFacturas_ int(6)
+,mes_ varchar(30)
+,tipoMoneda_ varchar(10)
+,monto_ varchar(5)
+,fechaEmision_ date 
+,fechaVencimiento_ date
+,estado_ varchar(15)
+,documento_ varchar(255)
+,idClientes_ int(6)
+)
+BEGIN
+
+UPDATE
+facturas
+SET
+mes=mes_
+,tipoMoneda=tipoMoneda_
+,monto=monto_
+,fechaEmision=fechaEmision_
+,fechaVencimiento=fechaVencimiento_
+,estado=estado_
+,documento=documento_
+,idClientes=idClientes_
+WHERE
+idFacturas=idFacturas_;
+
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_facturas_delete`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_facturas_delete`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_facturas_delete`(
+idFacturas_ int(6)
+)
+BEGIN
+
+DELETE FROM
+facturas
+WHERE
+idFacturas=idFacturas_;
+
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_search_clientes_fac`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_search_clientes_fac`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_search_clientes_fac`()
+BEGIN
+
+SELECT
+		cli.idClientes
+    ,cli.nombre
+	FROM
+		contrato con
+    INNER JOIN credenciales cre ON con.idCredenciales = cre.idCredenciales
+    INNER JOIN clientes cli ON cli.idClientes = cre.idClientes;
 	
 END
 ;;
