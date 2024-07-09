@@ -17,3 +17,4 @@
         currentYearElement.textContent = '2018 - ' + currentYear;
     });
 </script>
+

@@ -52,8 +52,8 @@ require_once("layouts/headCliente.php");
                                     <td></td>
                                 <?php } else { ?>
                                     <td>
-                                        <a class="btn btn-primary btn-sm d-none d-sm-inline-block download-button" role="button" target="_blank" href="Facturas/<?php echo $facturas->documento; ?>">
-                                            <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Ver Factura
+                                        <a class="btn btn-primary btn-sm d-none d-sm-inline-block download-button" role="button" href="Facturas/<?php echo $facturas->documento; ?>" download>
+                                            <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Download
                                         </a>
                                     </td>
                                 <?php } ?>

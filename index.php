@@ -235,6 +235,5 @@ require_once("layouts/head.php");
             });
         });
     </script>
-
     <?php require_once("layouts/script.php"); ?>
 </body>

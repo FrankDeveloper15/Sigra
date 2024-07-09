@@ -214,7 +214,7 @@ require_once("layouts/headAdmin.php");
                                     <td></td>
                                 <?php } else { ?>
                                     <td>
-                                        <a class="btn btn-primary btn-sm d-none d-sm-inline-block download-button" role="button" target="_blank" href="ReportePago/<?php echo $facturas->reportePago; ?>">
+                                        <a class="btn btn-primary btn-sm d-none d-sm-inline-block download-button" role="button" href="ReportePago/<?php echo $facturas->reportePago; ?>" download>
                                             <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Dowloand
                                         </a>
                                     </td>

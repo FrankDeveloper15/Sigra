@@ -41,9 +41,6 @@
                         <div class="modal-line">
                             <a href="menuCliente.php"><i class="fa-solid fa-house-chimney"></i></a>
                         </div>
-                        <div class="modal-line">
-                            <i class="fa-solid fa-bell" id="abrir-notificacion"></i>
-                        </div>
                         <div class="container__button__menu">
                             <a href="cerrarSesion.php" class="button__One__menu" id="cerrarSesionBtn" style="padding: 5px;"><i class="fa-solid fa-circle-xmark"></i>CERRAR SESIÓN</a>
                         </div>
@@ -57,6 +54,13 @@
             </div>
         </div>
     </div>
+    <?php
+    require_once("Model/ClienteDAO.php");
+    $clienteDAO = new ClienteDAO();
+    $facturasArray = array();
+    $facturasArray = $clienteDAO->infoFacturas($_SESSION['idClientes']);
+    ?>
+
 
     <div class="container__notificacion" id="container-notificacion">
         <div class="cabezado__notificacion">
@@ -65,33 +69,19 @@
             <i class="fa-solid fa-circle-xmark" id="closed-notificacion"></i>
         </div>
         <div class="cuerpo__notificacion">
-            <div class="part__notificacion">
-                <i class="fa-solid fa-bell"></i>
-                <div class="text__info">
-                    <p>CONSTRUCTORA Y CONSULTORA DE LA TORRE S.A.C.</p>
-                    <p>Reporto nuevo pago - Jue. 15 de febrero, 2024 09:35 a.m.</p>
-                    <p>Factura del mes de Febrero 2024</p>
-                    <p>Monto: S/. 37.90</p>
-                </div>
-            </div>
-            <div class="part__notificacion">
-                <i class="fa-solid fa-bell"></i>
-                <div class="text__info">
-                    <p>CAMARA DE COMERCIO HUANCAYO S.A.C.</p>
-                    <p>Reporto nuevo pago - Mie. 14 de febrero, 2024 12:45 p.m.</p>
-                    <p>Factura del mes de Febrero 2024</p>
-                    <p>Monto: S/. 3754.90</p>
-                </div>
-            </div>
-            <div class="part__notificacion">
-                <i class="fa-solid fa-bell"></i>
-                <div class="text__info">
-                    <p>R&M CARD S.A.C.</p>
-                    <p>Reporto nuevo pago - Lun. 12 de febrero, 2024 13:20 p.m.</p>
-                    <p>Factura del mes de Febrero 2024</p>
-                    <p>Monto: S/. 750.90</p>
-                </div>
-            </div>
+            <?php foreach ($facturasArray as $facturas) { ?>
+                <?php if (($facturas->estado == "Pendiente") && ($facturas->notificacion == "1")) { ?>
+                    <div class="part__notificacion">
+                        <i class="fa-solid fa-bell"></i>
+                        <div class="text__info">
+                            <p><?php echo $facturas->nombre; ?></p>
+                            <p><?php echo $facturas->nombreServicios; ?></p>
+                            <p>Tiene una deuda <?php echo $facturas->estado; ?></p>
+                            <p>De <?php echo $facturas->mes; ?> de un monto de <?php echo $facturas->tipoMoneda; ?> <?php echo $facturas->monto; ?></p>
+                        </div>
+                    </div>
+                <?php } ?>
+            <?php } ?>
         </div>
     </div>
 </header>

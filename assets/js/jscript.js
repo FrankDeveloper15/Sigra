@@ -52,8 +52,21 @@ window.addEventListener('DOMContentLoaded', function () {
         containerNotificacion.classList.add('cerrado');
         setTimeout(function () {
             // Ocultar el div después del retraso
-            containerNotificacion.style.display = 'none'; 
+            containerNotificacion.style.display = 'none';
         }, 250); // 500 milisegundos de retraso
     });
 });
 
+/* abrir whatsapp */
+
+$(document).ready(function () {
+    $('#soporte').click(function () {
+        window.open('https://api.whatsapp.com/send?phone=51935993670&text= Hola, necesito soporte para mi cuenta.');
+    });
+});
+
+$(document).ready(function () {
+    $('#contactar').click(function () {
+        window.open('https://api.whatsapp.com/send?phone=51935993670&text= Hola, estoy interesado de trabajar con usted.');
+    });
+});
