@@ -12,6 +12,8 @@ class Facturas
     public $estado;
     public $documento;
     public $idClientes;
+    public $reportePago;
+    public $notificacion;
 
     public $nombre;
     public $nombreServicios;
@@ -91,6 +93,14 @@ class Facturas
         //-----------------------------------------------------------------------------
 
         $this->documento = $this->test_input($this->documento);
+
+        //-----------------------------------------------------------------------------
+
+        $this->reportePago = $this->test_input($this->reportePago);
+
+        //-----------------------------------------------------------------------------
+
+        $this->notificacion = $this->test_input($this->notificacion);
 
         //-----------------------------------------------------------------------------
 

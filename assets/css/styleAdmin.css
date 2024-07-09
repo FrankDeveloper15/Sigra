@@ -50,7 +50,7 @@ header .navb-items{
 header .item{
     text-align: center;
     margin-inline: 3%;
-    font-size: 12px;
+    font-size: 15px;
     letter-spacing: 3px;
     color: #fefefe;
     padding: 5px 0;
@@ -843,10 +843,9 @@ p {
 
 .button__general {
     width: 100%;
-    padding: 15px 0px;
-    ;
+    padding-right: 30%;
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     align-items: center;
 }
 
@@ -861,21 +860,6 @@ p {
     color: #ffffff;
     margin-left: 3%;
     cursor: pointer;
-}
-
-.button__general button {
-    width: 160px;
-    height: 50px;
-    margin-left: 5%;
-    border: none;
-    color: #ffffff;
-    font-weight: bold;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.button__general button i {
-    margin-right: 5%;
 }
 
 .general__facturas {

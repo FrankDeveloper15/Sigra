@@ -1,4 +1,5 @@
 <?php
+$pageTitle = "Facturas Admin";
 require_once("layouts/headAdmin.php");
 ?>
 
@@ -17,34 +18,10 @@ require_once("layouts/headAdmin.php");
                 $facturas->monto = $_POST['montoInsert'];
                 $facturas->fechaEmision = $_POST['fechaEmisionInsert'];
                 $facturas->fechaVencimiento = $_POST['fechaVencimientoInsert'];
-                $facturas->estado = $_POST['estadoInsert'];
-
-                if (empty($_POST['forFile'])) {
-                    $facturas->documento = $_POST['documentoInsert'];
-                } else {
-                    if (isset($_FILES['documentoInsert']) && $_FILES['documentoInsert']['error'] == UPLOAD_ERR_OK) {
-                        $uploadDir = 'Facturas/';
-                        $uploadedFileName = basename($_FILES['documentoInsert']['name']);
-                        $uploadFilePath = $uploadDir . $uploadedFileName;
-
-                        // Obtener la extensión del archivo
-                        $fileExtension = pathinfo($uploadFilePath, PATHINFO_EXTENSION);
-
-                        // Verificar si el archivo es PDF
-                        if (strtolower($fileExtension) === 'pdf') {
-                            // Mover el archivo a la carpeta de destino
-                            if (move_uploaded_file($_FILES['documentoInsert']['tmp_name'], $uploadFilePath)) {
-                                $facturas->documento = $uploadedFileName;
-                            } else {
-                                $mensajesErrores[] = "Error al mover el archivo.";
-                            }
-                        } else {
-                            $mensajesErrores[] = "Solo se permiten archivos PDF.";
-                        }
-                    } else {
-                        $mensajesErrores[] = "Error al subir el archivo.";
-                    }
-                }
+                $facturas->estado = "Pendiente";
+                $facturas->documento = "";
+                $facturas->reportePago = "";
+                $facturas->notificacion = "1";
 
                 $facturas->idClientes = $_POST['idClientesInsert'];
 
@@ -74,6 +51,7 @@ require_once("layouts/headAdmin.php");
                 $facturas->fechaEmision = $_POST['fechaEmisionEdit'];
                 $facturas->fechaVencimiento = $_POST['fechaVencimientoEdit'];
                 $facturas->estado = $_POST['estadoEdit'];
+                $facturas->reportePago = $_POST['reportePagoEdit'];
 
                 if (empty($_POST['forFile'])) {
                     $facturas->documento = $_POST['documentoEdit'];
@@ -101,6 +79,7 @@ require_once("layouts/headAdmin.php");
                         $mensajesErrores[] = "Error al subir el archivo.";
                     }
                 }
+
                 $facturas->idClientes = $_POST['idClientesEdit'];
 
                 $mensajesErrores = $facturas->validarFacturas();
@@ -166,9 +145,6 @@ require_once("layouts/headAdmin.php");
         <?php
         require_once("layouts/headerAdmin.php");
         ?>
-        <?php
-        require_once("layouts/headerAdmin.php");
-        ?>
         <?php if (isset($_SESSION['msj'])) { ?>
             <script>
                 Swal.fire({
@@ -190,7 +166,14 @@ require_once("layouts/headAdmin.php");
             unset($_SESSION['msj']);
         } ?>
         <div class="container-fluid p-4">
-            <button type="button" class="btn btn-primary clr-fac" id="agregar-factura" data-bs-toggle="modal" data-bs-target="#modalAgregarFacturas"><i class="fa-solid fa-file-circle-plus"></i>&nbsp; AGREGAR</button>
+        <div class="row">
+                <div class="col ms-5">
+                    <span><strong>FACTURAS:</strong></span>
+                </div>
+                <div class="col">
+                <button type="button" class="btn btn-primary clr-fac" id="agregar-factura" data-bs-toggle="modal" data-bs-target="#modalAgregarFacturas"><i class="fa-solid fa-file-circle-plus"></i>&nbsp; AGREGAR</button>
+                </div>
+            </div>
         </div>
         <div class="container-fluid container-table my-4 shadow-lg bg-body-tertiary rounded">
             <div class="row table-factura">
@@ -206,6 +189,7 @@ require_once("layouts/headAdmin.php");
                             <th>Fecha Emision</th>
                             <th>Fecha Vencimiento</th>
                             <th>Estado</th>
+                            <th>Reporte Pago</th>
                             <th>Documento</th>
                             <th>Acción</th>
                         </tr>
@@ -226,7 +210,15 @@ require_once("layouts/headAdmin.php");
                                 <?php } else { ?>
                                     <td style="color: #00913f;"><?php echo $facturas->estado; ?></td>
                                 <?php } ?>
-
+                                <?php if (empty($facturas->reportePago)) { ?>
+                                    <td></td>
+                                <?php } else { ?>
+                                    <td>
+                                        <a class="btn btn-primary btn-sm d-none d-sm-inline-block download-button" role="button" target="_blank" href="ReportePago/<?php echo $facturas->reportePago; ?>">
+                                            <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Dowloand
+                                        </a>
+                                    </td>
+                                <?php } ?>
                                 <?php if (empty($facturas->documento)) { ?>
                                     <td></td>
                                 <?php } else { ?>
@@ -275,19 +267,28 @@ require_once("layouts/headAdmin.php");
                                     </div>
                                 </div>
                                 <div class="row align-items-center mb-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <label for="mesInsert" class="col-auto col-form-label">Mes:</label>
+                                            <div class="col">
+                                                <select title="Selecciona Mes" data-style="btn-secondary" class="form-control form-select selectpicker show-tick" name="mesInsert" id="mesInsert" data-size="3" data-live-search="true">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
                                         <div class="row">
                                             <label for="tipoMonedaInsert" class="col-auto col-form-label">Tipo Moneda:</label>
                                             <div class="col">
                                                 <select title="Estado..." data-style="btn-secondary" class="form-control form-select" name="tipoMonedaInsert" id="tipoMonedaInsert">
-                                                    <option value="">Selecciona Moneda</option>
+                                                    <option value="">Seleccionar</option>
                                                     <option value="S/.">S/.</option>
                                                     <option value="$">$</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="row">
                                             <label for="montoInsert" class="col-auto col-form-label">Monto:</label>
                                             <div class="col">
@@ -310,39 +311,6 @@ require_once("layouts/headAdmin.php");
                                             <label for="fechaVencimientoInsert" class="col-auto col-form-label">Fecha Vencimiento:</label>
                                             <div class="col">
                                                 <input type="date" class="form-control" id="fechaVencimientoInsert" name="fechaVencimientoInsert">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-md-5">
-                                        <div class="row">
-                                            <label for="estadoInsert" class="col-auto col-form-label">Estado:</label>
-                                            <div class="col">
-                                                <select title="Estado..." data-style="btn-secondary" class="form-control form-select" name="estadoInsert" id="estadoInsert">
-                                                    <option value="">Seleccionar Estado</option>
-                                                    <option value="Pendiente">Pendiente</option>
-                                                    <option value="Pago">Pago</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="row">
-                                            <label for="mesInsert" class="col-auto col-form-label">Mes:</label>
-                                            <div class="col">
-                                                <select title="Selecciona Mes" data-style="btn-secondary" class="form-control form-select selectpicker show-tick" name="mesInsert" id="mesInsert" data-size="3" data-live-search="true">
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <label for="documentoInsert" class="col-auto col-form-label">Archivo:</label>
-                                            <div class="col">
-                                                <input type="file" class="form-control" id="documentoInsert" name="documentoInsert">
                                             </div>
                                         </div>
                                     </div>
@@ -433,6 +401,7 @@ require_once("layouts/headAdmin.php");
                                     <input type="hidden" name="tipoEnvio" value="edit">
                                     <input type="hidden" id="idFacturasEdit-<?php echo $facturas->idFacturas; ?>" name="idFacturasEdit" value="<?php echo $facturas->idFacturas; ?>">
                                     <input type="hidden" id="forFile-<?php echo $facturas->idFacturas; ?>" name="forFile">
+                                    <input type="hidden" id="reportePagoEdit-<?php echo $facturas->idFacturas; ?>" name="reportePagoEdit" value="<?php echo $facturas->reportePago; ?>">
                                     <div class="row align-items-center mb-3">
                                         <div class="col-md-10">
                                             <div class="row">
@@ -511,16 +480,22 @@ require_once("layouts/headAdmin.php");
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <label for="documentoEdit-<?php echo $facturas->idFacturas; ?>" class="col-auto col-form-label">Archivo:</label>
-                                                <div class="col">
-                                                    <input type="file" class="form-control" id="documentoEdit-<?php echo $facturas->idFacturas; ?>" name="documentoEdit">
+                                    <?php if ($facturas->estado == "Pago") { ?>
+                                        <div class="row align-items-center mb-3">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <label for="documentoEdit-<?php echo $facturas->idFacturas; ?>" class="col-auto col-form-label">Archivo:</label>
+                                                    <div class="col">
+                                                        <input type="file" class="form-control" id="documentoEdit-<?php echo $facturas->idFacturas; ?>" name="documentoEdit" value="<?php echo $facturas->documento; ?>">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                        <input type="hidden" id="verificarEdit-<?php echo $facturas->idFacturas; ?>" name="verificarEdit" value="new">
+                                    <?php } else if ($facturas->estado == "Pendiente") { ?>
+                                        <input type="hidden" id="documentoEdit-<?php echo $facturas->idFacturas; ?>" name="documentoEdit" value="<?php echo $facturas->documento; ?>">
+                                        <input type="hidden" id="verificarEdit-<?php echo $facturas->idFacturas; ?>" name="verificarEdit" value="">
+                                    <?php } ?>
                                     <div class="modal-footer row align-items-center p-0 pt-2">
                                         <div class="row d-flex justify-content-end mb-3">
                                             <div class="col-md-3">
@@ -633,8 +608,6 @@ require_once("layouts/headAdmin.php");
                     var monto = $('#montoInsert').val().trim();
                     var fechaEmision = $('#fechaEmisionInsert').val().trim();
                     var fechaVencimiento = $('#fechaVencimientoInsert').val().trim();
-                    var estado = $('#estadoInsert').val().trim();
-                    var documento = $('#documentoInsert').val().trim();
                     var idClientes = $('#idClientesInsert').val().trim();
 
                     // Validación
@@ -680,39 +653,15 @@ require_once("layouts/headAdmin.php");
                         mensajesErrores.push("La fecha de vencimiento debe tener el formato Y-m-d.");
                     }
 
-                    if (!estado) {
-                        mensajesErrores.push("No selecciono ningun estado.");
-                    } else if (estado.length > 15) {
-                        mensajesErrores.push("El tipo de moneda no debe de exceder de 10 caracteres.");
-                    }
-
-                    // Obtener la extensión del archivo
-                    var extension = documento.split('.').pop().toLowerCase();
-
-                    if (!documento) {
-                        $('#forFile').val('');
-                    } else if (extension !== 'pdf') {
-                        mensajesErrores.push("El documento debe ser un archivo PDF.");
-                    } else {
-                        $('#forFile').val('new');
-                    }
-
                     if (!idClientes) {
                         mensajesErrores.push("No selecciono ningun cliente.");
                     } else if (idClientes.length > 6) {
                         mensajesErrores.push("El cliente no debe de exceder de 6 caracteres.");
                     }
 
-                    // Obtener solo el nombre del archivo del documento insertado
-                    var nombreArchivoInsertado = documento.split('\\').pop().split('/').pop();
-
                     <?php foreach ($facturasArray as $facturas) { ?>
                         if ((idClientes === '<?php echo $facturas->idClientes; ?>') && (mes === '<?php echo $facturas->mes; ?>')) {
                             mensajesErrores.push("La factura del mes del cliente ya existe.");
-                        }
-
-                        if (nombreArchivoInsertado === '<?php echo $facturas->documento; ?>') {
-                            mensajesErrores.push("El documento ya existe.");
                         }
                     <?php } ?>
 
@@ -748,6 +697,7 @@ require_once("layouts/headAdmin.php");
                         var estado = $('#estadoEdit-<?php echo $facturas->idFacturas; ?>').val().trim();
                         var documento = $('#documentoEdit-<?php echo $facturas->idFacturas; ?>').val().trim();
                         var idClientes = $('#idClientesEdit-<?php echo $facturas->idFacturas; ?>').val().trim();
+                        var verificarEdit = $('#verificarEdit-<?php echo $facturas->idFacturas; ?>').val().trim();
 
                         // Validación
                         var mensajesErrores = [];
@@ -798,17 +748,26 @@ require_once("layouts/headAdmin.php");
                             mensajesErrores.push("El tipo de moneda no debe de exceder de 10 caracteres.");
                         }
 
-                        // Obtener la extensión del archivo
-                        var extension = documento.split('.').pop().toLowerCase();
-
-                        if (!documento) {
-                            $('#documentoEdit-<?php echo $facturas->idFacturas; ?>').attr('type', 'text');
-                            $('#documentoEdit-<?php echo $facturas->idFacturas; ?>').val('<?php echo $facturas->documento; ?>');
+                        var extension = "";
+                        var nombreArchivoInsertado = "";
+                        if (!verificarEdit) {
                             $('#forFile-<?php echo $facturas->idFacturas; ?>').val('');
-                        } else if (extension !== 'pdf') {
-                            mensajesErrores.push("El documento debe ser un archivo PDF.");
                         } else {
-                            $('#forFile-<?php echo $facturas->idFacturas; ?>').val('new');
+                            // Obtener la extensión del archivo
+                            extension = documento.split('.').pop().toLowerCase();
+
+                            if (!documento) {
+                                $('#documentoEdit-<?php echo $facturas->idFacturas; ?>').attr('type', 'text');
+                                $('#documentoEdit-<?php echo $facturas->idFacturas; ?>').val('<?php echo $facturas->documento; ?>');
+                                $('#forFile-<?php echo $facturas->idFacturas; ?>').val('');
+                            } else if (extension !== 'pdf') {
+                                mensajesErrores.push("El documento debe ser un archivo PDF.");
+                            } else {
+                                $('#forFile-<?php echo $facturas->idFacturas; ?>').val('new');
+                            }
+
+                            // Obtener solo el nombre del archivo del documento insertado
+                            nombreArchivoInsertado = documento.split('\\').pop().split('/').pop();
                         }
 
                         if (!idClientes) {
@@ -817,14 +776,12 @@ require_once("layouts/headAdmin.php");
                             mensajesErrores.push("El cliente no debe de exceder de 6 caracteres.");
                         }
 
-                        // Obtener solo el nombre del archivo del documento insertado
-                        var nombreArchivoInsertado = documento.split('\\').pop().split('/').pop();
-
                         // Verificación de la existencia de los valores 
                         <?php foreach ($facturasArray as $value) { ?>
-                            if (('<?php echo $facturas->idFacturas; ?>' != '<?php echo $value->idFacturas; ?>') && (nombreArchivoInsertado === '<?php echo $value->documento; ?>')) {
+                            if (('<?php echo $facturas->idFacturas; ?>' != '<?php echo $value->idFacturas; ?>') && (nombreArchivoInsertado === '<?php echo $value->documento; ?>') && (nombreArchivoInsertado != "")) {
                                 mensajesErrores.push("Este archivo ya esta registrado.");
                             }
+
                             if ('<?php echo $facturas->idFacturas; ?>' != '<?php echo $value->idFacturas; ?>' && ((idClientes === '<?php echo $value->idClientes; ?>') && (mes === '<?php echo $value->mes; ?>'))) {
                                 mensajesErrores.push("La factura del mes del cliente ya existe.");
                             }
@@ -836,9 +793,13 @@ require_once("layouts/headAdmin.php");
                             alertaErrores.css('display', 'block');
                             alertaErrores.html(mensajesErrores.join('<br>'));
 
-                            if (!documento) {
-                                $('#documentoEdit-<?php echo $facturas->idFacturas; ?>').attr('type', 'file');
-                                $('#documentoEdit-<?php echo $facturas->idFacturas; ?>').val('');
+                            if (!verificarEdit) {
+                                ('#forFile-<?php echo $facturas->idFacturas; ?>').val('');
+                            } else {
+                                if (!documento) {
+                                    $('#documentoEdit-<?php echo $facturas->idFacturas; ?>').attr('type', 'file');
+                                    $('#documentoEdit-<?php echo $facturas->idFacturas; ?>').val('');
+                                }
                             }
 
                             $('#forFile-<?php echo $facturas->idFacturas; ?>').val('');

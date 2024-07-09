@@ -27,6 +27,8 @@ class FacturasDAO
                 $facturas->fechaVencimiento = $row["fechaVencimiento"];
                 $facturas->estado = $row["estado"];
                 $facturas->documento = $row["documento"];
+                $facturas->reportePago = $row["reportePago"];
+                $facturas->notificacion = $row["notificacion"];
                 $facturas->idClientes = $row["idClientes"];
                 $facturas->nombre = $row["nombre"];
                 $facturas->nombreServicios = $row["nombreServicios"];
@@ -44,7 +46,7 @@ class FacturasDAO
     {
         try {
             $con = Conexion::getConexion();
-            $sql = "CALL sp_facturas_insert(?,?,?,?,?,?,?,?)";
+            $sql = "CALL sp_facturas_insert(?,?,?,?,?,?,?,?,?,?)";
             $query = $con->prepare($sql);
 
             $query->bindValue(1, $facturas->mes);
@@ -54,7 +56,9 @@ class FacturasDAO
             $query->bindValue(5, $facturas->fechaVencimiento);
             $query->bindValue(6, $facturas->estado);
             $query->bindValue(7, $facturas->documento);
-            $query->bindValue(8, $facturas->idClientes);
+            $query->bindValue(8, $facturas->reportePago);
+            $query->bindValue(9, $facturas->notificacion);
+            $query->bindValue(10, $facturas->idClientes);
 
             $query->execute();
         } catch (PDOException $e) {
@@ -68,7 +72,7 @@ class FacturasDAO
 
         try {
             $con = Conexion::getConexion();
-            $sql = "CALL sp_facturas_edit(?,?,?,?,?,?,?,?,?)";
+            $sql = "CALL sp_facturas_edit(?,?,?,?,?,?,?,?,?,?)";
             $query = $con->prepare($sql);
             $query->bindValue(1, $facturas->idFacturas);
             $query->bindValue(2, $facturas->mes);
@@ -78,7 +82,8 @@ class FacturasDAO
             $query->bindValue(6, $facturas->fechaVencimiento);
             $query->bindValue(7, $facturas->estado);
             $query->bindValue(8, $facturas->documento);
-            $query->bindValue(9, $facturas->idClientes);
+            $query->bindValue(9, $facturas->reportePago);
+            $query->bindValue(10, $facturas->idClientes);
 
             $query->execute();
         } catch (PDOException $e) {

@@ -1,4 +1,5 @@
 <?php
+$pageTitle = "Administradores";
 require_once("layouts/headAdmin.php");
 ?>
 

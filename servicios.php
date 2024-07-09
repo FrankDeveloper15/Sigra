@@ -1,4 +1,5 @@
 <?php
+$pageTitle = "Servicios Admin";
 require_once("layouts/headAdmin.php");
 ?>
 

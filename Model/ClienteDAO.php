@@ -1,6 +1,9 @@
 <?php
 require_once("Connection/conexion.php");
 require_once("Model/Cliente.php");
+require_once("Model/Credenciales.php");
+require_once("Model/Contrato.php");
+require_once("Model/Facturas.php");
 
 class ClienteDAO
 {
@@ -103,6 +106,153 @@ class ClienteDAO
             $sql = "CALL sp_clientes_delete(?)";
             $query = $con->prepare($sql);
             $query->bindValue(1, $idClientes);
+            $query->execute();
+        } catch (PDOException $e) {
+            throw $e;
+        }
+    }
+    /*-------------------------------------------------------------------------------------------------*/
+
+    public function infoClientes($idClientes)
+    {
+        try {
+            $con = Conexion::getConexion();
+            $sql = "CALL sp_info_clientes(?)";
+            $query = $con->prepare($sql);
+            $query->bindValue(1, $idClientes);
+            $query->setFetchMode(PDO::FETCH_ASSOC);
+            $query->execute();
+            $cliente = new Cliente();
+            while ($row = $query->fetch()) {
+                $cliente->idClientes = $row["idClientes"];
+                $cliente->tipoDocumento = $row["tipoDocumento"];
+                $cliente->numDocumento = $row["numDocumento"];
+                $cliente->nombre = $row["nombre"];
+                $cliente->razonSocial = $row["razonSocial"];
+                $cliente->nombreComercial = $row["nombreComercial"];
+                $cliente->telefonoContacto = $row["telefonoContacto"];
+                $cliente->correoContacto = $row["correoContacto"];
+            }
+            return $cliente;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit;
+        }
+    }
+
+    /*-------------------------------------------------------------------------------------------------*/
+
+    public function infoCredenciales($idClientes)
+    {
+        try {
+            $con = Conexion::getConexion();
+            $sql = "CALL sp_info_credenciales(?)";
+            $query = $con->prepare($sql);
+            $query->bindValue(1, $idClientes);
+            $query->setFetchMode(PDO::FETCH_ASSOC);
+            $query->execute();
+
+            $credencialesArray = array();
+            while ($row = $query->fetch()) {
+                $credenciales = new Credenciales();
+                $credenciales->idCredenciales = $row["idCredenciales"];
+                $credenciales->usuario = $row["usuario"];
+                $credenciales->observacion = $row["observacion"];
+                $credenciales->idClientes = $row["idClientes"];
+                $credenciales->idServicios = $row["idServicios"];
+                $credenciales->nombre = $row["nombre"];
+                $credenciales->nombreServicios = $row["nombreServicios"];
+                $credenciales->linkAcceso = $row["linkAcceso"];
+                $credencialesArray[] = $credenciales;
+            }
+            return $credencialesArray;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit;
+        }
+    }
+
+    /*-------------------------------------------------------------------------------------------------*/
+
+    public function infoContrato($idClientes)
+    {
+        try {
+            $con = Conexion::getConexion();
+            $sql = "CALL sp_info_contrato(?)";
+            $query = $con->prepare($sql);
+            $query->bindValue(1, $idClientes);
+            $query->setFetchMode(PDO::FETCH_ASSOC);
+            $query->execute();
+            $contratoArray = array();
+            while ($row = $query->fetch()) {
+                $contrato = new Contrato();
+                $contrato->idContrato = $row["idContrato"];
+                $contrato->fechaInicio = $row["fechaInicio"];
+                $contrato->fechaRenovacion = $row["fechaRenovacion"];
+                $contrato->documento = $row["documento"];
+                $contrato->idCredenciales = $row["idCredenciales"];
+                $contrato->idAdmin = $row["idAdmin"];
+                $contrato->idClientes = $row["idClientes"];
+                $contrato->idServicios = $row["idServicios"];
+                $contrato->nombre = $row["nombre"];
+                $contrato->nombreServicios = $row["nombreServicios"];
+                $contrato->nombreApellidos = $row["nombreApellidos"];
+                $contratoArray[] = $contrato;
+            }
+            return $contratoArray;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit;
+        }
+    }
+
+    /*-------------------------------------------------------------------------------------------------*/
+
+    public function infoFacturas($idClientes)
+    {
+        try {
+            $con = Conexion::getConexion();
+            $sql = "CALL sp_info_facturas(?)";
+            $query = $con->prepare($sql);
+            $query->bindValue(1, $idClientes);
+            $query->setFetchMode(PDO::FETCH_ASSOC);
+            $query->execute();
+            $facturasArray = array();
+            while ($row = $query->fetch()) {
+                $facturas = new Facturas();
+                $facturas->idFacturas = $row["idFacturas"];
+                $facturas->mes = $row["mes"];
+                $facturas->tipoMoneda = $row["tipoMoneda"];
+                $facturas->monto = $row["monto"];
+                $facturas->fechaEmision = $row["fechaEmision"];
+                $facturas->estado = $row["estado"];
+                $facturas->documento = $row["documento"];
+                $facturas->reportePago = $row["reportePago"];
+                $facturas->notificacion = $row["notificacion"];
+                $facturas->idClientes = $row["idClientes"];
+                $facturas->nombre = $row["nombre"];
+                $facturas->nombreServicios = $row["nombreServicios"];
+                $facturasArray[] = $facturas;
+            }
+            return $facturasArray;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            exit;
+        }
+    }
+
+    /*---------------------------------------------------------------------------------*/
+    public function editReportePago(Facturas $facturas)
+    {
+
+        try {
+            $con = Conexion::getConexion();
+            $sql = "CALL sp_facturas_edit_reportePago(?,?,?)";
+            $query = $con->prepare($sql);
+            $query->bindValue(1, $facturas->idFacturas);
+            $query->bindValue(2, $facturas->reportePago);
+            $query->bindValue(3, $facturas->notificacion);
+
             $query->execute();
         } catch (PDOException $e) {
             throw $e;

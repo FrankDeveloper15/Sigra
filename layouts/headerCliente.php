@@ -8,14 +8,17 @@
 <header>
     <div class="container-fluid">
         <div class="col-md-6" style="color: #fff;">
-            <span class="p-2"><Strong>BIENVENIDO/A:</Strong> <?php echo $_SESSION['nombreComercial']; ?> </span>
+            <span class="p-2"><Strong>BIENVENIDO/A:</Strong> <?php echo $_SESSION['nombre']; ?> </span>
         </div>
         <div class="navb-items">
             <div class="item">
                 <a href="menuCliente.php"><i class="fa-solid fa-house-chimney"></i></a>
             </div>
+            <div class="item">
+                <i class="fa-solid fa-bell" id="abrir-notificacion"></i>
+            </div>
             <div class="item-button container__button__menu">
-            <a href="cerrarSesion.php" class="button__One__menu" id="cerrarSesionBtn" style="padding: 5px;"><i class="fa-solid fa-circle-xmark"></i>CERRAR SESIÓN</a>
+                <a href="cerrarSesion.php" class="button__One__menu" id="cerrarSesionBtn" style="padding: 5px;"><i class="fa-solid fa-circle-xmark"></i>CERRAR SESIÓN</a>
             </div>
         </div>
 
@@ -38,8 +41,11 @@
                         <div class="modal-line">
                             <a href="menuCliente.php"><i class="fa-solid fa-house-chimney"></i></a>
                         </div>
+                        <div class="modal-line">
+                            <i class="fa-solid fa-bell" id="abrir-notificacion"></i>
+                        </div>
                         <div class="container__button__menu">
-                        <a href="cerrarSesion.php" class="button__One__menu" id="cerrarSesionBtn" style="padding: 5px;"><i class="fa-solid fa-circle-xmark"></i>CERRAR SESIÓN</a>
+                            <a href="cerrarSesion.php" class="button__One__menu" id="cerrarSesionBtn" style="padding: 5px;"><i class="fa-solid fa-circle-xmark"></i>CERRAR SESIÓN</a>
                         </div>
                     </div>
                     <div class="mobile-modal-footer">
@@ -47,6 +53,43 @@
                         <a target="_blank" href="#"><i class="fa-brands fa-instagram"></i></a>
                         <a target="_blank" href="#"><i class="fa-brands fa-linkedin"></i></a>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container__notificacion" id="container-notificacion">
+        <div class="cabezado__notificacion">
+            <i class="fa-solid fa-bell"></i>
+            <span>NOTIFICACIONES</span>
+            <i class="fa-solid fa-circle-xmark" id="closed-notificacion"></i>
+        </div>
+        <div class="cuerpo__notificacion">
+            <div class="part__notificacion">
+                <i class="fa-solid fa-bell"></i>
+                <div class="text__info">
+                    <p>CONSTRUCTORA Y CONSULTORA DE LA TORRE S.A.C.</p>
+                    <p>Reporto nuevo pago - Jue. 15 de febrero, 2024 09:35 a.m.</p>
+                    <p>Factura del mes de Febrero 2024</p>
+                    <p>Monto: S/. 37.90</p>
+                </div>
+            </div>
+            <div class="part__notificacion">
+                <i class="fa-solid fa-bell"></i>
+                <div class="text__info">
+                    <p>CAMARA DE COMERCIO HUANCAYO S.A.C.</p>
+                    <p>Reporto nuevo pago - Mie. 14 de febrero, 2024 12:45 p.m.</p>
+                    <p>Factura del mes de Febrero 2024</p>
+                    <p>Monto: S/. 3754.90</p>
+                </div>
+            </div>
+            <div class="part__notificacion">
+                <i class="fa-solid fa-bell"></i>
+                <div class="text__info">
+                    <p>R&M CARD S.A.C.</p>
+                    <p>Reporto nuevo pago - Lun. 12 de febrero, 2024 13:20 p.m.</p>
+                    <p>Factura del mes de Febrero 2024</p>
+                    <p>Monto: S/. 750.90</p>
                 </div>
             </div>
         </div>

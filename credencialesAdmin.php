@@ -1,4 +1,5 @@
 <?php
+$pageTitle = "Credenciales Admin";
 require_once("layouts/headAdmin.php");
 ?>
 
@@ -131,7 +132,14 @@ require_once("layouts/headAdmin.php");
             unset($_SESSION['msj']);
         } ?>
         <div class="container-fluid p-4">
-            <button type="button" class="btn btn-primary w-auto clr-cre" id="agregar-accesos" data-bs-toggle="modal" data-bs-target="#modalAgregarCredenciales"><i class="fa-solid fa-file-circle-plus"></i> AGREGAR</button>
+        <div class="row">
+                <div class="col ms-5">
+                    <span><strong>CREDENCIALES:</strong></span>
+                </div>
+                <div class="col">
+                <button type="button" class="btn btn-primary w-auto clr-cre" id="agregar-accesos" data-bs-toggle="modal" data-bs-target="#modalAgregarCredenciales"><i class="fa-solid fa-file-circle-plus"></i> AGREGAR</button>
+                </div>
+            </div>
         </div>
         <div class="container-fluid container-table my-4 shadow-lg bg-body-tertiary rounded">
             <div class="row table-credenciales">

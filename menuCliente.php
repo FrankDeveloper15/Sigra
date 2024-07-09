@@ -4,6 +4,12 @@ require_once("layouts/headCliente.php");
 
 <body>
     <?php
+    require_once("Model/ClienteDAO.php");
+    $clienteDAO = new ClienteDAO();
+    $cliente = new Cliente();
+    $cliente = $clienteDAO->infoClientes($_SESSION['idClientes']);
+    ?>
+    <?php
     require_once("layouts/headerCliente.php");
     ?>
     <main>
@@ -12,15 +18,13 @@ require_once("layouts/headCliente.php");
                 <div class="col-12 col-lg-6">
                     <span class="title__info"><i class="fa-solid fa-circle-info"></i>INFORMACIÓN DE LA EMPRESA</span>
                     <div class="info wrap-text">
-                        <p>RUC: 20568757433</p>
-                        <p>Razón Social: Constructora y Consultora de la Torre S.A.C.</p>
-                        <p>Nombre Comercial: Casa Verde Inmobiliaria</p>
-                        <p>Numero de Contacto: 987654321</p>
-                        <p>Correo de Contacto: administracion@casaverdeinmobiliaria.com</p>
-                        <p>Persona a Cargo: Dina Vallejos</p>
-                        <p>Servicio Contratado: Correo corporativo / Pagina web</p>
-                        <p>Ciclo de facturación: Ciclo 03</p>
-                        <p>Renovación de contrato: 15/05/2024</p>
+                        <p><strong>Documento: </strong><?php echo $cliente->tipoDocumento; ?></p>
+                        <p><strong>N°: </strong><?php echo $cliente->numDocumento; ?></p>
+                        <p><strong>Nombre: </strong><?php echo $cliente->nombre; ?></p>
+                        <p><strong>Razon Social: </strong><?php echo $cliente->razonSocial; ?></p>
+                        <p><strong>Nombre Comercial: </strong><?php echo $cliente->nombreComercial; ?></p>
+                        <p><strong>Telefono: </strong><?php echo $cliente->telefonoContacto; ?></p>
+                        <p><strong>Correo: </strong><?php echo $cliente->correoContacto; ?></p>
                     </div>
                 </div>
                 <div class="col-12 col-lg-6 d-flex flex-column align-items-center justify-content-center">

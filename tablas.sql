@@ -100,22 +100,12 @@ CREATE TABLE `facturas` (
   `fechaVencimiento` date NOT NULL,
   `estado` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `documento` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `reportePago` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `notificacion` varchar(6) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `idClientes` int(6) NULL DEFAULT NULL,
   PRIMARY KEY (`idFacturas`) USING BTREE,
   INDEX `fk_facturas_id_clientes_clientes_idx` (`idClientes`) USING BTREE,
   CONSTRAINT `fk_facturas_id_clientes` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`idClientes`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
-
--- ----------------------------
--- Table structure for historias_pagos
--- ----------------------------
-DROP TABLE IF EXISTS `historias_pagos`;
-CREATE TABLE `historias_pagos` (
-  `idHistoriaPagos` int(6) NOT NULL AUTO_INCREMENT,
-  `idFacturas` int(6) NULL DEFAULT NULL,
-  PRIMARY KEY (`idHistoriaPagos`) USING BTREE,
-  INDEX `fk_historias_pagos_id_facturas_facturas_idx` (`idFacturas`) USING BTREE,
-  CONSTRAINT `fk_historias_pagos_id_facturas` FOREIGN KEY (`idFacturas`) REFERENCES `facturas` (`idFacturas`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
 
 -- -
@@ -803,7 +793,6 @@ END
 DELIMITER ;
 
 /* =================================== FACTURAS =========================================== */
-
 -- ----------------------------
 -- Procedure structure for `sp_facturas_insert`
 -- ----------------------------
@@ -817,6 +806,8 @@ mes_ varchar(30)
 ,fechaVencimiento_ date
 ,estado_ varchar(15)
 ,documento_ varchar(255)
+,reportePago_ varchar(255)
+,notificacion_ varchar(6)
 ,idClientes_ int(6)
 
 )
@@ -831,6 +822,8 @@ mes
 ,fechaVencimiento
 ,estado
 ,documento
+,reportePago
+,notificacion
 ,idClientes
 )
 VALUES
@@ -842,6 +835,8 @@ mes_
 ,fechaVencimiento_
 ,estado_
 ,documento_
+,reportePago_
+,notificacion_
 ,idClientes_
 );
 END
@@ -865,6 +860,8 @@ SELECT
     ,fac.fechaVencimiento
 		,fac.estado
     ,fac.documento
+    ,fac.reportePago
+    ,fac.notificacion
     ,fac.idClientes
     ,cli.nombre
     ,ser.nombreServicios
@@ -884,34 +881,44 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `sp_facturas_edit`;
 DELIMITER ;;
 CREATE PROCEDURE `sp_facturas_edit`(
-idFacturas_ int(6)
-,mes_ varchar(30)
-,tipoMoneda_ varchar(10)
-,monto_ varchar(5)
-,fechaEmision_ date 
-,fechaVencimiento_ date
-,estado_ varchar(15)
-,documento_ varchar(255)
-,idClientes_ int(6)
+    idFacturas_ INT(6),
+    mes_ VARCHAR(30),
+    tipoMoneda_ VARCHAR(10),
+    monto_ VARCHAR(5),
+    fechaEmision_ DATE, 
+    fechaVencimiento_ DATE,
+    estado_ VARCHAR(15),
+    documento_ VARCHAR(255),
+    reportePago_ VARCHAR(255),
+    idClientes_ INT(6)
 )
 BEGIN
+    DECLARE new_notificacion VARCHAR(6);
 
-UPDATE
-facturas
-SET
-mes=mes_
-,tipoMoneda=tipoMoneda_
-,monto=monto_
-,fechaEmision=fechaEmision_
-,fechaVencimiento=fechaVencimiento_
-,estado=estado_
-,documento=documento_
-,idClientes=idClientes_
-WHERE
-idFacturas=idFacturas_;
+    IF estado_ = 'Pago' THEN
+        SET new_notificacion = '0';
+    ELSEIF estado_ = 'Pendiente' THEN
+        SET new_notificacion = '1';
+    ELSE
+        SET new_notificacion = '1'; -- Valor predeterminado en caso de que no sea ni 'Pago' ni 'Pendiente'
+    END IF;
 
-END
-;;
+    UPDATE facturas
+    SET
+        mes = mes_,
+        tipoMoneda = tipoMoneda_,
+        monto = monto_,
+        fechaEmision = fechaEmision_,
+        fechaVencimiento = fechaVencimiento_,
+        estado = estado_,
+        documento = documento_,
+        reportePago = reportePago_,
+        notificacion = new_notificacion,
+        idClientes = idClientes_
+    WHERE
+        idFacturas = idFacturas_;
+
+END;;
 DELIMITER ;
 
 -- ----------------------------
@@ -953,3 +960,149 @@ END
 ;;
 DELIMITER ;
 
+/* =================================== TABLAS DE CLIENTES =========================================== */
+-- ----------------------------
+-- Procedure structure for `sp_info_clientes`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_info_clientes`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_info_clientes`(
+idClientes_ int(6)
+)
+BEGIN
+
+SELECT
+    idClientes
+		,tipoDocumento
+    ,numDocumento
+    ,nombre
+    ,razonSocial
+    ,nombreComercial
+    ,telefonoContacto
+    ,correoContacto
+	FROM
+		clientes
+  WHERE
+	idClientes = idClientes_;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_info_credenciales`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_info_credenciales`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_info_credenciales`(
+idClientes_ int(6)
+)
+BEGIN
+
+SELECT
+    cre.idCredenciales
+		,cre.usuario
+    ,cre.observacion
+    ,cre.idClientes
+    ,cre.idServicios
+    ,cli.nombre
+    ,ser.nombreServicios
+    ,ser.linkAcceso
+	FROM
+		credenciales cre
+    INNER JOIN clientes cli ON cre.idClientes = cli.idClientes
+    INNER JOIN servicios ser ON cre.idServicios = ser.idServicios
+  WHERE
+	  cre.idClientes = idClientes_;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_info_contrato
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_info_contrato`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_info_contrato`(
+idClientes_ int(6)
+)
+BEGIN
+
+SELECT
+    con.idContrato
+    ,con.fechaInicio
+    ,con.fechaRenovacion
+    ,con.documento
+    ,con.idCredenciales
+    ,con.idAdmin
+		,cre.idClientes
+    ,cre.idServicios
+    ,cli.nombre
+    ,ser.nombreServicios
+    ,ad.nombreApellidos
+	FROM
+		contrato con
+    INNER JOIN credenciales cre ON con.idCredenciales = cre.idCredenciales
+    INNER JOIN administrador ad ON con.idAdmin = ad.idAdmin
+    INNER JOIN clientes cli ON cre.idClientes = cli.idClientes
+    INNER JOIN servicios ser ON cre.idServicios = ser.idServicios
+  WHERE
+	cre.idClientes = idClientes_;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_info_facturas`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_info_facturas`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_info_facturas`(
+  idClientes_ int(6)
+)
+BEGIN
+
+SELECT
+    fac.idFacturas
+    ,fac.mes
+    ,fac.tipoMoneda
+    ,fac.monto
+    ,fac.fechaEmision
+    ,fac.fechaVencimiento
+		,fac.estado
+    ,fac.documento
+    ,fac.reportePago
+    ,fac.notificacion
+    ,fac.idClientes
+    ,cli.nombre
+    ,ser.nombreServicios
+	FROM
+		facturas fac
+    INNER JOIN credenciales cre ON fac.idClientes = cre.idClientes
+    INNER JOIN contrato con ON con.idCredenciales = cre.idCredenciales
+    INNER JOIN clientes cli ON cli.idClientes = cre.idClientes
+    INNER JOIN servicios ser ON ser.idServicios = cre.idServicios
+  WHERE
+    fac.idClientes = idClientes_;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for `sp_facturas_edit_reportePago`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `sp_facturas_edit_reportePago`;
+DELIMITER ;;
+CREATE PROCEDURE `sp_facturas_edit_reportePago`(
+    idFacturas_ INT(6),
+    reportePago_ VARCHAR(255),
+    notificacion_ VARCHAR(6)
+)
+BEGIN
+    UPDATE facturas
+    SET
+        reportePago = reportePago_,
+        notificacion = notificacion_
+    WHERE
+        idFacturas = idFacturas_;
+END;;
+DELIMITER ;

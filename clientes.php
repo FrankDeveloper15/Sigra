@@ -1,4 +1,5 @@
 <?php
+$pageTitle = "Clientes Admin";
 require_once("layouts/headAdmin.php");
 ?>
 
@@ -344,6 +345,15 @@ require_once("layouts/headAdmin.php");
         </div>
 
         <?php foreach ($clientesArray as $index => $clientes) { ?>
+            <?php
+            $cliente2DAO = new ClienteDAO();
+            $tablaFacturas = array();
+            $tablaFacturas = $cliente2DAO->infoFacturas($clientes->idClientes);
+            $tablaCredenciales = array();
+            $tablaCredenciales = $cliente2DAO->infoCredenciales($clientes->idClientes);
+            $tablaContrato = array();
+            $tablaContrato = $cliente2DAO->infoContrato($clientes->idClientes);
+            ?>
             <div class="container__desplegar" id="containerDesplegar-<?php echo $clientes->idClientes; ?>">
                 <div class="cabezado__desplegar">
                     <i class="fa-solid fa-circle-user"></i>
@@ -374,9 +384,6 @@ require_once("layouts/headAdmin.php");
                             </div>
                         </div>
                         <div class="button__general">
-                            <button class="general__facturas"><i class="fa-solid fa-file-circle-check"></i>VER FACTURAS</button>
-                            <button class="general__contrato"><i class="fa-solid fa-file-circle-check"></i>CONTRATO</button>
-                            <button class="general__credenciales"><i class="fa-solid fa-file-import"></i>CREDENCIALES</button>
                             <div class="eliminar">
                                 <i class="fa-solid fa-trash" role="button" data-bs-toggle="modal" data-bs-target="#modalEliminarCliente-<?php echo $clientes->idClientes; ?>"></i>
                             </div>
@@ -501,31 +508,63 @@ require_once("layouts/headAdmin.php");
 
                 <!-- ======================== APARTADO DE FACTURAS ================ -->
                 <div class="cuerpo__general3" id="cuerpo-general3-<?php echo $clientes->idClientes; ?>">
-                    <div class="container-fluid p-4">
-                        <button type="button" class="btn btn-primary w-auto clr-pa" data-bs-toggle="modal" data-bs-target="#modalAgregarFactura-<?php echo $clientes->idClientes; ?>"><i class="fa-solid fa-file-circle-plus"></i>&nbsp; AGREGAR</button>
-                    </div>
                     <div class="container-fluid container-table my-4 shadow-lg bg-body-tertiary rounded" style="width: 90%; max-height: 400px;">
-                        <div class="row table-reporte">
-                            <table class="table table-striped" id="facturas">
+                        <div class="row table-factura">
+                            <table class="table table-striped" id="facturas-<?php echo $clientes->idClientes; ?>">
                                 <thead>
                                     <tr>
-                                        <th>N°</th>
-                                        <th>MES</th>
-                                        <th>S/.</th>
-                                        <th>FECHA EMI.</th>
-                                        <th>FECHA VEN.</th>
-                                        <th>REPORTADO</th>
+                                        <th>#</th>
+                                        <th>Cliente</th>
+                                        <th>Servicio</th>
+                                        <th>Mes</th>
+                                        <th>Tipo Moneda</th>
+                                        <th>Monto</th>
+                                        <th>Fecha Emision</th>
+                                        <th>Fecha Vencimiento</th>
+                                        <th>Estado</th>
+                                        <th>Reporte Pago</th>
+                                        <th>Documento</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>001</td>
-                                        <td>Noviembre 2023</td>
-                                        <td>37.9</td>
-                                        <td>03/11/2023</td>
-                                        <td>04/11/2023</td>
-                                        <td>Pendiente</td>
-                                    </tr>
+                                    <?php foreach ($tablaFacturas as $index2 => $facturas) { ?>
+                                        <tr data-id="<?php $index2 + 1; ?>">
+                                            <td><?php echo $index2 + 1; ?></td>
+                                            <td><?php echo $facturas->nombre; ?></td>
+                                            <td><?php echo $facturas->nombreServicios; ?></td>
+                                            <td><?php echo $facturas->mes; ?></td>
+                                            <td><?php echo $facturas->tipoMoneda; ?></td>
+                                            <td><?php echo $facturas->monto; ?></td>
+                                            <td><?php echo date('d-m-Y', strtotime($facturas->fechaEmision)); ?></td>
+                                            <td><?php echo date('d-m-Y', strtotime($facturas->fechaVencimiento)); ?></td>
+                                            <?php if ($facturas->estado == 'Pendiente') { ?>
+                                                <td style="color: #cb3234;"><?php echo $facturas->estado; ?></td>
+                                                <td></td>
+                                                <td></td>
+                                            <?php } else { ?>
+                                                <td style="color: #00913f;"><?php echo $facturas->estado; ?></td>
+                                                <?php if (empty($facturas->reportePago)) { ?>
+                                                    <td></td>
+                                                <?php } else { ?>
+                                                    <td>
+                                                        <a class="btn btn-primary btn-sm d-none d-sm-inline-block download-button" role="button" target="_blank" href="Facturas/<?php echo $facturas->documento; ?>">
+                                                            <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Ver Factura
+                                                        </a>
+                                                    </td>
+                                                <?php } ?>
+                                                <?php if (empty($facturas->documento)) { ?>
+                                                    <td></td>
+                                                <?php } else { ?>
+                                                    <td>
+                                                        <a class="btn btn-primary btn-sm d-none d-sm-inline-block download-button" role="button" target="_blank" href="Facturas/<?php echo $facturas->documento; ?>">
+                                                            <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Ver Factura
+                                                        </a>
+                                                    </td>
+                                                <?php } ?>
+
+                                            <?php } ?>
+                                        </tr>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                         </div>
@@ -534,39 +573,30 @@ require_once("layouts/headAdmin.php");
 
                 <!-- ======================== APARTADO DE CREDENCIALES ================ -->
                 <div class="cuerpo__general4" id="cuerpo-general4-<?php echo $clientes->idClientes; ?>">
-                    <div class="container-fluid p-4">
-                        <button type="button" class="btn btn-primary w-auto clr-cre" data-bs-toggle="modal" data-bs-target="#modalAgregarCredenciales-<?php echo $clientes->idClientes; ?>"><i class="fa-solid fa-file-circle-plus"></i> AGREGAR</button>
-                    </div>
-                    <div class="container-fluid container-table my-4 shadow-lg bg-body-tertiary rounded" style="width: 90%; max-height: 400px;">
+                    <div class="container-fluid container-table my-4 shadow-lg bg-body-tertiary rounded">
                         <div class="row table-credenciales">
-                            <table class="table table-striped" id="credenciales">
+                            <table class="table table-striped" id="credenciales-<?php echo $clientes->idClientes; ?>">
                                 <thead>
                                     <tr>
+                                        <th>#</th>
+                                        <th>Cliente</th>
                                         <th>Servicio</th>
-                                        <th>Tipo</th>
-                                        <th>N. Usuario</th>
-                                        <th>Contraseña</th>
-                                        <th>LINK DE ACCESO</th>
-                                        <th>F.INICIO</th>
-                                        <th>F.Renovación</th>
-                                        <th>Observación</th>
+                                        <th>Usuario</th>
+                                        <th>Observacion</th>
+                                        <th>Link de Acceso</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Diseño</td>
-                                        <td>Web</td>
-                                        <td>admin53@tudominio.com</td>
-                                        <td>Adminn5553</td>
-                                        <td>www.microsoft.com</td>
-                                        <td>15/04/2023</td>
-                                        <td>15/05/2024</td>
-                                        <td>
-                                            <a class="btn btn-primary btn-sm d-none d-sm-inline-block download-button" role="button" target="_blank" href="#">
-                                                <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Ver historial
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    <?php foreach ($tablaCredenciales as $index3 => $credenciales) { ?>
+                                        <tr data-id="<?php $index3 + 1; ?>">
+                                            <td><?php echo $index3 + 1; ?></td>
+                                            <td><?php echo $credenciales->nombre; ?></td>
+                                            <td><?php echo $credenciales->nombreServicios; ?></td>
+                                            <td><?php echo $credenciales->usuario; ?></td>
+                                            <td><?php echo $credenciales->observacion; ?></td>
+                                            <td><?php echo $credenciales->linkAcceso; ?></td>
+                                        </tr>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                         </div>
@@ -575,27 +605,36 @@ require_once("layouts/headAdmin.php");
 
                 <!-- ======================== APARTADO DE CONTRATO ================ -->
                 <div class="cuerpo__general5" id="cuerpo-general5-<?php echo $clientes->idClientes; ?>">
-                    <div class="container-fluid p-4">
-                        <button type="button" class="btn btn-primary w-auto clr-con" data-bs-toggle="modal" data-bs-target="#modalAgregarContrato-<?php echo $clientes->idClientes; ?>"><i class="fa-solid fa-file-circle-plus"></i> AGREGAR</button>
-                    </div>
-                    <div class="container-fluid container-table my-4 shadow-lg bg-body-tertiary rounded" style="width: 90%; max-height: 400px;">
+                    <div class="container-fluid container-table my-4 shadow-lg bg-body-tertiary rounded">
                         <div class="row table-contrato">
-                            <table class="table table-striped" id="contratos">
+                            <table class="table table-striped" id="contratos-<?php echo $clientes->idClientes; ?>">
                                 <thead>
                                     <tr>
-                                        <th>SERVICIO</th>
-                                        <th>DOCUMENTO</th>
+                                        <th>#</th>
+                                        <th>Cliente</th>
+                                        <th>Servicio</th>
+                                        <th>Administrador</th>
+                                        <th>Fecha Inicio</th>
+                                        <th>Fecha Renovación</th>
+                                        <th>Contrato</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Diseño</td>
-                                        <td>
-                                            <a class="btn btn-primary btn-sm d-none d-sm-inline-block download-button" role="button" target="_blank" href="#">
-                                                <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Ver historial
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    <?php foreach ($tablaContrato as $index4 => $contrato) { ?>
+                                        <tr data-id="<?php $index4 + 1; ?>">
+                                            <td><?php echo $index4 + 1; ?></td>
+                                            <td><?php echo $contrato->nombre; ?></td>
+                                            <td><?php echo $contrato->nombreServicios; ?></td>
+                                            <td><?php echo $contrato->nombreApellidos; ?></td>
+                                            <td><?php echo date('d-m-Y', strtotime($contrato->fechaInicio)); ?></td>
+                                            <td><?php echo date('d-m-Y', strtotime($contrato->fechaRenovacion)); ?></td>
+                                            <td>
+                                                <a class="btn btn-primary btn-sm d-sm-inline-block download-button" role="button" target="_blank" href="File/<?php echo $contrato->documento; ?>">
+                                                    <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Ver Contrato
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                         </div>
@@ -646,413 +685,6 @@ require_once("layouts/headAdmin.php");
                                 </div>
                                 <div class="col-md-4">
                                     <button type="submit" id="btn-aceptar-editar-cliente-<?php echo $clientes->idClientes; ?>" class="btn btn-primary salvar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Guardar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Modal Agregar Factura -->
-            <div class="modal fade" id="modalAgregarFactura" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header title-edit" style="background-color: #00b807; margin-top: 0px;">
-                            <p>AGREGAR FACTURA</p>
-                        </div>
-                        <div class="modal-body">
-                            <div class="col mb-3 px-3">
-                                <form id="form-factura" action="">
-                                    <input type="hidden" name="idCliente">
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col-md-5">
-                                            <div class="row">
-                                                <label for="selectClientes" class="col-auto col-form-label">Clientes:</label>
-                                                <div class="col">
-                                                    <select title="Clientes..." data-style="btn-secondary" class="form-control" name="selectClientes" id="selectClientes">
-                                                        <option value="dni">Jhon Casimiro</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="row">
-                                                <label for="tipoMoneda" class="col-auto col-form-label">Tipo Moneda:</label>
-                                                <div class="col">
-                                                    <input type="text" class="form-control" id="tipoMoneda" name="tipoMoneda">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="row">
-                                                <label for="monto" class="col-auto col-form-label">Monto:</label>
-                                                <div class="col">
-                                                    <input type="text" class="form-control" id="monto" name="monto">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col">
-                                            <div class="row">
-                                                <label for="fechaEmision" class="col-auto col-form-label">Fecha Emisión:</label>
-                                                <div class="col">
-                                                    <input type="date" class="form-control" id="fechaEmision" name="fechaEmision">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <label for="fechaVencimiento" class="col-auto col-form-label">Fecha Vencimiento:</label>
-                                                <div class="col">
-                                                    <input type="date" class="form-control" id="fechaVencimiento" name="fechaVencimiento">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col-md-4">
-                                            <div class="row">
-                                                <label for="estado" class="col-auto col-form-label">Estado:</label>
-                                                <div class="col">
-                                                    <select title="Estado..." data-style="btn-secondary" class="form-control" name="estado" id="estado">
-                                                        <option value="pendiente">Pendiente</option>
-                                                        <option value="pago">Pago</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="row">
-                                                <label for="mes" class="col-auto col-form-label">Mes:</label>
-                                                <div class="col">
-                                                    <input type="text" class="form-control" id="mes" name="mes">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <label for="archivo" class="col-auto col-form-label">Archivo:</label>
-                                                <div class="col">
-                                                    <input type="file" class="form-control" id="archivo" name="archivo">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer row align-items-center p-0 pt-2">
-                                        <div class="row d-flex justify-content-end mb-3">
-                                            <div class="col-md-3">
-                                                <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button type="button" class="btn btn-primary salvar" data-bs-target="#modalAceptarFactura" data-bs-toggle="modal"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Salvar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Aceptar Factura-->
-            <div class="modal fade" id="modalAceptarFactura" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color: #00b807; color: #fff;">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Agregar Factura</h1>
-                        </div>
-                        <div class="modal-body">
-                            La factura sera registrado.
-                        </div>
-                        <div class="modal-footer row align-items-center p-0">
-                            <div class="row d-flex justify-content-end mb-3">
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-secondary cancelar" data-bs-target="#modalAgregarFactura" data-bs-toggle="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button type="submit" id="btn-aceptar-factura" class="btn btn-primary salvar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Salvar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Eliminar Factura-->
-            <div class="modal fade" id="modalEliminarFactura" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color: #00b807; color: #fff;">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Eliminar Cliente</h1>
-                        </div>
-                        <div class="modal-body">
-                            La factura sera eliminado.
-                        </div>
-                        <div class="modal-footer row align-items-center p-0">
-                            <div class="row d-flex justify-content-end mb-3">
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-secondary cancelar" data-bs-toggle="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button type="submit" class="btn btn-primary salvar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Salvar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Agregar Credenciales o Accesos -->
-            <div class="modal fade" id="modalAgregarCredenciales" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header title-edit" style="background-color: #106da2; margin-top: 0px;">
-                            <p>AGREGAR CREDENCIALES</p>
-                        </div>
-                        <div class="modal-body">
-                            <div class="col mb-3 px-3">
-                                <form id="form-credenciales" action="">
-                                    <input type="hidden" name="idCliente">
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col-md-5">
-                                            <div class="row">
-                                                <label for="selectClientes" class="col-auto col-form-label">Clientes:</label>
-                                                <div class="col">
-                                                    <select title="Clientes..." data-style="btn-secondary" class="form-control" name="selectClientes" id="selectClientes">
-                                                        <option value="dni">Jhon Casimiro</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <div class="row">
-                                                <label for="selectServicios" class="col-auto col-form-label">Servicios:</label>
-                                                <div class="col">
-                                                    <select title="Servicios..." data-style="btn-secondary" class="form-control" name="selectServicios" id="selectServicios">
-                                                        <option value="diseñoWeb">Diseño Web</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col">
-                                            <div class="row">
-                                                <label for="usuario" class="col-auto col-form-label">Usuario:</label>
-                                                <div class="col">
-                                                    <input type="text" class="form-control" id="usuario" name="usuario">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <label for="contraseniaUsuario" class="col-auto col-form-label">Contraseña:</label>
-                                                <div class="col input-group">
-                                                    <input type="password" class="form-control" id="contraseniaUsuario" name="contraseniaUsuario">
-                                                    <button class="input-group-text" type="button" id="togglePasswordVisibility" style="width: 50px;">
-                                                        <i class="fa-solid fa-eye"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <label for="observacion" class="col-auto col-form-label">Observacion:</label>
-                                                <div class="col">
-                                                    <input type="text" class="form-control" id="observacion" name="observacion">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer row align-items-center p-0 pt-2">
-                                        <div class="row d-flex justify-content-end mb-3">
-                                            <div class="col-md-3">
-                                                <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button type="button" class="btn btn-primary salvar" data-bs-target="#modalAceptarCredenciales" data-bs-toggle="modal"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Salvar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Aceptar Credenciales-->
-            <div class="modal fade" id="modalAceptarCredenciales" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color: #106da2; color: #fff;">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Agregar Credencial</h1>
-                        </div>
-                        <div class="modal-body">
-                            La credencial sera registrado.
-                        </div>
-                        <div class="modal-footer row align-items-center p-0">
-                            <div class="row d-flex justify-content-end mb-3">
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-secondary cancelar" data-bs-target="#modalAgregarCredenciales" data-bs-toggle="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button type="submit" id="btn-aceptar-credenciales" class="btn btn-primary salvar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Salvar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Eliminar Credenciales-->
-            <div class="modal fade" id="modalEliminarCredenciales" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color: #106da2; color: #fff;">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Eliminar Credenciales</h1>
-                        </div>
-                        <div class="modal-body">
-                            La credencial sera eliminado.
-                        </div>
-                        <div class="modal-footer row align-items-center p-0">
-                            <div class="row d-flex justify-content-end mb-3">
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-secondary cancelar" data-bs-toggle="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button type="submit" class="btn btn-primary salvar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Salvar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Agregar Contrato -->
-            <div class="modal fade" id="modalAgregarContrato" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header title-edit" style="background-color: #4a4a4a; margin-top: 0px;">
-                            <p>AGREGAR CONTRATO</p>
-                        </div>
-                        <div class="modal-body">
-                            <div class="col mb-3 px-3">
-                                <form id="form-contrato" action="">
-                                    <input type="hidden" name="idCliente">
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col-md-5">
-                                            <div class="row">
-                                                <label for="selectAdmin" class="col-auto col-form-label">Admin:</label>
-                                                <div class="col">
-                                                    <select title="Admin..." data-style="btn-secondary" class="form-control" name="selectAdmin" id="selectAdmin">
-                                                        <option value="dni">Jhon Casimiro</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <div class="row">
-                                                <label for="selectCredenciales" class="col-auto col-form-label">Credenciales:</label>
-                                                <div class="col">
-                                                    <select title="Credenciales..." data-style="btn-secondary" class="form-control" name="selectCredenciales" id="selectCredenciales">
-                                                        <option value="diseñoWeb">Diseño Web</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col">
-                                            <div class="row">
-                                                <label for="fechaInicio" class="col-auto col-form-label">Fecha Inicio:</label>
-                                                <div class="col">
-                                                    <input type="date" class="form-control" id="fechaInicio" name="fechaInicio">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <label for="fechaRenovacion" class="col-auto col-form-label">Fecha Renovación:</label>
-                                                <div class="col">
-                                                    <input type="date" class="form-control" id="fechaRenovacion" name="fechaRenovacion">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <label for="archivoContrato" class="col-auto col-form-label">Archivo Contrato:</label>
-                                                <div class="col">
-                                                    <input type="file" class="form-control" id="archivoContrato" name="archivoContrato">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer row align-items-center p-0 pt-2">
-                                        <div class="row d-flex justify-content-end mb-3">
-                                            <div class="col-md-3">
-                                                <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button type="button" class="btn btn-primary salvar" data-bs-target="#modalAceptarContrato" data-bs-toggle="modal"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Salvar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Aceptar Contrato-->
-            <div class="modal fade" id="modalAceptarContrato" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color: #4a4a4a; color: #fff;">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Agregar Contrato</h1>
-                        </div>
-                        <div class="modal-body">
-                            El contrato sera registrado.
-                        </div>
-                        <div class="modal-footer row align-items-center p-0">
-                            <div class="row d-flex justify-content-end mb-3">
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-secondary cancelar" data-bs-target="#modalAgregarContrato" data-bs-toggle="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button type="submit" id="btn-aceptar-contrato" class="btn btn-primary salvar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Salvar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Eliminar Contrato-->
-            <div class="modal fade" id="modalEliminarContrato" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color: #4a4a4a; color: #fff;">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Desea Eliminar Contrato</h1>
-                        </div>
-                        <div class="modal-body">
-                            El contrato sera eliminado.
-                        </div>
-                        <div class="modal-footer row align-items-center p-0">
-                            <div class="row d-flex justify-content-end mb-3">
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-secondary cancelar" data-bs-toggle="modal"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button type="submit" class="btn btn-primary salvar"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Salvar</button>
                                 </div>
                             </div>
                         </div>
@@ -1322,79 +954,85 @@ require_once("layouts/headAdmin.php");
                     }
                 }
             });
-
-            $('#facturas').DataTable({
-                responsive: true,
-                autoWidth: false,
-                "language": {
-                    "lengthMenu": "Mostrar " +
-                        `<select class="custom-select custom-select-sm w-50 form-select form-select-sm mb-2">
+        </script>
+        <script>
+            $(document).ready(function() {
+                <?php foreach ($clientesArray as $clientes) { ?>
+                    $('#facturas-<?php echo $clientes->idClientes; ?>').DataTable({
+                        responsive: true,
+                        autoWidth: false,
+                        "language": {
+                            "lengthMenu": "Mostrar " +
+                                `<select class="custom-select custom-select-sm w-50 form-select form-select-sm mb-2">
                                         <option value="5">5</option>
                                         <option value="10">10</option>
                                         <option value="15">15</option>
                                         <option value="20">20</option>
                                     </select>`,
-                    "zeroRecords": "No se encontró nada - lo siento",
-                    "info": "Mostrando la página _PAGE_ de _PAGES_ de _TOTAL_ clientes",
-                    "infoEmpty": "No hay registros disponibles",
-                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                    "search": "Buscar:",
-                    "emptyTable": "No hay datos disponibles en la tabla",
-                    "paginate": {
-                        "next": ">",
-                        "previous": "<"
-                    }
-                }
-            });
+                            "zeroRecords": "No se encontró nada - lo siento",
+                            "info": "Mostrando la página _PAGE_ de _PAGES_ de _TOTAL_ facturas",
+                            "infoEmpty": "No hay registros disponibles",
+                            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                            "search": "Buscar:",
+                            "emptyTable": "No hay datos disponibles en la tabla",
+                            "paginate": {
+                                "next": ">",
+                                "previous": "<"
+                            }
+                        }
+                    });
 
-            $('#credenciales').DataTable({
-                responsive: true,
-                autoWidth: false,
-                "language": {
-                    "lengthMenu": "Mostrar " +
-                        `<select class="custom-select custom-select-sm w-50 form-select form-select-sm mb-2">
+                    $('#credenciales-<?php echo $clientes->idClientes; ?>').DataTable({
+                        responsive: true,
+                        autoWidth: false,
+                        "language": {
+                            "lengthMenu": "Mostrar " +
+                                `<select class="custom-select custom-select-sm w-50 form-select form-select-sm mb-2">
                                         <option value="5">5</option>
                                         <option value="10">10</option>
                                         <option value="15">15</option>
                                         <option value="20">20</option>
                                     </select>`,
-                    "zeroRecords": "No se encontró nada - lo siento",
-                    "info": "Mostrando la página _PAGE_ de _PAGES_ de _TOTAL_ clientes",
-                    "infoEmpty": "No hay registros disponibles",
-                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                    "search": "Buscar:",
-                    "emptyTable": "No hay datos disponibles en la tabla",
-                    "paginate": {
-                        "next": ">",
-                        "previous": "<"
-                    }
-                }
-            });
+                            "zeroRecords": "No se encontró nada - lo siento",
+                            "info": "Mostrando la página _PAGE_ de _PAGES_ de _TOTAL_ credenciales",
+                            "infoEmpty": "No hay registros disponibles",
+                            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                            "search": "Buscar:",
+                            "emptyTable": "No hay datos disponibles en la tabla",
+                            "paginate": {
+                                "next": ">",
+                                "previous": "<"
+                            }
+                        }
+                    });
 
-            $('#contratos').DataTable({
-                responsive: true,
-                autoWidth: false,
-                "language": {
-                    "lengthMenu": "Mostrar " +
-                        `<select class="custom-select custom-select-sm w-50 form-select form-select-sm mb-2">
+                    $('#contratos-<?php echo $clientes->idClientes; ?>').DataTable({
+                        responsive: true,
+                        autoWidth: false,
+                        "language": {
+                            "lengthMenu": "Mostrar " +
+                                `<select class="custom-select custom-select-sm w-50 form-select form-select-sm mb-2">
                                         <option value="5">5</option>
                                         <option value="10">10</option>
                                         <option value="15">15</option>
                                         <option value="20">20</option>
                                     </select>`,
-                    "zeroRecords": "No se encontró nada - lo siento",
-                    "info": "Mostrando la página _PAGE_ de _PAGES_ de _TOTAL_ clientes",
-                    "infoEmpty": "No hay registros disponibles",
-                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                    "search": "Buscar:",
-                    "emptyTable": "No hay datos disponibles en la tabla",
-                    "paginate": {
-                        "next": ">",
-                        "previous": "<"
-                    }
-                }
+                            "zeroRecords": "No se encontró nada - lo siento",
+                            "info": "Mostrando la página _PAGE_ de _PAGES_ de _TOTAL_ contratos",
+                            "infoEmpty": "No hay registros disponibles",
+                            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                            "search": "Buscar:",
+                            "emptyTable": "No hay datos disponibles en la tabla",
+                            "paginate": {
+                                "next": ">",
+                                "previous": "<"
+                            }
+                        }
+                    });
+                <?php } ?>
             });
         </script>
+        <!-- Validar antes de registrar cliente -->
         <script>
             $(document).ready(function() {
                 // Evento para el botón de aceptar en modalAgregarAdmin
@@ -1509,7 +1147,7 @@ require_once("layouts/headAdmin.php");
                 }
             });
         </script>
-
+        <!-- Validar antes de editar cliente -->
         <script>
             $(document).ready(function() {
                 <?php foreach ($clientesArray as $clientes) { ?>
@@ -1616,7 +1254,7 @@ require_once("layouts/headAdmin.php");
                 <?php } ?>
             });
         </script>
-
+        <!-- valiar antes de eliminar cliente -->
         <script>
             $(document).ready(function() {
                 <?php foreach ($clientesArray as $clientes) { ?>

@@ -24,9 +24,6 @@
                 <a href="contratosAdmin.php">CONTRATO</a>
             </div>
             <div class="item">
-                <a href="servicios.php">SERVICIOS</a>
-            </div>
-            <div class="item">
                 <a href="#">SOPORTE</a>
             </div>
             <div class="item">

@@ -22,12 +22,6 @@ require_once("layouts/headAdmin.php");
                 </a>
             </div>
             <div class="col-lg-3 col-md-6 mb-3 picture">
-                <a href="historialPagos.php">
-                    <img src="assets/img/campaign.svg" alt="">
-                    <span>NOTIFICACIONES DE PAGOS</span>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-3 picture">
                 <a href="admin.php">
                     <img src="assets/img/access.svg" alt="">
                     <span>ADMINISTRADOR</span>
