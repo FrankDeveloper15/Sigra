@@ -5,49 +5,50 @@ session_start();
 
 $adminLoguin = new AdminLoguin();
 $datosProcesados = false;
-$inicioSesionError = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-
     $adminLoguin->correoContacto = $_POST["correoContacto"];
     $adminLoguin->contrasenia = $_POST["contrasenia"];
 
     $mensajesErrores = $adminLoguin->validarCampos();
 
     if (count($mensajesErrores) > 0) {
-        $datosProcesados = false;
+        $_SESSION['mensajesErrores'] = $mensajesErrores;
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit();
     } else {
-
         try {
-
             $adminDAO = new AdminDAO();
             $resp = $adminDAO->login($adminLoguin);
-
             $datosProcesados = true;
 
-            $recordarme = $_POST["chkRecordarme"];
+            $recordarme = isset($_POST["chkRecordarme"]) ? $_POST["chkRecordarme"] : false;
             if ($recordarme) {
-                setcookie("admin", $nombreApellidos, time() + (60 * 60));
+                setcookie("correoContacto", $adminLoguin->correoContacto, time() + (60 * 60 * 24 * 30)); // 30 días
+            } else {
+                setcookie("correoContacto", "", time() - 3600); // Eliminar cookie
             }
+
+            header('Location: menuAdministrador.php');
+            exit();
         } catch (Exception $e) {
-
-            $datosProcesados = false;
-
+            $mensajesErrores = [];
             if (str_contains($e->getMessage(), 'E-001')) {
                 $mensajesErrores[] = "Administrador no encontrado";
-                //  $inicioSesionError="Usuario no encontrado"
             } else if (str_contains($e->getMessage(), 'E-002')) {
                 $mensajesErrores[] = "Clave incorrecta";
-                // $inicioSesionError="Clave incorrecta"   
             } else {
                 $mensajesErrores[] = $e->getMessage();
-                //$inicioSesionError= $e->getMessage();       
             }
+            $_SESSION['mensajesErrores'] = $mensajesErrores;
+            header('Location: ' . $_SERVER['PHP_SELF']);
+            exit();
         }
     }
 }
 
+$mensajesErrores = isset($_SESSION['mensajesErrores']) ? $_SESSION['mensajesErrores'] : [];
+unset($_SESSION['mensajesErrores']);
 ?>
 <?php
 require 'layouts/head.php';
@@ -60,20 +61,12 @@ require 'layouts/head.php';
     <?php
     if (!$datosProcesados) {
     ?>
-        <div id="mensajeMovil">
-            <img src="assets/img/administrador.svg" alt="Imagen para dispositivos móviles">
-            <p>LO SENTIMOS, ESTA PÁGINA WEB NO ESTÁ DISPONIBLE EN UNA EXPERIENCIA MÓVIL.</p>
-            <br>
-            <p>RECUERDE INICIAR SESIÓN EN SU ORDENADOR PARA GARANTIZAR MAYOR PRODUCTIVIDAD EN SUS LABORES</p>
-            <a href="index.php"><button id="irAlInicio">Ir al Inicio</button></a>
-        </div>
-
         <div class="container-fluid d-flex justify-content-center align-items-center container-administrador">
             <div class="col-12 col-md-6 m-4 p-4 text-center" style="background-color: #eee7ff; max-width: 550px; box-shadow: 0 8px 8px rgba(0, 0, 0, 0.8); border-radius: 8px;">
                 <div class="mb-4" style="color: #7c19ed;">
                     <h2>INICIAR SESIÓN ADMINISTRADOR</h2>
                 </div>
-                <?php if (isset($mensajesErrores)) : ?>
+                <?php if (!empty($mensajesErrores)) : ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <?php foreach ($mensajesErrores as $mensajeError) { ?>
                             <strong><?php echo $mensajeError; ?></strong>
@@ -86,7 +79,7 @@ require 'layouts/head.php';
                         <div class="row g-3">
                             <div class="col-12 form-group mb-4">
                                 <label for="email" class="form-label">CORREO ELECTRÓNICO</label>
-                                <input type="text" class="form-control" id="email" name="correoContacto">
+                                <input type="text" class="form-control" id="email" name="correoContacto" value="<?php echo isset($_COOKIE["correoContacto"]) ? $_COOKIE["correoContacto"] : ''; ?>">
                             </div>
                             <div class="col-lg-8 col-md-12 form-group mb-4">
                                 <label for="password" class="form-label">CONTRASEÑA</label>
@@ -107,9 +100,6 @@ require 'layouts/head.php';
                         </div>
                     </form>
                 </div>
-                <div class="mb-3">
-                    <p class="link-acceso"><a href="#">He olvidado mi correo/contraseña</a></p>
-                </div>
                 <div class="admin-login">
                     <p><a href="login_cliente.php">Accede como CLIENTE</a></p>
                 </div>
@@ -124,7 +114,7 @@ require 'layouts/head.php';
     require 'layouts/footer.php';
     ?>
     <script>
-        /* Visibilidada de contraseña */
+        /* Visibilidad de contraseña */
         document.getElementById('togglePasswordVisibility').addEventListener('click', function() {
             const passwordInput = document.getElementById('password');
             const icon = this.querySelector('i');

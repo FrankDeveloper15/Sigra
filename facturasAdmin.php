@@ -292,7 +292,7 @@ require_once("layouts/headAdmin.php");
                                         <div class="row">
                                             <label for="montoInsert" class="col-auto col-form-label">Monto:</label>
                                             <div class="col">
-                                                <input type="text" class="form-control" id="montoInsert" name="montoInsert">
+                                                <input type="text" class="form-control" id="montoInsert" name="montoInsert" maxlength="6">
                                             </div>
                                         </div>
                                     </div>
@@ -433,7 +433,7 @@ require_once("layouts/headAdmin.php");
                                             <div class="row">
                                                 <label for="montoEdit-<?php echo $facturas->idFacturas; ?>" class="col-auto col-form-label">Monto:</label>
                                                 <div class="col">
-                                                    <input readonly type="text" class="form-control" id="montoEdit-<?php echo $facturas->idFacturas; ?>" name="montoEdit" value="<?php echo $facturas->monto; ?>">
+                                                    <input readonly type="text" class="form-control" id="montoEdit-<?php echo $facturas->idFacturas; ?>" name="montoEdit" value="<?php echo $facturas->monto; ?>" maxlength="6">
                                                 </div>
                                             </div>
                                         </div>
@@ -475,12 +475,12 @@ require_once("layouts/headAdmin.php");
                                             <div class="row">
                                                 <label for="mesEdit-<?php echo $facturas->idFacturas; ?>" class="col-auto col-form-label">Mes:</label>
                                                 <div class="col">
-                                                    <input type="text" class="form-control" id="mesEdit-<?php echo $facturas->idFacturas; ?>" name="mesEdit" value="<?php echo $facturas->mes; ?>">
+                                                    <input readonly type="text" class="form-control" id="mesEdit-<?php echo $facturas->idFacturas; ?>" name="mesEdit" value="<?php echo $facturas->mes; ?>">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <?php if ($facturas->estado == "Pago") { ?>
+                                    <?php if ((($facturas->estado == "Pendiente")&&($facturas->notificacion == "0")) || (($facturas->estado == "Pago")&&($facturas->notificacion == "0"))) { ?>
                                         <div class="row align-items-center mb-3">
                                             <div class="col-md-12">
                                                 <div class="row">
@@ -492,7 +492,7 @@ require_once("layouts/headAdmin.php");
                                             </div>
                                         </div>
                                         <input type="hidden" id="verificarEdit-<?php echo $facturas->idFacturas; ?>" name="verificarEdit" value="new">
-                                    <?php } else if ($facturas->estado == "Pendiente") { ?>
+                                    <?php } else if (($facturas->estado == "Pendiente")&&($facturas->notificacion == "1")) { ?>
                                         <input type="hidden" id="documentoEdit-<?php echo $facturas->idFacturas; ?>" name="documentoEdit" value="<?php echo $facturas->documento; ?>">
                                         <input type="hidden" id="verificarEdit-<?php echo $facturas->idFacturas; ?>" name="verificarEdit" value="">
                                     <?php } ?>

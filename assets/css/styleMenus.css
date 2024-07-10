@@ -402,49 +402,6 @@ p {
     text-decoration: underline;
 }
 
-/* Estilos generales */
-#mensajeMovil {
-    display: none;
-}
-
-.containerSesion.Administrador {
-    display: block;
-}
-
-
-/* Mostrar mensajeMovil en pantallas menores a 768px */
-@media only screen and (max-width: 768px) {
-
-    #mensajeMovil {
-        display: block;
-        /* Muestra el mensaje en dispositivos móviles */
-        color: #5410a2;
-        /* Cambia el color del texto según tus preferencias */
-        font-size: 10px;
-        /* Ajusta el tamaño del texto según tus preferencias */
-        text-align: center;
-        padding: 10px 40px;
-    }
-
-    #mensajeMovil img {
-        width: 50%;
-        /* Ajusta el ancho de la imagen al 100% del contenedor */
-    }
-
-    #irAlInicio {
-        background: #5410a2;
-        padding: 10px;
-        color: white;
-        width: 50%;
-        margin-top: 10px;
-        /* Agrega espacio entre la imagen y el botón */
-    }
-
-    .container-administrador {
-        display: none !important;
-    }
-}
-
 /* Estilos específicos para pantallas grandes (PC) */
 @media only screen and (min-width: 769px) {
     #mensajeMovil {

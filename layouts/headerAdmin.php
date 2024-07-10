@@ -7,7 +7,7 @@
 </div>
 <header>
     <div class="container-fluid">
-        <div class="col-md-3" style="color: #fff; margin-right: 6%;">
+        <div class="col-md-3" style="color: #fff;">
             <span class="p-2"><Strong>BIENVENIDO/A:</Strong><?php echo $_SESSION['nombreApellidos']; ?></span>
         </div>
         <div class="navb-items">

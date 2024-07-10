@@ -17,7 +17,7 @@ require_once("layouts/headAdmin.php");
                 $contrato->fechaRenovacion = $_POST['fechaRenovacionInsert'];
 
                 if (isset($_FILES['documentoInsert']) && $_FILES['documentoInsert']['error'] == UPLOAD_ERR_OK) {
-                    $uploadDir = 'File/';
+                    $uploadDir = 'Contratos/';
                     $uploadedFileName = basename($_FILES['documentoInsert']['name']);
                     $uploadFilePath = $uploadDir . $uploadedFileName;
 
@@ -68,7 +68,7 @@ require_once("layouts/headAdmin.php");
                     $contrato->documento = $_POST['documentoEdit'];
                 } else {
                     if (isset($_FILES['documentoEdit']) && $_FILES['documentoEdit']['error'] == UPLOAD_ERR_OK) {
-                        $uploadDir = 'File/';
+                        $uploadDir = 'Contratos/';
                         $uploadedFileName = basename($_FILES['documentoEdit']['name']);
                         $uploadFilePath = $uploadDir . $uploadedFileName;
 
@@ -214,7 +214,7 @@ require_once("layouts/headAdmin.php");
                                 <td><?php echo date('d-m-Y', strtotime($contrato->fechaInicio)); ?></td>
                                 <td><?php echo date('d-m-Y', strtotime($contrato->fechaRenovacion)); ?></td>
                                 <td>
-                                    <a class="btn btn-primary btn-sm d-sm-inline-block download-button" role="button" target="_blank" href="File/<?php echo $contrato->documento; ?>">
+                                    <a class="btn btn-primary btn-sm d-sm-inline-block download-button" role="button" target="_blank" href="Contratos/<?php echo $contrato->documento; ?>">
                                         <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Ver Contrato
                                     </a>
                                 </td>

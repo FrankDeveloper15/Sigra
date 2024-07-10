@@ -203,7 +203,7 @@ require_once("layouts/headAdmin.php");
                                         <div class="row">
                                             <label for="documento" class="col-auto col-form-label">N° Doc:</label>
                                             <div class="col">
-                                                <input type="text" class="form-control" id="documento" name="documento">
+                                                <input type="text" class="form-control" id="documento" name="documento" minlength="8" maxlength="11">
                                             </div>
                                         </div>
                                     </div>
@@ -233,7 +233,7 @@ require_once("layouts/headAdmin.php");
                                             <div class="row">
                                                 <label for="numDocumentoInsert" class="col-auto col-form-label">N° Doc:</label>
                                                 <div class="col">
-                                                    <input readonly type="text" class="form-control" id="numDocumentoInsert" name="numDocumentoInsert">
+                                                    <input readonly type="text" class="form-control" id="numDocumentoInsert" name="numDocumentoInsert" minlength="8" maxlength="9">
                                                 </div>
                                             </div>
                                         </div>

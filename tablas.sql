@@ -15,7 +15,7 @@ CREATE TABLE `clientes` (
   `contrasenia` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`idClientes`) USING BTREE,
   UNIQUE INDEX `idx_cliente_numDocumento` (`numDocumento`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Table structure for administrador
@@ -37,7 +37,7 @@ CREATE TABLE `administrador` (
 -- Records of administrador
 -- ----------------------------
 INSERT INTO `administrador` VALUES 
-(1, 'DNI', '71592447', '935993670', 'MONTAÑEZ LEON FRANK MARTIN', 'frank@gmail.com', '21232f297a57a5a743894a0e4a801fc3');
+(1, 'RUC', '20612408824', '984404105', 'CORPORACION V Y S PERU E.I.R.L', 'avsci@hotmail.com', '21232f297a57a5a743894a0e4a801fc3');
 
 -- ----------------------------
 -- Table structure for servicios

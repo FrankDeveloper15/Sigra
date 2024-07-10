@@ -174,7 +174,7 @@ require_once("layouts/headAdmin.php");
                                         <div class="row">
                                             <label for="documento" class="col-auto col-form-label">N° Doc:</label>
                                             <div class="col">
-                                                <input type="text" class="form-control" id="documento" name="documento">
+                                                <input type="text" class="form-control" id="documento" name="documento" minlength="8" maxlength="11">
                                             </div>
                                         </div>
                                     </div>
@@ -204,7 +204,7 @@ require_once("layouts/headAdmin.php");
                                             <div class="row">
                                                 <label for="numDocumentoInsert" class="col-auto col-form-label">N° Doc:</label>
                                                 <div class="col">
-                                                    <input readonly type="text" class="form-control" id="numDocumentoInsert" name="numDocumentoInsert">
+                                                    <input readonly type="text" class="form-control" id="numDocumentoInsert" name="numDocumentoInsert" minlength="8" maxlength="11">
                                                 </div>
                                             </div>
                                         </div>
@@ -242,7 +242,7 @@ require_once("layouts/headAdmin.php");
                                             <div class="row">
                                                 <label for="telefonoContactoInsert" class="col-auto col-form-label">Telefono Contacto:</label>
                                                 <div class="col">
-                                                    <input type="text" class="form-control" id="telefonoContactoInsert" name="telefonoContactoInsert">
+                                                    <input type="text" class="form-control" id="telefonoContactoInsert" name="telefonoContactoInsert" minlength="9" maxlength="9">
                                                 </div>
                                             </div>
                                         </div>
@@ -465,7 +465,7 @@ require_once("layouts/headAdmin.php");
                                         <div class="row">
                                             <label for="telefonoContactoEdit-<?php echo $clientes->idClientes; ?>" class="col-auto col-form-label">Telefono Contacto:</label>
                                             <div class="col">
-                                                <input type="text" class="form-control" id="telefonoContactoEdit-<?php echo $clientes->idClientes; ?>" name="telefonoContactoEdit" value="<?php echo $clientes->telefonoContacto; ?>">
+                                                <input type="text" class="form-control" id="telefonoContactoEdit-<?php echo $clientes->idClientes; ?>" name="telefonoContactoEdit" value="<?php echo $clientes->telefonoContacto; ?>" minlength="9" maxlength="9">
                                             </div>
                                         </div>
                                     </div>
@@ -493,9 +493,6 @@ require_once("layouts/headAdmin.php");
                                 </div>
                                 <div class="row align-items-center mb-3">
                                     <div class="row d-flex justify-content-end">
-                                        <div class="col-md-3">
-                                            <button type="button" class="btn btn-primary cancelar"><i class="fa-solid fa-circle-xmark"></i>&nbsp; Cancelar</button>
-                                        </div>
                                         <div class="col-md-3">
                                             <button type="button" class="btn btn-primary salvar" data-bs-target="#modalAceptarEditarCliente-<?php echo $clientes->idClientes; ?>" data-bs-toggle="modal"><i class="fa-solid fa-floppy-disk"></i>&nbsp;Aceptar</button>
                                         </div>

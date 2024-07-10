@@ -38,7 +38,7 @@ require_once("layouts/headCliente.php");
                             <td><?php echo date('d-m-Y', strtotime($contrato->fechaInicio)); ?></td>
                             <td><?php echo date('d-m-Y', strtotime($contrato->fechaRenovacion)); ?></td>
                             <td>
-                                <a class="btn btn-primary btn-sm d-sm-inline-block download-button" role="button" target="_blank" href="File/<?php echo $contrato->documento; ?>">
+                                <a class="btn btn-primary btn-sm d-sm-inline-block download-button" role="button" target="_blank" href="Contratos/<?php echo $contrato->documento; ?>">
                                     <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Ver Contrato
                                 </a>
                             </td>

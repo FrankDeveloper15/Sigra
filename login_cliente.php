@@ -8,48 +8,49 @@ $datosProcesados = false;
 $inicioSesionError = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-
-    $clienteLoguin->correoContacto = $_POST["correoContacto"];
+    $clienteLoguin->correoContacto = $_POST["correoContactoCliente"];
     $clienteLoguin->contrasenia = $_POST["contrasenia"];
 
     $mensajesErrores = $clienteLoguin->validarCampos();
 
     if (count($mensajesErrores) > 0) {
-        $datosProcesados = false;
+        $_SESSION['mensajesErrores'] = $mensajesErrores;
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit();
     } else {
-
         try {
-
             $clienteDAO = new ClienteDAO();
             $resp = $clienteDAO->login($clienteLoguin);
-
             $datosProcesados = true;
 
-            $recordarme = $_POST["chkRecordarme"];
+            $recordarme = isset($_POST["chkRecordarme"]) ? $_POST["chkRecordarme"] : false;
             if ($recordarme) {
-                setcookie("cliente", $nombreComercial, time() + (60 * 60));
+                setcookie("correoContactoCliente", $clienteLoguin->correoContacto, time() + (60 * 60 * 24 * 30)); // 30 días
+            } else {
+                setcookie("correoContactoCliente", "", time() - 3600); // Eliminar cookie
             }
+
+            header('Location: menuCliente.php');
+            exit();
         } catch (Exception $e) {
-
-            $datosProcesados = false;
-
+            $mensajesErrores = [];
             if (str_contains($e->getMessage(), 'E-001')) {
                 $mensajesErrores[] = "Cliente no encontrado";
-                //  $inicioSesionError="Usuario no encontrado"
             } else if (str_contains($e->getMessage(), 'E-002')) {
                 $mensajesErrores[] = "Clave incorrecta";
-                // $inicioSesionError="Clave incorrecta"   
             } else {
                 $mensajesErrores[] = $e->getMessage();
-                //$inicioSesionError= $e->getMessage();       
             }
+            $_SESSION['mensajesErrores'] = $mensajesErrores;
+            header('Location: ' . $_SERVER['PHP_SELF']);
+            exit();
         }
     }
 }
 
+$mensajesErrores = isset($_SESSION['mensajesErrores']) ? $_SESSION['mensajesErrores'] : [];
+unset($_SESSION['mensajesErrores']);
 ?>
-
 <?php
 require_once("layouts/head.php");
 ?>
@@ -64,9 +65,9 @@ require_once("layouts/head.php");
         <div class="container-fluid d-flex justify-content-center align-items-center">
             <div class="col-12 col-md-6 m-4 p-4 text-center" style="background-color: #eee7ff; max-width: 550px; box-shadow: 0 8px 8px rgba(0, 0, 0, 0.8); border-radius: 8px;">
                 <div class="mb-4" style="color: #7c19ed;">
-                    <h2>INICIAR SESIÓN</h2>
+                    <h2>INICIAR SESIÓN CLIENTE</h2>
                 </div>
-                <?php if (isset($mensajesErrores)) : ?>
+                <?php if (!empty($mensajesErrores)) : ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <?php foreach ($mensajesErrores as $mensajeError) { ?>
                             <strong><?php echo $mensajeError; ?></strong>
@@ -79,7 +80,7 @@ require_once("layouts/head.php");
                         <div class="row g-3">
                             <div class="col-12 form-group mb-4">
                                 <label for="email" class="form-label">CORREO ELECTRÓNICO</label>
-                                <input type="text" class="form-control" id="email" name="correoContacto">
+                                <input type="text" class="form-control" id="email" name="correoContactoCliente" value="<?php echo isset($_COOKIE["correoContactoCliente"]) ? $_COOKIE["correoContactoCliente"] : ''; ?>">
                             </div>
                             <div class="col-lg-8 col-md-12 form-group mb-4">
                                 <label for="password" class="form-label">CONTRASEÑA</label>
@@ -91,7 +92,7 @@ require_once("layouts/head.php");
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <input type="checkbox" class="form-check-input" id="chkRecordarme" name="chkRecordarme" <?php if (isset($_COOKIE["correoContacto"])) { ?> checked <?php } ?>>
+                                <input type="checkbox" class="form-check-input" id="chkRecordarme" name="chkRecordarme" <?php if (isset($_COOKIE["correoContactoCliente"])) { ?> checked <?php } ?>>
                                 <label class="form-check-label" for="chkRecordarme" style="color: #000;">Recordarme</label>
                             </div>
                             <div class="mb-3">
@@ -99,9 +100,6 @@ require_once("layouts/head.php");
                             </div>
                         </div>
                     </form>
-                </div>
-                <div class="mb-3">
-                    <p class="link-acceso"><a href="#">Olvidado correo/contraseña</a></p>
                 </div>
                 <div class="admin-login">
                     <p><a href="login_administrador.php">Accede como ADMINISTRADOR</a></p>
