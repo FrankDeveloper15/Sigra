@@ -1,6 +1,6 @@
 <?php
 require 'Model/ClienteDAO.php';
-require 'clienteLoguin.php';
+require 'ClienteLoguin.php';
 session_start();
 
 $clienteLoguin = new ClienteLoguin();

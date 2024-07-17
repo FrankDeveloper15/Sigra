@@ -66,9 +66,8 @@ require_once("layouts/headCliente.php");
         }
 
         if (!empty($mensajesErrores)) {
-            print_r($mensajesErrores);
-            /* header("Location: reportePagoCliente.php");
-            exit(); */
+            header("Location: reportePagoCliente.php");
+            exit();
         }
     } else {
         try {

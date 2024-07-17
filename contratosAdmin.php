@@ -159,26 +159,6 @@ require_once("layouts/headAdmin.php");
         <?php
         require_once("layouts/headerAdmin.php");
         ?>
-        <?php if (isset($_SESSION['msj'])) { ?>
-            <script>
-                Swal.fire({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    icon: "<?php echo $_SESSION['icon']; ?>",
-                    title: "<?php echo $_SESSION['msj']; ?>",
-                    timer: 2500,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
-            </script>
-        <?php
-            unset($_SESSION['icon']);
-            unset($_SESSION['msj']);
-        } ?>
         <div class="container-fluid p-4">
             <div class="row">
                 <div class="col ms-5">

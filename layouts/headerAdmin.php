@@ -30,7 +30,7 @@
                 <i class="fa-solid fa-bell" id="abrir-notificacion"></i>
             </div>
             <div class="item-button container__button__menu">
-                <a href="cerrarSesion.php" class="button__One__menu" id="cerrarSesionBtn" style="padding: 5px;"><i class="fa-solid fa-circle-xmark"></i>CERRAR SESIÓN</a>
+                <a href="cerrarSesionAdmin.php" class="button__One__menu" id="cerrarSesionBtn" style="padding: 5px;"><i class="fa-solid fa-circle-xmark"></i>CERRAR SESIÓN</a>
             </div>
         </div>
 
@@ -72,7 +72,7 @@
                             <i class="fa-solid fa-bell" id="abrir-notificacion"></i>
                         </div>
                         <div class="container__button__menu">
-                            <a href="cerrarSesion.php" class="button__One__menu" id="cerrarSesionBtn" style="padding: 5px;"><i class="fa-solid fa-circle-xmark"></i>CERRAR SESIÓN</a>
+                            <a href="cerrarSesionAdmin.php" class="button__One__menu" id="cerrarSesionBtn" style="padding: 5px;"><i class="fa-solid fa-circle-xmark"></i>CERRAR SESIÓN</a>
                         </div>
                     </div>
                     <div class="mobile-modal-footer">
@@ -117,4 +117,24 @@
 
         </div>
     </div>
+    <?php if (isset($_SESSION['msj'])) { ?>
+            <script>
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    icon: "<?php echo $_SESSION['icon']; ?>",
+                    title: "<?php echo $_SESSION['msj']; ?>",
+                    timer: 2500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+            </script>
+        <?php
+            unset($_SESSION['icon']);
+            unset($_SESSION['msj']);
+        } ?>
 </header>

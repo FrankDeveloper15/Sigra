@@ -6,7 +6,7 @@
         <div class="col-12 mb-3 text-footer text-center text-white">
             <p>TODOS LOS DERECHOS RESERVADOS - <span id="currentYear">2018 - 2024</span></p>
             <p>POWERED BY CORPORACION VYS PERÚ E.I.R.L - RUC: 20612408824</p>
-            <p>CENTRAL TELEFóNICA: +51 917 344 290</p>
+            <p>CENTRAL TELEFóNICA: +51 984 404 105</p>
         </div>
     </div>
 </footer>

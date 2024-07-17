@@ -31,7 +31,6 @@ setInterval(() => {
 Relojdigital();
 
 
-
 /* =========================== ABRIR EL LADO LATERAL DERECHA NOTIFICACION ======= */
 window.addEventListener('DOMContentLoaded', function () {
     // Obtener referencias a los botones y al div
@@ -61,12 +60,12 @@ window.addEventListener('DOMContentLoaded', function () {
 
 $(document).ready(function () {
     $('#soporte').click(function () {
-        window.open('https://api.whatsapp.com/send?phone=51935993670&text= Hola, necesito soporte para mi cuenta.');
+        window.open('https://api.whatsapp.com/send?phone=51984404105&text= Hola, necesito soporte para mi cuenta.');
     });
 });
 
 $(document).ready(function () {
     $('#contactar').click(function () {
-        window.open('https://api.whatsapp.com/send?phone=51935993670&text= Hola, estoy interesado de trabajar con usted.');
+        window.open('https://api.whatsapp.com/send?phone=51984404105&text= Hola, estoy interesado de trabajar con usted.');
     });
 });

@@ -1,65 +1,55 @@
 use sigra;
--- ----------------------------
 -- Table structure for clientes
--- ----------------------------
 DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE `clientes` (
   `idClientes` int(6) NOT NULL AUTO_INCREMENT,
-  `tipoDocumento` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `numDocumento` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `nombre` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `razonSocial` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `nombreComercial` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `telefonoContacto` varchar(9) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `correoContacto` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `contrasenia` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `tipoDocumento` varchar(20) NOT NULL,
+  `numDocumento` varchar(11) NOT NULL,
+  `nombre` varchar(60) NOT NULL,
+  `razonSocial` varchar(50) NOT NULL,
+  `nombreComercial` varchar(50) NOT NULL,
+  `telefonoContacto` varchar(9) NOT NULL,
+  `correoContacto` varchar(255) NOT NULL,
+  `contrasenia` varchar(255) NOT NULL,
   PRIMARY KEY (`idClientes`) USING BTREE,
   UNIQUE INDEX `idx_cliente_numDocumento` (`numDocumento`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
 -- Table structure for administrador
--- ----------------------------
 DROP TABLE IF EXISTS `administrador`;
 CREATE TABLE `administrador` (
   `idAdmin` int(6) NOT NULL AUTO_INCREMENT,
-  `tipoDocumento` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `numDocumento` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `telefonoContacto` varchar(9) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `nombreApellidos` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `correoContacto` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `contrasenia` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `tipoDocumento` char(20) NOT NULL,
+  `numDocumento` varchar(11) NOT NULL,
+  `telefonoContacto` varchar(9) NOT NULL,
+  `nombreApellidos` varchar(60) NOT NULL,
+  `correoContacto` varchar(255) NOT NULL,
+  `contrasenia` varchar(255) NOT NULL,
   PRIMARY KEY (`idAdmin`) USING BTREE,
   UNIQUE INDEX `idx_admin_numDocumento` (`numDocumento`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=2 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
 -- Records of administrador
--- ----------------------------
 INSERT INTO `administrador` VALUES 
 (1, 'RUC', '20612408824', '984404105', 'CORPORACION V Y S PERU E.I.R.L', 'avsci@hotmail.com', '21232f297a57a5a743894a0e4a801fc3');
 
--- ----------------------------
 -- Table structure for servicios
--- ----------------------------
 DROP TABLE IF EXISTS `servicios`;
 CREATE TABLE `servicios` (
   `idServicios` int(6) NOT NULL AUTO_INCREMENT,
-  `nombreServicios` char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `correoProveedor` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `linkAcceso` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `nombreServicios` char(50) NOT NULL,
+  `correoProveedor` varchar(255) NOT NULL,
+  `linkAcceso` varchar(255) NOT NULL,
   PRIMARY KEY (`idServicios`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
 -- Table structure for credenciales
--- ----------------------------
 DROP TABLE IF EXISTS `credenciales`;
 CREATE TABLE `credenciales` (
   `idCredenciales` int(6) NOT NULL AUTO_INCREMENT,
-  `usuario` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `contrasenia` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `observacion` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `usuario` varchar(30) NOT NULL,
+  `contrasenia` varchar(255) NOT NULL,
+  `observacion` varchar(50) NOT NULL,
   `idClientes` int(6) NULL DEFAULT NULL,
   `idServicios` int(6) NULL DEFAULT NULL,
   PRIMARY KEY (`idCredenciales`) USING BTREE,
@@ -67,17 +57,15 @@ CREATE TABLE `credenciales` (
   INDEX `fk_credenciales_id_servicios_servicios_idx` (`idServicios`) USING BTREE,
   CONSTRAINT `fk_credenciales_id_cliente` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`idClientes`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `fk_credenciales_id_servicios` FOREIGN KEY (`idServicios`) REFERENCES `servicios` (`idServicios`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
 -- Table structure for contrato
--- ----------------------------
 DROP TABLE IF EXISTS `contrato`;
 CREATE TABLE `contrato` (
   `idContrato` int(6) NOT NULL AUTO_INCREMENT,
   `fechaInicio` date NOT NULL,
   `fechaRenovacion` date NOT NULL,
-  `documento` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `documento` varchar(255) NOT NULL,
   `idCredenciales` int(6) NULL DEFAULT NULL,
   `idAdmin` int(6) NULL DEFAULT NULL,
   PRIMARY KEY (`idContrato`) USING BTREE,
@@ -85,29 +73,26 @@ CREATE TABLE `contrato` (
   INDEX `fk_servicios_id_admin_admin_idx` (`idAdmin`) USING BTREE,
   CONSTRAINT `fk_contrato_id_admin` FOREIGN KEY (`idAdmin`) REFERENCES `administrador` (`idAdmin`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `fk_contrato_id_credenciales` FOREIGN KEY (`idCredenciales`) REFERENCES `credenciales` (`idCredenciales`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ROW_FORMAT=DYNAMIC;
 
--- ----------------------------
 -- Table structure for facturas
--- ----------------------------
 DROP TABLE IF EXISTS `facturas`;
 CREATE TABLE `facturas` (
   `idFacturas` int(6) NOT NULL AUTO_INCREMENT,
-  `mes` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `tipoMoneda` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `monto` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `mes` varchar(30) NOT NULL,
+  `tipoMoneda` varchar(10) NOT NULL,
+  `monto` varchar(5) NOT NULL,
   `fechaEmision` date NOT NULL,
   `fechaVencimiento` date NOT NULL,
-  `estado` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `documento` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `reportePago` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `notificacion` varchar(6) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `estado` varchar(15) NOT NULL,
+  `documento` varchar(255) DEFAULT NULL,
+  `reportePago` varchar(255) DEFAULT NULL,
+  `notificacion` varchar(6) NOT NULL,
   `idClientes` int(6) NULL DEFAULT NULL,
   PRIMARY KEY (`idFacturas`) USING BTREE,
   INDEX `fk_facturas_id_clientes_clientes_idx` (`idClientes`) USING BTREE,
   CONSTRAINT `fk_facturas_id_clientes` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`idClientes`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 CHARACTER SET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
-
+) ENGINE=InnoDB AUTO_INCREMENT=1 ROW_FORMAT=DYNAMIC;
 -- -
 -- ----------------------------
 -- Procedure structure for sp_clientes_login
