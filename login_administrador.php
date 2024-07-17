@@ -1,79 +1,108 @@
 <?php
+session_start();
 require 'Model/AdminDAO.php';
 require 'AdminLoguin.php';
-session_start();
-
-$adminLoguin = new AdminLoguin();
-$datosProcesados = false;
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $adminLoguin->correoContacto = $_POST["correoContacto"];
-    $adminLoguin->contrasenia = $_POST["contrasenia"];
-
-    $mensajesErrores = $adminLoguin->validarCampos();
-
-    if (count($mensajesErrores) > 0) {
-        $_SESSION['mensajesErrores'] = $mensajesErrores;
-        header('Location: ' . $_SERVER['PHP_SELF']);
-        exit();
-    } else {
-        try {
-            $adminDAO = new AdminDAO();
-            $resp = $adminDAO->login($adminLoguin);
-            $datosProcesados = true;
-
-            $recordarme = isset($_POST["chkRecordarme"]) ? $_POST["chkRecordarme"] : false;
-            if ($recordarme) {
-                setcookie("correoContacto", $adminLoguin->correoContacto, time() + (60 * 60 * 24 * 30)); // 30 días
-            } else {
-                setcookie("correoContacto", "", time() - 3600); // Eliminar cookie
-            }
-
-            header('Location: menuAdministrador.php');
-            exit();
-        } catch (Exception $e) {
-            $mensajesErrores = [];
-            if (str_contains($e->getMessage(), 'E-001')) {
-                $mensajesErrores[] = "Administrador no encontrado";
-            } else if (str_contains($e->getMessage(), 'E-002')) {
-                $mensajesErrores[] = "Clave incorrecta";
-            } else {
-                $mensajesErrores[] = $e->getMessage();
-            }
-            $_SESSION['mensajesErrores'] = $mensajesErrores;
-            header('Location: ' . $_SERVER['PHP_SELF']);
-            exit();
-        }
-    }
-}
-
-$mensajesErrores = isset($_SESSION['mensajesErrores']) ? $_SESSION['mensajesErrores'] : [];
-unset($_SESSION['mensajesErrores']);
-?>
-<?php
 require 'layouts/head.php';
 ?>
 
 <body>
     <?php
-    require 'layouts/headerLogin.php';
+
+    $adminLoguin = new AdminLoguin();
+    $datosProcesados = false;
+    /* esto es para que pruebes el sistema sin reptcapchat */
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $adminLoguin->correoContacto = $_POST["correoContacto"];
+        $adminLoguin->contrasenia = $_POST["contrasenia"];
+
+        $mensajesErrores = $adminLoguin->validarCampos();
+
+        if (count($mensajesErrores) > 0) {
+            header('Location: ' . $_SERVER['PHP_SELF']);
+            exit();
+        } else {
+            try {
+                $adminDAO = new AdminDAO();
+                $resp = $adminDAO->login($adminLoguin);
+                $datosProcesados = true;
+
+                $recordarme = isset($_POST["chkRecordarme"]) ? $_POST["chkRecordarme"] : false;
+                if ($recordarme) {
+                    setcookie("correoContacto", $adminLoguin->correoContacto, time() + (60 * 60 * 24 * 30)); // 30 días
+                } else {
+                    setcookie("correoContacto", "", time() - 3600); // Eliminar cookie
+                }
+                
+                header('Location: menuAdministrador.php');
+                exit();
+            } catch (Exception $e) {
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit();
+            }
+        }
+    }
+    /* esto es para que pruebes con el reptcapchat cual debes desabilitar los comentarios en el form y en el head*/
+    /* if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (!isset($_POST['g-recaptcha-response']) || empty($_POST['g-recaptcha-response'])){
+            $_SESSION['msj'] = "No marco el recaptcha";
+            $_SESSION['icon'] = "error";
+        }else{
+            $secret = "6Lcr2hEqAAAAAOEvG7jGRrEEi3IgjJiAMVNYTvnF";
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['g-recaptcha-response']);
+    		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    		$response = curl_exec($ch);
+    		curl_close($ch);
+    		$response = json_decode($response);
+            
+            if($response->success) {
+                $adminLoguin->correoContacto = $_POST["correoContacto"];
+                $adminLoguin->contrasenia = $_POST["contrasenia"];
+        
+                $mensajesErrores = $adminLoguin->validarCampos();
+        
+                if (count($mensajesErrores) > 0) {
+                    header('Location: ' . $_SERVER['PHP_SELF']);
+                    exit();
+                } else {
+                    try {
+                        $adminDAO = new AdminDAO();
+                        $resp = $adminDAO->login($adminLoguin);
+                        $datosProcesados = true;
+        
+                        $recordarme = isset($_POST["chkRecordarme"]) ? $_POST["chkRecordarme"] : false;
+                        if ($recordarme) {
+                            setcookie("correoContacto", $adminLoguin->correoContacto, time() + (60 * 60 * 24 * 30)); // 30 días
+                        } else {
+                            setcookie("correoContacto", "", time() - 3600); // Eliminar cookie
+                        }
+                        
+                        header('Location: menuAdministrador.php');
+                        exit();
+                    } catch (Exception $e) {
+                        header('Location: ' . $_SERVER['PHP_SELF']);
+                        exit();
+                    }
+                }
+            }else{
+    			$_SESSION['msj'] = "No existe el correo registrado";
+                $_SESSION['icon'] = "error";
+    		}
+        }
+    } */
     ?>
     <?php
     if (!$datosProcesados) {
     ?>
+
+        <?php
+        require 'layouts/headerLogin.php';
+        ?>
         <div class="container-fluid d-flex justify-content-center align-items-center container-administrador">
             <div class="col-12 col-md-6 m-4 p-4 text-center" style="background-color: #eee7ff; max-width: 550px; box-shadow: 0 8px 8px rgba(0, 0, 0, 0.8); border-radius: 8px;">
                 <div class="mb-4" style="color: #7c19ed;">
                     <h2>INICIAR SESIÓN ADMINISTRADOR</h2>
                 </div>
-                <?php if (!empty($mensajesErrores)) : ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <?php foreach ($mensajesErrores as $mensajeError) { ?>
-                            <strong><?php echo $mensajeError; ?></strong>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        <?php }; ?>
-                    </div>
-                <?php endif; ?>
                 <div class="mb-4">
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
                         <div class="row g-3">
@@ -94,6 +123,12 @@ require 'layouts/head.php';
                                 <input type="checkbox" class="form-check-input" id="chkRecordarme" name="chkRecordarme" <?php if (isset($_COOKIE["correoContacto"])) { ?> checked <?php } ?>>
                                 <label class="form-check-label" for="chkRecordarme" style="color: #000;">Recordarme</label>
                             </div>
+                            <!-- <div class="mb-3">
+                                <div class="d-flex justify-content-center">
+                                    <div class="g-recaptcha" data-sitekey="6Lcr2hEqAAAAAJMfQV8W5ubWsBQfI73xRKVZqw_R">
+                                    </div>
+                                </div>
+                            </div> -->
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-primary w-50 btn-login" name="login">INGRESAR</button>
                             </div>

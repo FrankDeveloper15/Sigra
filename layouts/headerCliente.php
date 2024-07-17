@@ -84,4 +84,24 @@
             <?php } ?>
         </div>
     </div>
+    <?php if (isset($_SESSION['msj'])) { ?>
+            <script>
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    icon: "<?php echo $_SESSION['icon']; ?>",
+                    title: "<?php echo $_SESSION['msj']; ?>",
+                    timer: 2500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+            </script>
+        <?php
+            unset($_SESSION['icon']);
+            unset($_SESSION['msj']);
+        } ?>
 </header>

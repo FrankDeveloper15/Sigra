@@ -293,19 +293,27 @@ class ClienteDAO
             $_SESSION['contrasenia'] = "";
 
             if ($resp) {
+                $_SESSION['msj'] = "Ingreso correctamente la sesión";
+                $_SESSION['icon'] = "success";
                 return $resp;
             } else {
+                $_SESSION['msj'] = "Clave incorrecta";
+                $_SESSION['icon'] = "error";
                 throw new Exception("E-002"); //clave incorrecta             
             }
         } catch (Exception $e) {
 
             if (str_contains($e->getMessage(), 'E-001')) {
+                $_SESSION['msj'] = "No se pudo encontrar al Cliente";
+                $_SESSION['icon'] = "error";
                 throw $e;
             } else if (str_contains($e->getMessage(), 'E-002')) {
+                $_SESSION['msj'] = "Clave incorrecta";
+                $_SESSION['icon'] = "error";
                 throw $e;
             } else {
-                //echo $e->getMessage();
-                //throw new Exception ('Error crítico: Comunicarse con el administrador del sistema');            
+                $_SESSION['msj'] = "Comunicarse con el administrador del sistema";
+                $_SESSION['icon'] = "error";         
                 throw $e;
             }
         }

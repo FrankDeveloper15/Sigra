@@ -90,26 +90,6 @@ require_once("layouts/headCliente.php");
         <?php
         require_once("layouts/headerCliente.php");
         ?>
-        <?php if (isset($_SESSION['msj'])) { ?>
-            <script>
-                Swal.fire({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    icon: "<?php echo $_SESSION['icon']; ?>",
-                    title: "<?php echo $_SESSION['msj']; ?>",
-                    timer: 2500,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
-                    }
-                });
-            </script>
-        <?php
-            unset($_SESSION['icon']);
-            unset($_SESSION['msj']);
-        } ?>
         <div class="container-fluid container-table my-4 shadow-lg bg-body-tertiary rounded">
             <div class="row table-factura">
                 <table class="table table-striped" id="factura">
