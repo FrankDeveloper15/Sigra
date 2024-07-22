@@ -3,12 +3,12 @@
     <p class="tiempo"></p>
 </div>
 <div class="container-fluid">
-    <a href="menuAdministrador.php"><img src="assets/img/logoSigra.svg" alt="logoSigra" class="img-fluid"></a>
+    <a href="menuCliente.php"><img src="assets/img/corplogohead.png" alt="logoSigra" class="img-fluid logo-header"></a>
 </div>
 <header>
     <div class="container-fluid">
         <div class="col-md-6" style="color: #fff;">
-            <span class="p-2"><Strong>BIENVENIDO/A:</Strong> <?php echo $_SESSION['nombre']; ?> </span>
+            <span class="p-2"><Strong>BIENVENIDO/A:&nbsp;</Strong> <?php echo $_SESSION['nombre']; ?> </span>
         </div>
         <div class="navb-items">
             <div class="item">

@@ -11,6 +11,10 @@ body {
     overflow-x: hidden;
 }
 
+.container-fluid{
+    overflow-x: hidden;
+}
+
 a{
     text-decoration: none;
     color: currentColor;

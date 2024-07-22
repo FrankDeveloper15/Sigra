@@ -1,0 +1,28 @@
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php82” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php82 .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
+
+RewriteEngine on
+
+# Ocultar extensión .php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php [L]
+
+# Asegurarse de que las carpetas no se vean afectadas
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^([^/]+)/$ $1.php [L]
+
+# Reescritura adicional si es necesario
+RewriteRule ^([^/]+)/([^/]+)/$ /$1/$2.php [L]
+
+# Evitar accesos directos a archivos sin extensión
+RewriteCond %{REQUEST_URI} !(\.[a-zA-Z0-9]{1,5}|/)$
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule (.*)$ /$1/ [R=301,L]

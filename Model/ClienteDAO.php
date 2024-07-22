@@ -225,6 +225,7 @@ class ClienteDAO
                 $facturas->tipoMoneda = $row["tipoMoneda"];
                 $facturas->monto = $row["monto"];
                 $facturas->fechaEmision = $row["fechaEmision"];
+                $facturas->fechaVencimiento = $row["fechaVencimiento"];
                 $facturas->estado = $row["estado"];
                 $facturas->documento = $row["documento"];
                 $facturas->reportePago = $row["reportePago"];

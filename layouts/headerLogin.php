@@ -5,7 +5,7 @@
 <header>
     <div class="container-fluid">
         <div class="navb-logo">
-            <a href="index.php"><img src="assets/img/logoSigra.svg" alt="logoSigra"></a>
+            <a href="index.php"><img src="assets/img/corplogohead.png" alt="logoSigra"></a>
         </div>
         <div class="navb-items">
             <div class="item-button">

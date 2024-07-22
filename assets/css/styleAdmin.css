@@ -69,6 +69,10 @@ header .item-button{
     flex-direction: row;
 }
 
+.logo-header{
+    width: 20%;
+}
+
 /* modal  */
 .modal-dialog-header{
     margin: 0;
@@ -177,6 +181,10 @@ header .item-button{
     .navb-items{
         display: none !important;
     }
+    
+    .logo-header{
+    width: 50%;
+}
 }
 
 @media screen and (max-width: 768px) {
@@ -184,6 +192,7 @@ header .item-button{
         margin: 0;
         width: 90%;
     }
+    
 }
 
 .container__button__menu a {

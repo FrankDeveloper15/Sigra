@@ -74,6 +74,10 @@ header .item-button{
     width: 430px;
 }
 
+.logo-header{
+    width: 20%;
+}
+
 @media(max-width: 450px){
     .modal-dialog-header{
         width: 82px;
@@ -183,6 +187,9 @@ header .item-button{
         margin: 0;
         width: 90%;
     }
+    .logo-header{
+    width: 50%;
+}
 }
 
 .container__button__menu a {
