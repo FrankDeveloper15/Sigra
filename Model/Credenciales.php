@@ -51,8 +51,8 @@ class Credenciales
         if (empty($this->observacion)) {
             $mensajesErrores[] = "La observación no puede estar vacio";
         } else {
-            if (strlen($this->observacion) > 50) {
-                $mensajesErrores[] = "La observación no debe exceder de 50 carácteres.";
+            if (strlen($this->observacion) > 100) {
+                $mensajesErrores[] = "La observación no debe exceder de 100 carácteres.";
             }
             $this->observacion = $this->test_input($this->observacion);
         }

@@ -130,6 +130,7 @@ require_once("layouts/headAdmin.php");
                             <th>Cliente</th>
                             <th>Servicio</th>
                             <th>Usuario</th>
+                            <th>Contraseña</th>
                             <th>Observacion</th>
                             <th>Link de Acceso</th>
                             <th>Acciones</th>
@@ -142,6 +143,7 @@ require_once("layouts/headAdmin.php");
                                 <td><?php echo $credenciales->nombre; ?></td>
                                 <td><?php echo $credenciales->nombreServicios; ?></td>
                                 <td><?php echo $credenciales->usuario; ?></td>
+                                <td><?php echo $credenciales->contrasenia; ?></td>
                                 <td><?php echo $credenciales->observacion; ?></td>
                                 <td><?php echo $credenciales->linkAcceso; ?></td>
                                 <td>
@@ -501,8 +503,8 @@ require_once("layouts/headAdmin.php");
 
                     if (!observacion) {
                         mensajesErrores.push("La observación no puede estar vacío.");
-                    } else if (observacion.length > 50) {
-                        mensajesErrores.push("La observación no puede exceder 50 caracteres.");
+                    } else if (observacion.length > 100) {
+                        mensajesErrores.push("La observación no puede exceder 100 caracteres.");
                     }
 
                     if (!idClientes) {
@@ -575,8 +577,8 @@ require_once("layouts/headAdmin.php");
 
                         if (!observacion) {
                             mensajesErrores.push("La observación no puede estar vacío.");
-                        } else if (observacion.length > 50) {
-                            mensajesErrores.push("La observación no puede exceder 50 caracteres.");
+                        } else if (observacion.length > 100) {
+                            mensajesErrores.push("La observación no puede exceder 100 caracteres.");
                         }
 
                         if (!idClientes) {

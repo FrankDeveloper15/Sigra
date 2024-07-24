@@ -45,7 +45,7 @@ require_once("layouts/headCliente.php");
                                 <a href="reportePagoCliente.php" class="btn btn-primary clr-pa" id="reportarPagoBtn" role="button"><i class="fa-solid fa-file-circle-check"></i> REPORTAR PAGO</a>
                             </div>
                             <div class="col-md-5 d-flex justify-content-center mb-3 mb-md-0">
-                                <button id="soporte" class="btn btn-primary clr-so" role="button"><i class="fa-regular fa-circle-question"></i> CONTACTAR A SOPORTE</button>
+                                <a href="https://api.whatsapp.com/send?phone=51984404105&text= Hola, necesito soporte para mi cuenta." id="soporte" class="btn btn-primary clr-so" role="button"><i class="fa-regular fa-circle-question"></i> CONTACTAR A SOPORTE</a>
                             </div>
                         </div>
                     </div>

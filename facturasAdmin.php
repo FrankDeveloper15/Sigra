@@ -23,7 +23,30 @@ require_once("layouts/headAdmin.php");
                 $facturas->reportePago = "";
                 $facturas->notificacion = "1";
 
-                $facturas->idClientes = $_POST['idClientesInsert'];
+                $facturas->idCredenciales = $_POST['idCredencialesInsert'];
+
+                if (isset($_FILES['ordenPagoInsert']) && $_FILES['ordenPagoInsert']['error'] == UPLOAD_ERR_OK) {
+                    $uploadDir = 'OrdenPago/';
+                    $uploadedFileName = basename($_FILES['ordenPagoInsert']['name']);
+                    $uploadFilePath = $uploadDir . $uploadedFileName;
+
+                    // Obtener la extensión del archivo
+                    $fileExtension = pathinfo($uploadFilePath, PATHINFO_EXTENSION);
+
+                    // Verificar si el archivo es PDF
+                    if (strtolower($fileExtension) === 'pdf') {
+                        // Mover el archivo a la carpeta de destino
+                        if (move_uploaded_file($_FILES['ordenPagoInsert']['tmp_name'], $uploadFilePath)) {
+                            $facturas->ordenPago = $uploadedFileName;
+                        } else {
+                            $mensajesErrores[] = "Error al mover el archivo.";
+                        }
+                    } else {
+                        $mensajesErrores[] = "Solo se permiten archivos PDF.";
+                    }
+                } else {
+                    $mensajesErrores[] = "Error al subir el archivo.";
+                }
 
                 $mensajesErrores = $facturas->validarFacturas();
 
@@ -80,7 +103,34 @@ require_once("layouts/headAdmin.php");
                     }
                 }
 
-                $facturas->idClientes = $_POST['idClientesEdit'];
+                $facturas->idCredenciales = $_POST['idCredencialesEdit'];
+
+                if (empty($_POST['forOrdenPago'])) {
+                    $facturas->ordenPago = $_POST['ordenPagoEdit'];
+                } else {
+                    if (isset($_FILES['ordenPagoEdit']) && $_FILES['ordenPagoEdit']['error'] == UPLOAD_ERR_OK) {
+                        $uploadDir = 'OrdenPago/';
+                        $uploadedFileName = basename($_FILES['ordenPagoEdit']['name']);
+                        $uploadFilePath = $uploadDir . $uploadedFileName;
+
+                        // Obtener la extensión del archivo
+                        $fileExtension = pathinfo($uploadFilePath, PATHINFO_EXTENSION);
+
+                        // Verificar si el archivo es PDF
+                        if (strtolower($fileExtension) === 'pdf') {
+                            // Mover el archivo a la carpeta de destino
+                            if (move_uploaded_file($_FILES['ordenPagoEdit']['tmp_name'], $uploadFilePath)) {
+                                $facturas->ordenPago = $uploadedFileName;
+                            } else {
+                                $mensajesErrores[] = "Error al mover el archivo.";
+                            }
+                        } else {
+                            $mensajesErrores[] = "Solo se permiten archivos PDF.";
+                        }
+                    } else {
+                        $mensajesErrores[] = "Error al subir el archivo.";
+                    }
+                }
 
                 $mensajesErrores = $facturas->validarFacturas();
 
@@ -146,12 +196,12 @@ require_once("layouts/headAdmin.php");
         require_once("layouts/headerAdmin.php");
         ?>
         <div class="container-fluid p-4">
-        <div class="row">
+            <div class="row">
                 <div class="col ms-5">
                     <span><strong>FACTURAS:</strong></span>
                 </div>
                 <div class="col">
-                <button type="button" class="btn btn-primary clr-fac" id="agregar-factura" data-bs-toggle="modal" data-bs-target="#modalAgregarFacturas"><i class="fa-solid fa-file-circle-plus"></i>&nbsp; AGREGAR</button>
+                    <button type="button" class="btn btn-primary clr-fac" id="agregar-factura" data-bs-toggle="modal" data-bs-target="#modalAgregarFacturas"><i class="fa-solid fa-file-circle-plus"></i>&nbsp; AGREGAR</button>
                 </div>
             </div>
         </div>
@@ -169,6 +219,7 @@ require_once("layouts/headAdmin.php");
                             <th>Fecha Emision</th>
                             <th>Fecha Vencimiento</th>
                             <th>Estado</th>
+                            <th>Orden Pago</th>
                             <th>Reporte Pago</th>
                             <th>Documento</th>
                             <th>Acción</th>
@@ -190,12 +241,17 @@ require_once("layouts/headAdmin.php");
                                 <?php } else { ?>
                                     <td style="color: #00913f;"><?php echo $facturas->estado; ?></td>
                                 <?php } ?>
+                                <td>
+                                    <a class="btn btn-primary btn-sm d-sm-inline-block download-button" role="button" target="_blank" href="OrdenPago/<?php echo $facturas->ordenPago; ?>">
+                                        <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Orden Pago
+                                    </a>
+                                </td>
                                 <?php if (empty($facturas->reportePago)) { ?>
                                     <td></td>
                                 <?php } else { ?>
                                     <td>
-                                        <a class="btn btn-primary btn-sm d-none d-sm-inline-block download-button" role="button" href="ReportePago/<?php echo $facturas->reportePago; ?>" download>
-                                            <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Dowloand
+                                        <a class="btn btn-primary btn-sm d-sm-inline-block download-button" role="button" href="ReportePago/<?php echo $facturas->reportePago; ?>" download>
+                                            <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Descargar
                                         </a>
                                     </td>
                                 <?php } ?>
@@ -203,7 +259,7 @@ require_once("layouts/headAdmin.php");
                                     <td></td>
                                 <?php } else { ?>
                                     <td>
-                                        <a class="btn btn-primary btn-sm d-none d-sm-inline-block download-button" role="button" target="_blank" href="Facturas/<?php echo $facturas->documento; ?>">
+                                        <a class="btn btn-primary btn-sm d-sm-inline-block download-button" role="button" target="_blank" href="Facturas/<?php echo $facturas->documento; ?>">
                                             <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Ver Factura
                                         </a>
                                     </td>
@@ -235,11 +291,11 @@ require_once("layouts/headAdmin.php");
                                 <div class="row align-items-center mb-3">
                                     <div class="col-md-10">
                                         <div class="row">
-                                            <label for="idClientesInsert" class="col-auto col-form-label">Clientes:</label>
+                                            <label for="idCredencialesInsert" class="col-auto col-form-label">Credenciales:</label>
                                             <div class="col">
-                                                <select title="Selecciona Cliente" data-style="btn-secondary" class="form-control form-select selectpicker show-tick" name="idClientesInsert" id="idClientesInsert" data-size="4" data-live-search="true">
-                                                    <?php foreach ($searchClientesFac as $clientes) { ?>
-                                                        <option value="<?php echo $clientes->idClientes; ?>"><?php echo $clientes->nombre; ?></option>
+                                                <select title="Selecciona Credencial" data-style="btn-secondary" class="form-control form-select selectpicker show-tick" name="idCredencialesInsert" id="idCredencialesInsert" data-size="4" data-live-search="true">
+                                                    <?php foreach ($searchClientesFac as $credenciales) { ?>
+                                                        <option value="<?php echo $credenciales->idCredenciales; ?>"><?php echo $credenciales->nombre; ?> -> <?php echo $credenciales->nombreServicios; ?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>
@@ -291,6 +347,16 @@ require_once("layouts/headAdmin.php");
                                             <label for="fechaVencimientoInsert" class="col-auto col-form-label">Fecha Vencimiento:</label>
                                             <div class="col">
                                                 <input type="date" class="form-control" id="fechaVencimientoInsert" name="fechaVencimientoInsert">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <label for="ordenPagoInsert" class="col-auto col-form-label">Orden de Pago:</label>
+                                            <div class="col">
+                                                <input type="file" class="form-control" id="ordenPagoInsert" name="ordenPagoInsert" accept="application/pdf">
                                             </div>
                                         </div>
                                     </div>
@@ -381,14 +447,15 @@ require_once("layouts/headAdmin.php");
                                     <input type="hidden" name="tipoEnvio" value="edit">
                                     <input type="hidden" id="idFacturasEdit-<?php echo $facturas->idFacturas; ?>" name="idFacturasEdit" value="<?php echo $facturas->idFacturas; ?>">
                                     <input type="hidden" id="forFile-<?php echo $facturas->idFacturas; ?>" name="forFile">
+                                    <input type="hidden" id="forOrdenPago-<?php echo $facturas->idFacturas; ?>" name="forOrdenPago">
                                     <input type="hidden" id="reportePagoEdit-<?php echo $facturas->idFacturas; ?>" name="reportePagoEdit" value="<?php echo $facturas->reportePago; ?>">
                                     <div class="row align-items-center mb-3">
                                         <div class="col-md-10">
                                             <div class="row">
-                                                <label for="idClientesEdit-<?php echo $facturas->idFacturas; ?>" class="col-auto col-form-label">Clientes:</label>
+                                                <label for="idCredencialesEdit-<?php echo $facturas->idFacturas; ?>" class="col-auto col-form-label">Credenciales:</label>
                                                 <div class="col">
-                                                    <select title="Selecciona Cliente" data-style="btn-secondary" class="form-control" name="idClientesEdit" id="idClientesEdit-<?php echo $facturas->idFacturas; ?>">
-                                                        <option value="<?php echo $facturas->idClientes; ?>"><?php echo $facturas->nombre; ?></option>
+                                                    <select title="Selecciona Credencial" data-style="btn-secondary" class="form-control" name="idCredencialesEdit" id="idCredencialesEdit-<?php echo $facturas->idFacturas; ?>">
+                                                        <option value="<?php echo $facturas->idCredenciales; ?>"><?php echo $facturas->nombre; ?> -> <?php echo $facturas->nombreServicios; ?></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -413,7 +480,7 @@ require_once("layouts/headAdmin.php");
                                             <div class="row">
                                                 <label for="montoEdit-<?php echo $facturas->idFacturas; ?>" class="col-auto col-form-label">Monto:</label>
                                                 <div class="col">
-                                                    <input readonly type="text" class="form-control" id="montoEdit-<?php echo $facturas->idFacturas; ?>" name="montoEdit" value="<?php echo $facturas->monto; ?>" maxlength="6">
+                                                    <input type="text" class="form-control" id="montoEdit-<?php echo $facturas->idFacturas; ?>" name="montoEdit" value="<?php echo $facturas->monto; ?>" maxlength="6">
                                                 </div>
                                             </div>
                                         </div>
@@ -455,12 +522,22 @@ require_once("layouts/headAdmin.php");
                                             <div class="row">
                                                 <label for="mesEdit-<?php echo $facturas->idFacturas; ?>" class="col-auto col-form-label">Mes:</label>
                                                 <div class="col">
-                                                    <input readonly type="text" class="form-control" id="mesEdit-<?php echo $facturas->idFacturas; ?>" name="mesEdit" value="<?php echo $facturas->mes; ?>">
+                                                    <input type="text" class="form-control" id="mesEdit-<?php echo $facturas->idFacturas; ?>" name="mesEdit" value="<?php echo $facturas->mes; ?>">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <?php if ((($facturas->estado == "Pendiente")&&($facturas->notificacion == "0")) || (($facturas->estado == "Pago")&&($facturas->notificacion == "0"))) { ?>
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <label for="ordenPagoEdit-<?php echo $facturas->idFacturas; ?>" class="col-auto col-form-label">Orden de Pago:</label>
+                                                <div class="col">
+                                                    <input type="file" class="form-control" id="ordenPagoEdit-<?php echo $facturas->idFacturas; ?>" name="ordenPagoEdit" accept="application/pdf">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php if ((($facturas->estado == "Pendiente") && ($facturas->notificacion == "0")) || (($facturas->estado == "Pago") && ($facturas->notificacion == "0"))) { ?>
                                         <div class="row align-items-center mb-3">
                                             <div class="col-md-12">
                                                 <div class="row">
@@ -472,7 +549,7 @@ require_once("layouts/headAdmin.php");
                                             </div>
                                         </div>
                                         <input type="hidden" id="verificarEdit-<?php echo $facturas->idFacturas; ?>" name="verificarEdit" value="new">
-                                    <?php } else if (($facturas->estado == "Pendiente")&&($facturas->notificacion == "1")) { ?>
+                                    <?php } else if (($facturas->estado == "Pendiente") && ($facturas->notificacion == "1")) { ?>
                                         <input type="hidden" id="documentoEdit-<?php echo $facturas->idFacturas; ?>" name="documentoEdit" value="<?php echo $facturas->documento; ?>">
                                         <input type="hidden" id="verificarEdit-<?php echo $facturas->idFacturas; ?>" name="verificarEdit" value="">
                                     <?php } ?>
@@ -578,7 +655,7 @@ require_once("layouts/headAdmin.php");
         <!-- Para validar antes de agregar factura -->
         <script>
             $(document).ready(function() {
-                // Evento para el botón de aceptar en modalAgregarContrato
+                // Evento para el botón de aceptar en modalAgregarFacturas
                 $('#btn-aceptar-factura').on('click', function(event) {
                     event.preventDefault(); // Prevenir el envío automático del formulario
 
@@ -588,7 +665,8 @@ require_once("layouts/headAdmin.php");
                     var monto = $('#montoInsert').val().trim();
                     var fechaEmision = $('#fechaEmisionInsert').val().trim();
                     var fechaVencimiento = $('#fechaVencimientoInsert').val().trim();
-                    var idClientes = $('#idClientesInsert').val().trim();
+                    var idCredenciales = $('#idCredencialesInsert').val().trim();
+                    var ordenPago = $('#ordenPagoInsert').val().trim();
 
                     // Validación
                     var mensajesErrores = [];
@@ -633,15 +711,34 @@ require_once("layouts/headAdmin.php");
                         mensajesErrores.push("La fecha de vencimiento debe tener el formato Y-m-d.");
                     }
 
-                    if (!idClientes) {
-                        mensajesErrores.push("No selecciono ningun cliente.");
-                    } else if (idClientes.length > 6) {
-                        mensajesErrores.push("El cliente no debe de exceder de 6 caracteres.");
+                    if (!idCredenciales) {
+                        mensajesErrores.push("No selecciono ninguna credencial.");
+                    } else if (idCredenciales.length > 6) {
+                        mensajesErrores.push("La crdencial no debe de exceder de 6 caracteres.");
                     }
 
+                    if (!ordenPago) {
+                        mensajesErrores.push("La orden de pago no puede estar vacío.");
+                    } else {
+                        // Obtener la extensión del archivo
+                        var extension = ordenPago.split('.').pop().toLowerCase();
+
+                        // Verificar si la extensión es PDF
+                        if (extension !== 'pdf') {
+                            mensajesErrores.push("La orden de pago debe ser un archivo PDF.");
+                        }
+                    }
+
+                    // Obtener solo el nombre del archivo del documento insertado
+                    var nombreArchivoInsertado = ordenPago.split('\\').pop().split('/').pop();
+
                     <?php foreach ($facturasArray as $facturas) { ?>
-                        if ((idClientes === '<?php echo $facturas->idClientes; ?>') && (mes === '<?php echo $facturas->mes; ?>')) {
-                            mensajesErrores.push("La factura del mes del cliente ya existe.");
+                        if ((idCredenciales === '<?php echo $facturas->idCredenciales; ?>') && (mes === '<?php echo $facturas->mes; ?>')) {
+                            mensajesErrores.push("La factura del mes del cliente y servicio ya existe.");
+                        }
+
+                        if (nombreArchivoInsertado === '<?php echo $facturas->ordenPago; ?>') {
+                            mensajesErrores.push("La orden de pago ya existe.");
                         }
                     <?php } ?>
 
@@ -675,8 +772,9 @@ require_once("layouts/headAdmin.php");
                         var fechaEmision = $('#fechaEmisionEdit-<?php echo $facturas->idFacturas; ?>').val().trim();
                         var fechaVencimiento = $('#fechaVencimientoEdit-<?php echo $facturas->idFacturas; ?>').val().trim();
                         var estado = $('#estadoEdit-<?php echo $facturas->idFacturas; ?>').val().trim();
+                        var ordenPago = $('#ordenPagoEdit-<?php echo $facturas->idFacturas;?>').val().trim();
                         var documento = $('#documentoEdit-<?php echo $facturas->idFacturas; ?>').val().trim();
-                        var idClientes = $('#idClientesEdit-<?php echo $facturas->idFacturas; ?>').val().trim();
+                        var idCredenciales = $('#idCredencialesEdit-<?php echo $facturas->idFacturas; ?>').val().trim();
                         var verificarEdit = $('#verificarEdit-<?php echo $facturas->idFacturas; ?>').val().trim();
 
                         // Validación
@@ -750,10 +848,24 @@ require_once("layouts/headAdmin.php");
                             nombreArchivoInsertado = documento.split('\\').pop().split('/').pop();
                         }
 
-                        if (!idClientes) {
-                            mensajesErrores.push("No selecciono ningun cliente.");
-                        } else if (idClientes.length > 6) {
-                            mensajesErrores.push("El cliente no debe de exceder de 6 caracteres.");
+                        var extensionTwo = "";
+                        var nombreArchivoInsertadoTwo = "";
+                        if (!ordenPago) {
+                            $('#ordenPagoEdit-<?php echo $facturas->idFacturas; ?>').attr('type', 'text');
+                            $('#ordenPagoEdit-<?php echo $facturas->idFacturas; ?>').val('<?php echo $facturas->ordenPago; ?>');
+                        } else if (extensionTwo !== 'pdf') {
+                            mensajesErrores.push("La orden de pago debe ser un archivo PDF.");
+                        } else {
+                            $('#forOrdenPago-<?php echo $facturas->idFacturas; ?>').val('new');
+                        }
+
+                        // Obtener solo el nombre del archivo del documento insertado
+                        nombreArchivoInsertadoTwo = ordenPago.split('\\').pop().split('/').pop();
+
+                        if (!idCredenciales) {
+                            mensajesErrores.push("No selecciono ninguna credencial.");
+                        } else if (idCredenciales.length > 6) {
+                            mensajesErrores.push("La credencial no debe de exceder de 6 caracteres.");
                         }
 
                         // Verificación de la existencia de los valores 
@@ -762,8 +874,12 @@ require_once("layouts/headAdmin.php");
                                 mensajesErrores.push("Este archivo ya esta registrado.");
                             }
 
-                            if ('<?php echo $facturas->idFacturas; ?>' != '<?php echo $value->idFacturas; ?>' && ((idClientes === '<?php echo $value->idClientes; ?>') && (mes === '<?php echo $value->mes; ?>'))) {
-                                mensajesErrores.push("La factura del mes del cliente ya existe.");
+                            if (('<?php echo $facturas->idFacturas; ?>' != '<?php echo $value->idFacturas; ?>') && (nombreArchivoInsertadoTwo === '<?php echo $value->ordenPago; ?>')) {
+                                mensajesErrores.push("Esta orden de pago ya esta registrado.");
+                            }
+
+                            if ('<?php echo $facturas->idFacturas; ?>' != '<?php echo $value->idFacturas; ?>' && ((idCredenciales === '<?php echo $value->idCredenciales; ?>') && (mes === '<?php echo $value->mes; ?>'))) {
+                                mensajesErrores.push("La factura del mes del cliente y servicio ya existe.");
                             }
                         <?php } ?>
 
@@ -782,6 +898,12 @@ require_once("layouts/headAdmin.php");
                                 }
                             }
 
+                            if (!ordenPago) {
+                                $('#ordenPagoEdit-<?php echo $facturas->idFacturas; ?>').attr('type', 'file');
+                                $('#ordenPagoEdit-<?php echo $facturas->idFacturas; ?>').val('');
+                            }
+
+                            $('#forOrdenPago-<?php echo $facturas->idFacturas; ?>').val('');
                             $('#forFile-<?php echo $facturas->idFacturas; ?>').val('');
                             $('#modalAceptarEditarFacturas-<?php echo $facturas->idFacturas; ?>').modal('hide');
                             $('#modalEditarFacturas-<?php echo $facturas->idFacturas; ?>').modal('show');

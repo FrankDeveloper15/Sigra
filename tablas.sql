@@ -49,7 +49,7 @@ CREATE TABLE `credenciales` (
   `idCredenciales` int(6) NOT NULL AUTO_INCREMENT,
   `usuario` varchar(30) NOT NULL,
   `contrasenia` varchar(255) NOT NULL,
-  `observacion` varchar(50) NOT NULL,
+  `observacion` varchar(100) NOT NULL,
   `idClientes` int(6) NULL DEFAULT NULL,
   `idServicios` int(6) NULL DEFAULT NULL,
   PRIMARY KEY (`idCredenciales`) USING BTREE,
@@ -86,12 +86,13 @@ CREATE TABLE `facturas` (
   `fechaVencimiento` date NOT NULL,
   `estado` varchar(15) NOT NULL,
   `documento` varchar(255) DEFAULT NULL,
+  `ordenPago` varchar(255) DEFAULT NULL,
   `reportePago` varchar(255) DEFAULT NULL,
   `notificacion` varchar(6) NOT NULL,
-  `idClientes` int(6) NULL DEFAULT NULL,
+  `idCredenciales` int(6) NULL DEFAULT NULL,
   PRIMARY KEY (`idFacturas`) USING BTREE,
-  INDEX `fk_facturas_id_clientes_clientes_idx` (`idClientes`) USING BTREE,
-  CONSTRAINT `fk_facturas_id_clientes` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`idClientes`) ON DELETE NO ACTION ON UPDATE CASCADE
+  INDEX `fk_facturas_id_credenciales_credenciales_idx` (`idCredenciales`) USING BTREE,
+  CONSTRAINT `fk_facturas_id_credenciales` FOREIGN KEY (`idCredenciales`) REFERENCES `credenciales` (`idCredenciales`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ROW_FORMAT=DYNAMIC;
 -- -
 -- ----------------------------
@@ -791,10 +792,10 @@ mes_ varchar(30)
 ,fechaVencimiento_ date
 ,estado_ varchar(15)
 ,documento_ varchar(255)
+,ordenPago_ varchar(255)
 ,reportePago_ varchar(255)
 ,notificacion_ varchar(6)
-,idClientes_ int(6)
-
+,idCredenciales_ int(6)
 )
 BEGIN
 INSERT INTO
@@ -807,9 +808,10 @@ mes
 ,fechaVencimiento
 ,estado
 ,documento
+,ordenPago
 ,reportePago
 ,notificacion
-,idClientes
+,idCredenciales
 )
 VALUES
 (
@@ -820,9 +822,10 @@ mes_
 ,fechaVencimiento_
 ,estado_
 ,documento_
+,ordenPago_
 ,reportePago_
 ,notificacion_
-,idClientes_
+,idCredenciales_
 );
 END
 ;;
@@ -845,14 +848,15 @@ SELECT
     ,fac.fechaVencimiento
 		,fac.estado
     ,fac.documento
+    ,fac.ordenPago
     ,fac.reportePago
     ,fac.notificacion
-    ,fac.idClientes
+    ,fac.idCredenciales
     ,cli.nombre
     ,ser.nombreServicios
 	FROM
 		facturas fac
-    INNER JOIN credenciales cre ON fac.idClientes = cre.idClientes
+    INNER JOIN credenciales cre ON fac.idCredenciales = cre.idCredenciales
     INNER JOIN contrato con ON con.idCredenciales = cre.idCredenciales
     INNER JOIN clientes cli ON cli.idClientes = cre.idClientes
     INNER JOIN servicios ser ON ser.idServicios = cre.idServicios;
@@ -874,8 +878,9 @@ CREATE PROCEDURE `sp_facturas_edit`(
     fechaVencimiento_ DATE,
     estado_ VARCHAR(15),
     documento_ VARCHAR(255),
+    ordenPago_ VARCHAR(255),
     reportePago_ VARCHAR(255),
-    idClientes_ INT(6)
+    idCredenciales_ INT(6)
 )
 BEGIN
     DECLARE new_notificacion VARCHAR(6);
@@ -898,8 +903,9 @@ BEGIN
         estado = estado_,
         documento = documento_,
         reportePago = reportePago_,
+        ordenPago = ordenPago_,
         notificacion = new_notificacion,
-        idClientes = idClientes_
+        idCredenciales = idCredenciales_
     WHERE
         idFacturas = idFacturas_;
 
@@ -934,12 +940,14 @@ CREATE PROCEDURE `sp_search_clientes_fac`()
 BEGIN
 
 SELECT
-		cli.idClientes
+		cre.idCredenciales
     ,cli.nombre
+    ,ser.nombreServicios
 	FROM
 		contrato con
     INNER JOIN credenciales cre ON con.idCredenciales = cre.idCredenciales
-    INNER JOIN clientes cli ON cli.idClientes = cre.idClientes;
+    INNER JOIN clientes cli ON cli.idClientes = cre.idClientes
+    INNER JOIN servicios ser ON ser.idServicios = cre.idServicios;
 	
 END
 ;;
@@ -986,6 +994,7 @@ BEGIN
 SELECT
     cre.idCredenciales
 		,cre.usuario
+    ,cre.contrasenia
     ,cre.observacion
     ,cre.idClientes
     ,cre.idServicios
@@ -1055,19 +1064,20 @@ SELECT
     ,fac.fechaVencimiento
 		,fac.estado
     ,fac.documento
+    ,fac.ordenPago
     ,fac.reportePago
     ,fac.notificacion
-    ,fac.idClientes
+    ,fac.idCredenciales
     ,cli.nombre
     ,ser.nombreServicios
 	FROM
 		facturas fac
-    INNER JOIN credenciales cre ON fac.idClientes = cre.idClientes
+    INNER JOIN credenciales cre ON fac.idCredenciales = cre.idCredenciales
     INNER JOIN contrato con ON con.idCredenciales = cre.idCredenciales
     INNER JOIN clientes cli ON cli.idClientes = cre.idClientes
     INNER JOIN servicios ser ON ser.idServicios = cre.idServicios
   WHERE
-    fac.idClientes = idClientes_;
+    cre.idClientes = idClientes_;
 END
 ;;
 DELIMITER ;

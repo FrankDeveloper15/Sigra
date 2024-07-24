@@ -11,7 +11,8 @@ class Facturas
     public $fechaVencimiento;
     public $estado;
     public $documento;
-    public $idClientes;
+    public $ordenPago;
+    public $idCredenciales;
     public $reportePago;
     public $notificacion;
 
@@ -96,6 +97,10 @@ class Facturas
 
         //-----------------------------------------------------------------------------
 
+        $this->ordenPago = $this->test_input($this->ordenPago);
+
+        //-----------------------------------------------------------------------------
+
         $this->reportePago = $this->test_input($this->reportePago);
 
         //-----------------------------------------------------------------------------
@@ -104,10 +109,10 @@ class Facturas
 
         //-----------------------------------------------------------------------------
 
-        if (empty($this->idClientes)) {
-            $mensajesErrores[] = 'El id clientes es obligatorio';
+        if (empty($this->idCredenciales)) {
+            $mensajesErrores[] = 'El id credenciales es obligatorio';
         } else {
-            $this->idClientes = $this->test_input($this->idClientes);
+            $this->idCredenciales = $this->test_input($this->idCredenciales);
         }
 
         return $mensajesErrores;

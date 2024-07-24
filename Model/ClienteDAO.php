@@ -157,6 +157,7 @@ class ClienteDAO
                 $credenciales = new Credenciales();
                 $credenciales->idCredenciales = $row["idCredenciales"];
                 $credenciales->usuario = $row["usuario"];
+                $credenciales->contrasenia = $row["contrasenia"];
                 $credenciales->observacion = $row["observacion"];
                 $credenciales->idClientes = $row["idClientes"];
                 $credenciales->idServicios = $row["idServicios"];
@@ -228,9 +229,10 @@ class ClienteDAO
                 $facturas->fechaVencimiento = $row["fechaVencimiento"];
                 $facturas->estado = $row["estado"];
                 $facturas->documento = $row["documento"];
+                $facturas->ordenPago = $row["ordenPago"];
                 $facturas->reportePago = $row["reportePago"];
                 $facturas->notificacion = $row["notificacion"];
-                $facturas->idClientes = $row["idClientes"];
+                $facturas->idCredenciales = $row["idCredenciales"];
                 $facturas->nombre = $row["nombre"];
                 $facturas->nombreServicios = $row["nombreServicios"];
                 $facturasArray[] = $facturas;
@@ -245,7 +247,6 @@ class ClienteDAO
     /*---------------------------------------------------------------------------------*/
     public function editReportePago(Facturas $facturas)
     {
-
         try {
             $con = Conexion::getConexion();
             $sql = "CALL sp_facturas_edit_reportePago(?,?,?)";
@@ -264,7 +265,6 @@ class ClienteDAO
 
     public function login($clienteLogin)
     {
-
         try {
 
             $con = Conexion::getconexion();
@@ -314,7 +314,7 @@ class ClienteDAO
                 throw $e;
             } else {
                 $_SESSION['msj'] = "Comunicarse con el administrador del sistema";
-                $_SESSION['icon'] = "error";         
+                $_SESSION['icon'] = "error";
                 throw $e;
             }
         }

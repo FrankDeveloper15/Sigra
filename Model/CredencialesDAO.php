@@ -47,10 +47,7 @@ class CredencialesDAO
             $query = $con->prepare($sql);
 
             $query->bindValue(1, $credenciales->usuario);
-
-            $claveEncriptada = md5($credenciales->contrasenia);
-
-            $query->bindValue(2, $claveEncriptada);
+            $query->bindValue(2, $credenciales->contrasenia);
             $query->bindValue(3, $credenciales->observacion);
             $query->bindValue(4, $credenciales->idClientes);
             $query->bindValue(5, $credenciales->idServicios);
@@ -71,14 +68,7 @@ class CredencialesDAO
             $query = $con->prepare($sql);
             $query->bindValue(1, $credenciales->idCredenciales);
             $query->bindValue(2, $credenciales->usuario);
-
-            if (!empty($credenciales->forPassword)) {
-                $claveEncriptada = md5($credenciales->contrasenia);
-                $query->bindValue(3, $claveEncriptada);
-            } else{
-                $query->bindValue(3, $credenciales->contrasenia); //
-            }
-
+            $query->bindValue(3, $credenciales->contrasenia);
             $query->bindValue(4, $credenciales->observacion);
             $query->bindValue(5, $credenciales->idClientes);
             $query->bindValue(6, $credenciales->idServicios);          

@@ -26,6 +26,7 @@ require_once("layouts/headCliente.php");
                         <th>Monto</th>
                         <th>Fecha Emision</th>
                         <th>Fecha Vencimiento</th>
+                        <th>Orden Pago</th>
                         <th>Estado</th>
                         <th>Reporte Pago</th>
                         <th>Documento</th>
@@ -42,6 +43,11 @@ require_once("layouts/headCliente.php");
                             <td><?php echo $facturas->monto; ?></td>
                             <td><?php echo date('d-m-Y', strtotime($facturas->fechaEmision)); ?></td>
                             <td><?php echo date('d-m-Y', strtotime($facturas->fechaVencimiento)); ?></td>
+                            <td>
+                                <a class="btn btn-primary btn-sm d-sm-inline-block download-button" role="button" target="_blank" href="OrdenPago/<?php echo $facturas->ordenPago; ?>">
+                                    <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Orden Pago
+                                </a>
+                            </td>
                             <?php if ($facturas->estado == 'Pendiente') { ?>
                                 <td style="color: #cb3234;"><?php echo $facturas->estado; ?></td>
                                 <td></td>
@@ -52,8 +58,8 @@ require_once("layouts/headCliente.php");
                                     <td></td>
                                 <?php } else { ?>
                                     <td>
-                                        <a class="btn btn-primary btn-sm d-none d-sm-inline-block download-button" role="button" href="Facturas/<?php echo $facturas->documento; ?>" download>
-                                            <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Download
+                                        <a class="btn btn-primary btn-sm d-sm-inline-block download-button" role="button" href="Facturas/<?php echo $facturas->documento; ?>" download>
+                                            <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Descargar
                                         </a>
                                     </td>
                                 <?php } ?>
@@ -61,7 +67,7 @@ require_once("layouts/headCliente.php");
                                     <td></td>
                                 <?php } else { ?>
                                     <td>
-                                        <a class="btn btn-primary btn-sm d-none d-sm-inline-block download-button" role="button" target="_blank" href="Facturas/<?php echo $facturas->documento; ?>">
+                                        <a class="btn btn-primary btn-sm d-sm-inline-block download-button" role="button" target="_blank" href="Facturas/<?php echo $facturas->documento; ?>">
                                             <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Ver Factura
                                         </a>
                                     </td>

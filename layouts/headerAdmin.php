@@ -24,7 +24,7 @@
                 <a href="contratosAdmin.php">CONTRATO</a>
             </div>
             <div class="item">
-                <a id="soporte">SOPORTE</a>
+                <a href="https://api.whatsapp.com/send?phone=51984404105&text= Hola, necesito soporte para mi cuenta." id="soporte">SOPORTE</a>
             </div>
             <div class="item">
                 <i class="fa-solid fa-bell" id="abrir-notificacion"></i>
@@ -66,7 +66,7 @@
                             <a href="servicios.php">MIS SERVICIOS</a>
                         </div>
                         <div class="modal-line">
-                            <a id="soporte">SOPORTE</a>
+                            <a href="https://api.whatsapp.com/send?phone=51984404105&text= Hola, necesito soporte para mi cuenta." id="soporte">SOPORTE</a>
                         </div>
                         <div class="modal-line">
                             <i class="fa-solid fa-bell" id="abrir-notificacion"></i>

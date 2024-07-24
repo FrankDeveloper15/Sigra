@@ -498,6 +498,7 @@ require_once("layouts/headAdmin.php");
                                         <th>Monto</th>
                                         <th>Fecha Emision</th>
                                         <th>Fecha Vencimiento</th>
+                                        <th>Orden Pago</th>
                                         <th>Estado</th>
                                         <th>Reporte Pago</th>
                                         <th>Documento</th>
@@ -514,6 +515,11 @@ require_once("layouts/headAdmin.php");
                                             <td><?php echo $facturas->monto; ?></td>
                                             <td><?php echo date('d-m-Y', strtotime($facturas->fechaEmision)); ?></td>
                                             <td><?php echo date('d-m-Y', strtotime($facturas->fechaVencimiento)); ?></td>
+                                            <td>
+                                                <a class="btn btn-primary btn-sm d-sm-inline-block download-button" role="button" target="_blank" href="OrdenPago/<?php echo $facturas->ordenPago; ?>">
+                                                    <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Orden Pago
+                                                </a>
+                                            </td>
                                             <?php if ($facturas->estado == 'Pendiente') { ?>
                                                 <td style="color: #cb3234;"><?php echo $facturas->estado; ?></td>
                                                 <td></td>
@@ -559,6 +565,7 @@ require_once("layouts/headAdmin.php");
                                         <th>Cliente</th>
                                         <th>Servicio</th>
                                         <th>Usuario</th>
+                                        <th>Contraseña</th>
                                         <th>Observacion</th>
                                         <th>Link de Acceso</th>
                                     </tr>
@@ -570,6 +577,7 @@ require_once("layouts/headAdmin.php");
                                             <td><?php echo $credenciales->nombre; ?></td>
                                             <td><?php echo $credenciales->nombreServicios; ?></td>
                                             <td><?php echo $credenciales->usuario; ?></td>
+                                            <td><?php echo $credenciales->contrasenia; ?></td>
                                             <td><?php echo $credenciales->observacion; ?></td>
                                             <td><?php echo $credenciales->linkAcceso; ?></td>
                                         </tr>

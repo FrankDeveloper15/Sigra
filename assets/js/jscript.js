@@ -55,17 +55,3 @@ window.addEventListener('DOMContentLoaded', function () {
         }, 250); // 500 milisegundos de retraso
     });
 });
-
-/* abrir whatsapp */
-
-$(document).ready(function () {
-    $('#soporte').click(function () {
-        window.open('https://api.whatsapp.com/send?phone=51984404105&text= Hola, necesito soporte para mi cuenta.');
-    });
-});
-
-$(document).ready(function () {
-    $('#contactar').click(function () {
-        window.open('https://api.whatsapp.com/send?phone=51984404105&text= Hola, estoy interesado de trabajar con usted.');
-    });
-});

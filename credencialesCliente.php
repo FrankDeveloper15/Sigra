@@ -23,6 +23,7 @@ require_once("layouts/headCliente.php");
                             <th>Cliente</th>
                             <th>Servicio</th>
                             <th>Usuario</th>
+                            <th>Contraseña</th>
                             <th>Observacion</th>
                             <th>Link de Acceso</th>
                         </tr>
@@ -34,6 +35,7 @@ require_once("layouts/headCliente.php");
                                 <td><?php echo $credenciales->nombre; ?></td>
                                 <td><?php echo $credenciales->nombreServicios; ?></td>
                                 <td><?php echo $credenciales->usuario; ?></td>
+                                <td><?php echo $credenciales->contrasenia; ?></td>
                                 <td><?php echo $credenciales->observacion; ?></td>
                                 <td><?php echo $credenciales->linkAcceso; ?></td>
                             </tr>

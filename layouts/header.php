@@ -21,7 +21,7 @@
                 <a href="#id-clientes"><i class="fa-solid fa-user-check"></i>CLIENTES</a>
             </div>
             <div class="item-button">
-                <a id="contactar" role="button" class="btn btn-primary button__One me-4">CONTÁCTANOS <img src="assets/img/contactanos.svg" alt="contactanos"></a>
+                <a href="https://api.whatsapp.com/send?phone=51984404105&text= Hola, estoy interesado de trabajar con usted." id="contactar" role="button" class="btn btn-primary button__One me-4">CONTÁCTANOS <img src="assets/img/contactanos.svg" alt="contactanos"></a>
                 <a href="login_cliente.php" role="button" class="btn btn-primary button__Two">ÁREA DE CLIENTE <img src="assets/img/cliente.svg" alt="cliente"></a>
             </div>
         </div>
@@ -54,7 +54,7 @@
                         <div class="modal-line">
                             <a href="#id-clientes" class="modal-link" data-bs-dismiss="modal"><i class="fa-solid fa-user-check"></i>CLIENTES</a>
                         </div>
-                        <a id="contactar" role="button" class="btn btn-primary navb-button button__One me-4">CONTÁCTANOS <img src="assets/img/contactanos.svg" alt="contactanos"></a>
+                        <a href="https://api.whatsapp.com/send?phone=51984404105&text= Hola, estoy interesado de trabajar con usted." id="contactar" role="button" class="btn btn-primary navb-button button__One me-4">CONTÁCTANOS <img src="assets/img/contactanos.svg" alt="contactanos"></a>
                         <a href="login_cliente.php" role="button" class="btn btn-primary navb-button button__Two">ÁREA DE CLIENTE <img src="assets/img/cliente.svg" alt="cliente"></a>
                     </div>
                     <div class="mobile-modal-footer">

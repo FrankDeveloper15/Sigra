@@ -1,7 +1,7 @@
 <?php
 require_once("Connection/conexion.php");
 require_once("Model/Facturas.php");
-require_once("Model/Cliente.php");
+require_once("Model/Credenciales.php");
 
 class FacturasDAO
 {
@@ -27,9 +27,10 @@ class FacturasDAO
                 $facturas->fechaVencimiento = $row["fechaVencimiento"];
                 $facturas->estado = $row["estado"];
                 $facturas->documento = $row["documento"];
+                $facturas->ordenPago = $row["ordenPago"];
                 $facturas->reportePago = $row["reportePago"];
                 $facturas->notificacion = $row["notificacion"];
-                $facturas->idClientes = $row["idClientes"];
+                $facturas->idCredenciales = $row["idCredenciales"];
                 $facturas->nombre = $row["nombre"];
                 $facturas->nombreServicios = $row["nombreServicios"];
                 $facturasArray[] = $facturas;
@@ -46,7 +47,7 @@ class FacturasDAO
     {
         try {
             $con = Conexion::getConexion();
-            $sql = "CALL sp_facturas_insert(?,?,?,?,?,?,?,?,?,?)";
+            $sql = "CALL sp_facturas_insert(?,?,?,?,?,?,?,?,?,?,?)";
             $query = $con->prepare($sql);
 
             $query->bindValue(1, $facturas->mes);
@@ -56,9 +57,10 @@ class FacturasDAO
             $query->bindValue(5, $facturas->fechaVencimiento);
             $query->bindValue(6, $facturas->estado);
             $query->bindValue(7, $facturas->documento);
-            $query->bindValue(8, $facturas->reportePago);
-            $query->bindValue(9, $facturas->notificacion);
-            $query->bindValue(10, $facturas->idClientes);
+            $query->bindValue(8, $facturas->ordenPago);
+            $query->bindValue(9, $facturas->reportePago);
+            $query->bindValue(10, $facturas->notificacion);
+            $query->bindValue(11, $facturas->idCredenciales);
 
             $query->execute();
         } catch (PDOException $e) {
@@ -72,7 +74,7 @@ class FacturasDAO
 
         try {
             $con = Conexion::getConexion();
-            $sql = "CALL sp_facturas_edit(?,?,?,?,?,?,?,?,?,?)";
+            $sql = "CALL sp_facturas_edit(?,?,?,?,?,?,?,?,?,?,?)";
             $query = $con->prepare($sql);
             $query->bindValue(1, $facturas->idFacturas);
             $query->bindValue(2, $facturas->mes);
@@ -82,8 +84,9 @@ class FacturasDAO
             $query->bindValue(6, $facturas->fechaVencimiento);
             $query->bindValue(7, $facturas->estado);
             $query->bindValue(8, $facturas->documento);
-            $query->bindValue(9, $facturas->reportePago);
-            $query->bindValue(10, $facturas->idClientes);
+            $query->bindValue(9, $facturas->ordenPago);
+            $query->bindValue(10, $facturas->reportePago);
+            $query->bindValue(11, $facturas->idCredenciales);
 
             $query->execute();
         } catch (PDOException $e) {
@@ -121,10 +124,11 @@ class FacturasDAO
             $searchClientesFac = array();
 
             while ($row = $query->fetch()) {
-                $clientes = new Cliente();
-                $clientes->idClientes = $row["idClientes"];
-                $clientes->nombre = $row["nombre"];
-                $searchClientesFac[] = $clientes;
+                $credenciales = new Credenciales();
+                $credenciales->idCredenciales = $row["idCredenciales"];
+                $credenciales->nombre = $row["nombre"];
+                $credenciales->nombreServicios = $row["nombreServicios"];
+                $searchClientesFac[] = $credenciales;
             }
             return $searchClientesFac;
         } catch (PDOException $e) {

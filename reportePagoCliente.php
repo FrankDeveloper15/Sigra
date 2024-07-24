@@ -103,6 +103,7 @@ require_once("layouts/headCliente.php");
                             <th>Monto</th>
                             <th>Fecha Emision</th>
                             <th>Fecha Vencimiento</th>
+                            <th>Orden Pago</th>
                             <th>Estado</th>
                             <th>Acción</th>
                         </tr>
@@ -119,6 +120,11 @@ require_once("layouts/headCliente.php");
                                     <td><?php echo $facturas->monto; ?></td>
                                     <td><?php echo date('d-m-Y', strtotime($facturas->fechaEmision)); ?></td>
                                     <td><?php echo date('d-m-Y', strtotime($facturas->fechaVencimiento)); ?></td>
+                                    <td>
+                                        <a class="btn btn-primary btn-sm d-sm-inline-block download-button" role="button" target="_blank" href="OrdenPago/<?php echo $facturas->ordenPago; ?>">
+                                            <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Orden Pago
+                                        </a>
+                                    </td>
                                     <td style="color: #cb3234;"><?php echo $facturas->estado; ?></td>
                                     <td>
                                         <button class="btn btn-primary clr-cre" id="edit-facturas" data-bs-target="#modalEditarFacturas-<?php echo $facturas->idFacturas; ?>" data-bs-toggle="modal" style="border-radius: 10px 10px 10px 10px;"><i class="fa-solid fa-file-arrow-up"></i></button>

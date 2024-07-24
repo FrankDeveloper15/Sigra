@@ -252,7 +252,7 @@ require_once("layouts/headAdmin.php");
                                         <div class="row">
                                             <label for="fechaInicioInsert" class="col-auto col-form-label">Fecha Inicio:</label>
                                             <div class="col">
-                                                <input readonly type="date" class="form-control" id="fechaInicioInsert" name="fechaInicioInsert">
+                                                <input type="date" class="form-control" id="fechaInicioInsert" name="fechaInicioInsert">
                                             </div>
                                         </div>
                                     </div>
@@ -390,7 +390,7 @@ require_once("layouts/headAdmin.php");
                                             <div class="row">
                                                 <label for="fechaInicioEdit-<?php echo $contrato->idContrato; ?>" class="col-auto col-form-label">Fecha Inicio:</label>
                                                 <div class="col">
-                                                    <input readonly type="date" class="form-control" id="fechaInicioEdit-<?php echo $contrato->idContrato; ?>" name="fechaInicioEdit" value="<?php echo $contrato->fechaInicio; ?>">
+                                                    <input type="date" class="form-control" id="fechaInicioEdit-<?php echo $contrato->idContrato; ?>" name="fechaInicioEdit" value="<?php echo $contrato->fechaInicio; ?>">
                                                 </div>
                                             </div>
                                         </div>
